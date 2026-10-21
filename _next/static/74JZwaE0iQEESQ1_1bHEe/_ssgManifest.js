@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fcertificado\u002F[id]","\u002Fexamen\u002F[id]","\u002Fidioma\u002F[lang]","\u002Flesson\u002F[id]","\u002Fmision\u002F[id]","\u002Fmodulo\u002F[id]","\u002Fnivel\u002F[id]","\u002Fprueba\u002F[id]","\u002Freto\u002F[id]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
