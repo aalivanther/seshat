@@ -1,0 +1,59 @@
+{
+  "manifest": "drop-1",
+  "resolvedAt": "2026-10-20",
+  "modules": [
+    "f0",
+    "f1",
+    "f10",
+    "f11",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9",
+    "fi"
+  ],
+  "exams": [
+    "sim-a",
+    "sim-b",
+    "sim-c"
+  ],
+  "missions": [
+    "missionsDeA1"
+  ],
+  "references": [
+    "pronunciation",
+    "questions",
+    "verbs"
+  ],
+  "features": {
+    "ai": true,
+    "exams": true,
+    "missions": true,
+    "interview": true,
+    "review": true,
+    "challenges": true,
+    "placement": true,
+    "badges": true,
+    "reference": true,
+    "certificates": true,
+    "moduleTest": true,
+    "tts": true
+  },
+  "importedCards": {},
+  "counts": {
+    "modules": 13,
+    "exams": 3,
+    "missions": 1,
+    "references": 3
+  },
+  "langs": [
+    "de"
+  ],
+  "levels": [
+    "de-a1"
+  ]
+}

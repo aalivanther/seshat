@@ -1,0 +1,1 @@
+placeholder para go:embed — build-app.sh lo reemplaza con web/out

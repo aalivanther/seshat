@@ -1,0 +1,13 @@
+{
+  "id": "solo-ingles",
+  "name": "Seshat English",
+  "content": {
+    "include": [{ "lang": "en" }]
+  },
+  "features": {
+    "ai": true, "exams": true, "missions": true, "interview": true, "review": true,
+    "challenges": true, "placement": true, "badges": true, "reference": true,
+    "certificates": true, "moduleTest": true, "tts": true
+  },
+  "policy": { "vocabularyClosure": "strict", "onMissingCard": "fail" }
+}

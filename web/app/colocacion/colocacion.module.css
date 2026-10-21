@@ -1,0 +1,236 @@
+/* Prueba de nivel: pocas piezas, muy grandes, cero adorno. Quien está aquí no
+   conoce la app todavía — cada pantalla tiene que decir qué hacer sin leer. */
+
+.card {
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-hand);
+  background: var(--surface);
+  box-shadow: 4px 5px 0 var(--paper-edge);
+  padding: 20px;
+  margin-top: 16px;
+}
+.cardTitle { font-size: 1.0625rem; font-weight: 800; margin: 16px 0 8px; }
+.linea { color: var(--text-2); line-height: 1.6; margin: 8px 0; }
+
+.reglas { margin: 0 0 16px 18px; display: grid; gap: 8px; color: var(--text-2); line-height: 1.55; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: var(--shadow-btn);
+}
+.btn:active { transform: translateY(1.5px); }
+
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 2px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.acciones { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 18px 0 8px; }
+
+/* ── la prueba ── */
+.progresoFila { display: flex; align-items: center; gap: 12px; margin-top: 10px; color: var(--text-3); }
+.barra { flex: 1; height: 10px; border-radius: 999px; background: var(--panel); border: 1px solid var(--border); overflow: hidden; }
+.barraFill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .35s ease; }
+
+.consigna { font-weight: 700; margin-bottom: 10px; }
+.enunciado {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin: 10px 0 16px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--accent);
+  background: var(--panel);
+  border-radius: 0 12px 12px 0;
+  overflow-wrap: anywhere;
+}
+
+.opciones { display: grid; gap: 10px; }
+.opcion {
+  text-align: left;
+  padding: 14px 16px;
+  min-height: 52px;           /* dedo, no ratón */
+  border: 2px solid var(--border);
+  border-radius: var(--radius-hand);
+  background: var(--surface);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s ease, transform .1s ease;
+}
+.opcion:hover { border-color: var(--accent); }
+.opcion:active { transform: translateY(1px); }
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1.0625rem;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-hand);
+  background: var(--surface);
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* saltar tiene que existir y no invitar: quien no sabe, no debe adivinar.
+   Discreto sí, inalcanzable no: mantiene los 44 px de alto de cualquier botón
+   y se centra con el «Anterior» con el que comparte fila. */
+.saltar {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 14px;
+  padding: 6px 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-3);
+  font-size: .875rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── informe ── */
+.veredicto { border-left: 5px solid var(--accent); }
+.nivelGrande { font-family: var(--font-hand); font-size: 1.75rem; font-weight: 800; margin-bottom: 6px; }
+.nivelGrande b { color: var(--accent-text); }
+
+.niveles { display: grid; gap: 10px; margin-top: 14px; }
+.nivelFila { display: flex; align-items: center; gap: 12px; }
+.nivelNombre { width: 2.5rem; font-weight: 800; color: var(--text-2); }
+
+.temas { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.temas li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding: 10px 12px;
+  border-radius: var(--radius-hand);
+  border: 2px solid var(--border);
+  background: var(--panel);
+  font-weight: 600;
+}
+.temas .num { margin-left: auto; color: var(--text-3); font-weight: 700; }
+
+.temaOk { border-color: var(--ok); }
+.temaMedio { border-color: var(--warn); }
+.temaFlojo { border-color: var(--err); }
+.temaNivel {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: .75rem;
+  color: var(--text-3);
+}
+
+@media (max-width: 640px) {
+  .card { padding: 16px; }
+  .enunciado { font-size: 1.125rem; }
+}
+
+/* ── Ítems de ordenar: fichas, no teclado ────────────────────────────────── */
+.fichasMontaje {
+  min-height: 56px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-hand);
+  background: var(--panel);
+  margin-bottom: 12px;
+}
+.fichasVacio { color: var(--text-3); font-size: .9375rem; }
+.fichasPool { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+
+.ficha {
+  padding: 9px 14px;
+  min-height: 44px;
+  border: 2px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .08s ease, border-color .15s ease;
+}
+.ficha:hover { border-color: var(--accent); }
+.ficha:active { transform: translateY(1px); }
+
+/* ── Lo que hace auditable el informe ─────────────────────────────────────── */
+.lineaMenuda { color: var(--text-3); font-size: .9375rem; line-height: 1.6; margin: 8px 0; }
+/* «volver al curso» va dentro de una frase, pero es la salida de la prueba:
+   zona táctil de 44 px sin tocar el flujo del párrafo */
+.lineaMenuda a { position: relative; color: var(--accent-text); font-weight: 700; }
+.lineaMenuda a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+.candoLista { margin: 10px 0 10px 18px; display: grid; gap: 6px; color: var(--text-2); line-height: 1.55; }
+.limites { margin: 6px 0 0 18px; display: grid; gap: 6px; color: var(--text-3); font-size: .9375rem; line-height: 1.55; }
+.destreza { flex: 0 0 10.5rem; width: 10.5rem; font-weight: 700; color: var(--text-2); }
+
+.confianza { border-left: 4px solid var(--border-strong); padding-left: 12px; }
+.conf_alta { border-left-color: var(--ok, #16a34a); }
+.conf_media { border-left-color: var(--warn, #b8860b); }
+.conf_frontera { border-left-color: var(--accent); }
+
+@media (max-width: 640px) {
+  .destreza { flex-basis: 7rem; width: 7rem; font-size: .9375rem; }
+}
+
+/* ── Audio de la prueba ───────────────────────────────────────────────────── */
+.audioFila { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+
+/* el botón de escuchar es la acción principal de esa pregunta: se ve como tal */
+.btnEscuchar {
+  padding: 12px 22px;
+  min-height: 48px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+}
+.btnEscuchar:active { transform: translateY(1.5px); }
+
+.avisoVoz {
+  flex-basis: 100%;
+  color: var(--warn);
+  font-size: .875rem;
+  line-height: 1.5;
+  font-weight: 600;
+}

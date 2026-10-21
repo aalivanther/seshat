@@ -1,0 +1,632 @@
+/* Dos temas, un mismo cuaderno.
+   Claro: papel de día — pergamino, tinta parda y ámbar.
+   Oscuro: papel de noche — NO es el claro invertido ni una terminal: el papel
+   se apaga a un pardo cálido, la tinta pasa a hueso y el ámbar se aclara lo
+   justo para no vibrar sobre fondo oscuro.
+   El claro manda por defecto: sin elección guardada no hay tema oscuro que
+   valga, aunque el sistema lo pida. Solo quien elige «el del sistema» (que se
+   escribe como data-theme="auto") queda a merced de prefers-color-scheme. */
+
+:root {
+  /* Papel y tinta */
+  --canvas: #fbf7f0;
+  --surface: #ffffff;
+  --panel: #f4ede1;
+  --border: #e8ddcc;
+  --border-strong: #d3c4ab;
+  --text: #33302b;
+  --text-2: #5f594f;
+  /* La tinta de las anotaciones era #6d6d75 y se quedaba en 4.41:1 sobre
+     --panel, justo por debajo del AA que exige el resto de la paleta. Ahora es
+     parda como el resto del cuaderno y llega a 5.03:1. */
+  --text-3: #6a645c;
+
+  /* Acento cálido (CTA, selección, foco) — AA con texto blanco */
+  --accent: #b45309;
+  --accent-strong: #92400e;
+  --accent-soft: #fdeedd;
+  --accent-text: #8a4a08;
+  --accent-contrast: #ffffff;
+
+  /* Estados semánticos */
+  --ok: #1b7a43;
+  --ok-soft: #e2f4e8;
+  --warn: #8a5a00;
+  --warn-soft: #fcf0d8;
+  --err: #b3323e;
+  --err-soft: #fbe9ea;
+
+  /* «Casi» no es un aviso: es un acierto a medias y se merece su propio color
+     (oro viejo) para que el alumno lo distinga del amarillo de precaución. */
+  --near: #93590a;
+  --near-soft: #fdf1de;
+  /* Lo que aún no toca: gris pardo apagado, legible pero sin llamar */
+  --locked: #6b6359;
+  --locked-soft: #efe9e0;
+  /* Estreno: palabra o módulo que se ve por primera vez */
+  --new: #6d28d9;
+  --new-soft: #f3ecfe;
+
+  /* --bad y --bg se usaban en cuatro hojas sin estar definidas en ninguna
+     parte: se pintaba siempre el valor de reserva, un rojo y un crema que no
+     eran de la casa y que en oscuro habrían quedado luminosos. Se quedan como
+     alias para que nada se rompa si alguien los vuelve a escribir. */
+  --bad: var(--err);
+  --bg: var(--canvas);
+
+  --radius: 18px;
+  --radius-sm: 12px;
+  --shadow: 0 2px 4px rgba(87, 63, 25, 0.06), 0 8px 24px rgba(87, 63, 25, 0.08);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Con inercia: la barra que crece se pasa un pelo de la meta y vuelve. Solo
+     para lo que mide progreso; en botones marearía. */
+  --ease-spring: cubic-bezier(0.34, 1.46, 0.64, 1);
+
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  /* La fuente de next/font entra como --font-shantell y aquí se le pone la
+     pila de respaldo. Antes esta línea era «--font-hand: var(--font-hand), …»,
+     una variable definida en términos de sí misma: solo funcionaba porque
+     next/font declaraba --font-hand en el mismo elemento. Cambiar dos líneas de
+     layout.tsx habría dejado toda la app en sans-serif sin avisar. */
+  --font-hand: var(--font-shantell), var(--font-nunito), sans-serif;
+
+  /* El redondeo «a mano alzada» de la casa: cada esquina distinta, como si lo
+     hubiera trazado alguien con un rotulador. Estaba copiado literal en cinco
+     componentes y en nueve hojas de estilo; ahora se cambia en un sitio. */
+  --radius-hand: 13px 11px 14px 12px;
+  --shadow-btn: inset 0 2px 0 var(--btn-sheen), 0 4px 0 var(--accent-strong);
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* ── Materiales del cuaderno ──
+     El relieve de papelería (esa sombra dura y desplazada que hace que una
+     tarjeta parezca cartulina pegada) iba a pelo en nueve hojas como
+     rgba(211,196,171,0.45). En oscuro esa fórmula es negro sobre negro: la
+     tarjeta pierde el borde. Aquí es un color, y en oscuro es LUZ — el canto
+     del papel iluminado desde arriba. */
+  --paper-edge: #e6dbc9;
+  --paper-edge-strong: #dbcdb6;
+  --paper-2: #fffdf5;          /* cartulina crema: carteles, anuncios, fichas */
+  --shadow-ambient: rgba(87, 63, 25, 0.07); /* sombra difusa bajo lo que flota */
+  --inset-shadow: rgba(87, 63, 25, 0.06);   /* bandeja hundida */
+  --btn-sheen: rgba(255, 255, 255, 0.25);   /* brillo superior de pegatina */
+  --accent-glow: rgba(180, 83, 9, 0.22);    /* halo cálido bajo el botón principal */
+  /* Base con la que se aclaran/oscurecen los cantos de color (color-mix): en
+     claro se tira a blanco, en oscuro al fondo. */
+  --tint-base: #ffffff;
+  --veil: rgba(51, 48, 43, 0.28); /* telón de diálogos y paneles modales */
+
+  /* Libreta */
+  --line: rgba(87, 63, 25, 0.09);      /* renglones */
+  --margin-red: rgba(214, 69, 69, 0.35); /* línea de margen */
+  --marker: rgba(255, 213, 79, 0.55);   /* subrayador */
+  --mark-akk: #fcd9a8;                  /* código de color de casos */
+  --mark-dat: #b5e3d8;
+}
+
+/* ══ Papel de noche ══
+   Misma paleta en dos sitios a propósito: [data-theme="dark"] es la elección
+   explícita del alumno y manda siempre; [data-theme="auto"] solo se enciende
+   si el sistema pide oscuro. Si tocas una, toca la otra. */
+[data-theme="dark"] {
+  --canvas: #17130f;
+  --surface: #201a15;
+  --panel: #2a231c;
+  --border: #382f26;
+  --border-strong: #574a3c;
+  --text: #f1e7d8;
+  --text-2: #cbbcaa;
+  --text-3: #a3968a;
+
+  --accent: #e0913c;
+  --accent-strong: #c2762a;
+  --accent-soft: #38281a;
+  --accent-text: #f2b163;
+  --accent-contrast: #1a120b;
+
+  --ok: #56c98c;
+  --ok-soft: #14291d;
+  --warn: #e0ac4a;
+  --warn-soft: #302512;
+  --err: #f0808f;
+  --err-soft: #331a1e;
+
+  --near: #e8c069;
+  --near-soft: #322813;
+  --locked: #97897c;
+  --locked-soft: #241e18;
+  --new: #c4a4f7;
+  --new-soft: #271f34;
+
+  --shadow: 0 1px 0 rgba(255, 236, 205, 0.05), 0 10px 26px rgba(0, 0, 0, 0.5);
+  --paper-edge: #372c21;
+  --paper-edge-strong: #4a3b2c;
+  --paper-2: #262019;
+  --shadow-ambient: rgba(0, 0, 0, 0.5);
+  --inset-shadow: rgba(0, 0, 0, 0.35);
+  --btn-sheen: rgba(255, 240, 214, 0.16);
+  /* En oscuro el halo ámbar iluminaría el fondo en vez de asentar el botón:
+     aquí la profundidad la da la sombra, como en cualquier mesa a oscuras. */
+  --accent-glow: rgba(0, 0, 0, 0.45);
+  --tint-base: #100d0a;
+  --veil: rgba(8, 6, 4, 0.62);
+
+  --line: rgba(240, 226, 200, 0.08);
+  --margin-red: rgba(224, 116, 116, 0.3);
+  /* El subrayador no puede seguir siendo amarillo opaco: con tinta clara
+     encima no se leería nada. En oscuro es un velo ámbar que ALUMBRA la
+     palabra en vez de taparla (8.1:1 con --text). */
+  --marker: rgba(255, 199, 88, 0.22);
+  --mark-akk: rgba(224, 146, 60, 0.28);
+  --mark-dat: rgba(79, 199, 180, 0.26);
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] {
+    --canvas: #17130f;
+    --surface: #201a15;
+    --panel: #2a231c;
+    --border: #382f26;
+    --border-strong: #574a3c;
+    --text: #f1e7d8;
+    --text-2: #cbbcaa;
+    --text-3: #a3968a;
+
+    --accent: #e0913c;
+    --accent-strong: #c2762a;
+    --accent-soft: #38281a;
+    --accent-text: #f2b163;
+    --accent-contrast: #1a120b;
+
+    --ok: #56c98c;
+    --ok-soft: #14291d;
+    --warn: #e0ac4a;
+    --warn-soft: #302512;
+    --err: #f0808f;
+    --err-soft: #331a1e;
+
+    --near: #e8c069;
+    --near-soft: #322813;
+    --locked: #97897c;
+    --locked-soft: #241e18;
+    --new: #c4a4f7;
+    --new-soft: #271f34;
+
+    --shadow: 0 1px 0 rgba(255, 236, 205, 0.05), 0 10px 26px rgba(0, 0, 0, 0.5);
+    --paper-edge: #372c21;
+    --paper-edge-strong: #4a3b2c;
+    --paper-2: #262019;
+    --shadow-ambient: rgba(0, 0, 0, 0.5);
+    --inset-shadow: rgba(0, 0, 0, 0.35);
+    --btn-sheen: rgba(255, 240, 214, 0.16);
+    --accent-glow: rgba(0, 0, 0, 0.45);
+    --tint-base: #100d0a;
+    --veil: rgba(8, 6, 4, 0.62);
+
+    --line: rgba(240, 226, 200, 0.08);
+    --margin-red: rgba(224, 116, 116, 0.3);
+    --marker: rgba(255, 199, 88, 0.22);
+    --mark-akk: rgba(224, 146, 60, 0.28);
+    --mark-dat: rgba(79, 199, 180, 0.26);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  color-scheme: light;
+  height: 100%;
+}
+
+/* que los controles nativos (scrollbars, selects, autofill) vayan a juego */
+[data-theme="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] { color-scheme: dark; }
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+input, button, textarea {
+  font: inherit;
+  color: inherit;
+  caret-color: var(--accent);
+}
+
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+/* El foco se ve y además se nota: el aro nace pegado y se separa de un salto
+   corto, así el ojo lo caza aunque se navegue a toda velocidad con el
+   tabulador. El outline (no box-shadow) para no pisar el relieve de papel que
+   llevan botones y tarjetas en su propia box-shadow. */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  animation: focusRing 0.22s var(--ease);
+}
+
+@keyframes focusRing {
+  from { outline-color: transparent; outline-offset: 0; }
+}
+
+a { color: inherit; text-decoration: none; }
+
+.num { font-variant-numeric: tabular-nums; }
+
+/* --- Utilidades de libreta --- */
+
+h1, h2 { font-family: var(--font-hand); }
+
+/* Página rayada de cuaderno: renglones + línea de margen roja */
+.paper {
+  background-image:
+    linear-gradient(to right, transparent 0, transparent 44px, var(--margin-red) 44px, var(--margin-red) 46px, transparent 46px),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--line) 31px, var(--line) 32px);
+  background-color: var(--surface);
+}
+
+/* Texto marcado con subrayador amarillo */
+.marker {
+  background: linear-gradient(105deg, transparent 2%, var(--marker) 8%, var(--marker) 92%, transparent 98%);
+  padding: 0 4px;
+  border-radius: 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Letra manuscrita para anotaciones */
+.hand { font-family: var(--font-hand); }
+
+/* En móvil el padding se reduce: fuera la línea de margen, quedan los renglones */
+@media (max-width: 640px) {
+  .paper {
+    background-image:
+      repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--line) 31px, var(--line) 32px);
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ══ Jerarquía tipográfica estándar de la libreta ══
+   <b> sobre papel = subrayador amarillo (lo importante SE VE),
+   <u> = subrayado ondulado a mano en tinta de acento,
+   <mark> = subrayador explícito. La tinta secundaria es --text-2, las
+   anotaciones al margen --text-3: nada de grises inventados por pantalla. */
+
+.paper b,
+.paper strong {
+  background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 94%, transparent 94%);
+  padding: 0 2px;
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+u {
+  text-decoration: underline wavy var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+}
+
+mark {
+  background: linear-gradient(105deg, transparent 2%, var(--marker) 8%, var(--marker) 92%, transparent 98%);
+  color: inherit;
+  padding: 0 4px;
+  border-radius: 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ══ A2: glosa audible, colores de caso, timeline ══ */
+
+/* palabra subrayada TOCABLE: suena y traduce ([[wort|glosa]] en las notas) */
+u[data-g] {
+  cursor: pointer;
+  text-decoration-color: var(--accent);
+  border-radius: 3px;
+  transition: background 0.15s var(--ease);
+}
+
+u[data-g]:hover, u[data-g]:active { background: var(--accent-soft); }
+
+/* código de color de casos — el MISMO en todo el nivel (realce del input) */
+mark.akk { background: linear-gradient(105deg, transparent 2%, var(--mark-akk) 8%, var(--mark-akk) 92%, transparent 98%); }
+mark.dat { background: linear-gradient(105deg, transparent 2%, var(--mark-dat) 8%, var(--mark-dat) 92%, transparent 98%); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOVIMIENTO
+   Cuatro entradas y un pulso, definidos una sola vez. Las hojas de módulo las
+   usan por nombre; no hace falta reinventar un @keyframes por componente.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* sube y aparece: lo normal para una tarjeta o un bloque de respuesta */
+@keyframes seshatRise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* pasar hoja: entra desde la derecha, como el ejercicio siguiente */
+@keyframes seshatPage {
+  from { opacity: 0; transform: translateX(16px) rotate(0.4deg); }
+  to { opacity: 1; transform: none; }
+}
+
+/* pegatina que cae en su sitio: para lo que aparece de golpe (medalla, ficha) */
+@keyframes seshatPop {
+  0% { opacity: 0; transform: scale(0.86) rotate(-2deg); }
+  60% { opacity: 1; transform: scale(1.04) rotate(0.6deg); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* aparecer sin moverse: velos y capas de fondo */
+@keyframes seshatFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* latido corto de atención, sin bucle */
+@keyframes seshatPulse {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(1.035); }
+}
+
+/* Utilidades: se cuelgan desde el TSX cuando algo entra en pantalla. */
+.enter { animation: seshatRise 0.3s var(--ease) backwards; }
+.enterPage { animation: seshatPage 0.32s var(--ease) backwards; }
+.enterPop { animation: seshatPop 0.4s var(--ease) backwards; }
+.enterFade { animation: seshatFade 0.25s var(--ease) backwards; }
+
+/* Una lista que entra escalonada: .stagger en el contenedor y sus hijos
+   directos aparecen uno detrás de otro. Se corta en el sexto para que el
+   último no llegue tarde en listas largas. */
+.stagger > * { animation: seshatRise 0.34s var(--ease) backwards; }
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger > *:nth-child(3) { animation-delay: 0.1s; }
+.stagger > *:nth-child(4) { animation-delay: 0.14s; }
+.stagger > *:nth-child(5) { animation-delay: 0.18s; }
+.stagger > *:nth-child(n + 6) { animation-delay: 0.22s; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DIÁLOGO PROPIO (listo para cablear, sin JS aquí)
+   Sustituye a los window.confirm sueltos. Clases globales a propósito: el
+   diálogo lo monta quien lo necesite sin importar ninguna hoja de módulo.
+
+   Marcado esperado (el <dialog> nativo se lleva el foco y Esc gratis):
+
+     <div class="dialogVeil" onClick={cerrar}>
+       <div class="dialogCard" role="dialog" aria-modal="true" aria-labelledby="t">
+         <p id="t" class="dialogTitle">¿Salir de la lección?</p>
+         <p class="dialogText">Si sales ahora, esta lección no cuenta.</p>
+         <div class="dialogActions">
+           <button class="dialogBtn">Seguir aquí</button>
+           <button class="dialogBtn dialogBtnDanger">Salir igualmente</button>
+         </div>
+       </div>
+     </div>
+
+   Con <dialog> nativo: pon dialogCard en el propio <dialog> y olvídate del
+   velo — el ::backdrop de más abajo ya lo pinta.
+   Norma de la casa: el botón que NO destruye nada va primero y es el que se
+   lleva el foco; el destructivo se pinta en rojo y nunca es el primario.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.dialogVeil {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: var(--veil);
+  animation: seshatFade 0.18s var(--ease) backwards;
+}
+
+.dialogCard {
+  width: min(30rem, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  /* con textos largos («¿Borrar el progreso de …?») la tarjeta se desplaza
+     sola; sin esto, al llegar al final el gesto seguía y arrastraba la página
+     de debajo, que es justo lo que un modal no debe permitir */
+  overscroll-behavior: contain;
+  padding: 22px 24px;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: 21px 17px 22px 18px;
+  box-shadow: 5px 6px 0 var(--paper-edge), 0 20px 44px var(--shadow-ambient);
+  animation: seshatPop 0.28s var(--ease) backwards;
+}
+
+dialog.dialogCard {
+  /* el <dialog> nativo se centra solo; sin esto hereda el margen del agente */
+  margin: auto;
+  color: var(--text);
+}
+
+dialog.dialogCard::backdrop {
+  background: var(--veil);
+  animation: seshatFade 0.18s var(--ease) backwards;
+}
+
+.dialogTitle {
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.dialogText {
+  margin-top: 8px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.dialogBtn {
+  padding: 11px 20px;
+  min-height: 44px;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-hand);
+  background: var(--surface);
+  color: var(--text-2);
+  font-weight: 700;
+  box-shadow: 0 3px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease),
+    border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.dialogBtn:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--border-strong); }
+.dialogBtn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--border); }
+
+.dialogBtnPrimary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-hand);
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 4px 0 var(--accent-strong);
+}
+
+.dialogBtnPrimary:hover {
+  background: var(--accent-strong);
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 5px 0 var(--accent-strong);
+}
+
+.dialogBtnPrimary:active { box-shadow: inset 0 2px 0 var(--btn-sheen), 0 1px 0 var(--accent-strong); }
+
+.dialogBtnDanger {
+  border-color: var(--err);
+  color: var(--err);
+  background: var(--err-soft);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--err) 35%, var(--tint-base));
+}
+
+.dialogBtnDanger:hover { box-shadow: 0 4px 0 color-mix(in srgb, var(--err) 45%, var(--tint-base)); }
+.dialogBtnDanger:active { box-shadow: 0 1px 0 color-mix(in srgb, var(--err) 35%, var(--tint-base)); }
+
+/* aspa de cerrar, arriba a la derecha de la tarjeta */
+.dialogClose {
+  float: right;
+  margin: -6px -6px 0 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-3);
+}
+
+.dialogClose:hover { background: var(--panel); color: var(--text); }
+
+@media (max-width: 640px) {
+  /* En móvil los botones a ancho completo y el destructivo ABAJO DEL TODO.
+     Estaba escrito `column-reverse`, que hacía justo lo contrario: el rojo
+     («Borrar el progreso», «Salir sin guardar») salía arriba, más grande y en
+     el sitio donde cae el pulgar. La norma de la casa dice que el destructivo
+     nunca es lo primero que se toca. */
+  .dialogActions { flex-direction: column; }
+  .dialogActions .dialogBtn { width: 100%; justify-content: center; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* sin movimiento el escalonado no aporta nada y solo retrasa la lectura */
+  .stagger > * { animation-delay: 0s !important; }
+
+  /* ── RESCATE: secciones enteras invisibles con «reducir movimiento» ──
+     motor/react hornea su estado de partida en el HTML del export estático
+     (style="opacity:0;transform:translateY(22px) scale(0.98)"). Al hidratar,
+     <Reveal> ve prefers-reduced-motion y devuelve un <div> pelado en vez del
+     motion.div, así que YA NADIE anima esa entrada… pero React no reescribe el
+     style que venía del servidor. Resultado: quien tiene activado «reducir
+     movimiento» —muy común— veía en blanco las Herramientas del hub, las
+     tarjetas de nivel y media pantalla más.
+     Los dos selectores son los dos únicos `initial` que se hornean en todo el
+     export (comprobado sobre web/out), así que esto no toca nada más. El
+     arreglo de verdad va en components/Reveal.tsx; esto es la red. */
+  [style*="opacity:0"][style*="translateY(22px)"],
+  [style*="opacity:0"][style*="translateY(18px)"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ── AÑADIDO AL FINAL: respuesta física al pulsar ─────────────────────────────
+   Nada de aquí arriba se ha tocado; esto son clases nuevas al final del archivo.
+
+   La mitad de la sensación de un clic es lo que se ve, y la otra mitad es
+   cuándo se ve. `touch-action: manipulation` quita los ~300 ms que el
+   navegador móvil se guarda por si el toque fuera un doble toque para hacer
+   zoom: sin esto, el sonido llega en su sitio y el botón se hunde un tercio de
+   segundo después. El resaltado azul del sistema tampoco pinta nada aquí: ya
+   hay un hundido propio.
+
+   El `:active` va con `:where()` a propósito — especificidad cero — para que
+   cualquier regla de cualquier módulo CSS que ya defina su propio hundido siga
+   ganando. Esto es solo el suelo para lo que no tenía nada. */
+
+:where(button, a, [role="button"], [role="switch"], [role="option"], summary, label, input, select) {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button, [role="button"], [role="switch"]) {
+  /* la selección de texto al mantener pulsado un botón es un accidente, nunca
+     una intención */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* todo dentro de :where() — incluidos :not() y :active — o la regla acabaría
+     pesando más que las de los módulos CSS y les pisaría su propio hundido */
+  :where(button, [role="button"], [role="switch"], [role="option"], summary):where(:not(:disabled)):where(:not([aria-disabled="true"])):where(:active) {
+    transform: scale(0.97);
+    transition: transform 0.04s var(--ease, ease-out);
+  }
+}

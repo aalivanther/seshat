@@ -1,0 +1,60 @@
+/* Interruptor de tema: tres lengüetas en una pastilla, al estilo de los chips
+   de la barra. Pequeño, sin texto y con el mismo relieve de papel. */
+
+.group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 2px 0 var(--border);
+  flex-shrink: 0;
+}
+
+.opt {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-3);
+  transition: background 0.15s var(--ease), color 0.15s var(--ease), transform 0.08s var(--ease);
+}
+
+/* La pastilla se ve pequeña a propósito (es un ajuste, no una acción del
+   curso), pero el dedo necesita 44 px. Se los damos con una capa invisible que
+   NO ocupa sitio: así el interruptor sigue cabiendo en la barra del móvil y
+   deja de fallar el toque. El ancho (-1px por lado) casa justo con el paso
+   entre lengüetas, de modo que dos zonas nunca se solapan. */
+.opt::after {
+  content: "";
+  position: absolute;
+  inset: -3px -1px;
+  min-height: 44px;
+  border-radius: 999px;
+}
+
+.opt:hover { background: var(--panel); color: var(--text); }
+.opt:active { transform: scale(0.92); }
+
+/* La marca del activo la pone el atributo de <html>, no React: así el botón ya
+   sale bien pintado en la primera pasada, antes de que hidrate nada. */
+:global(html[data-theme-choice="light"]) .light,
+:global(html[data-theme-choice="dark"]) .dark,
+:global(html[data-theme-choice="auto"]) .auto {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+}
+
+@media (max-width: 640px) {
+  /* en la barra estrecha del móvil, lo justo para seguir siendo tocable:
+     38 px de pastilla y los 44 de rigor los pone .opt::after sin ocupar sitio */
+  .opt { width: 38px; height: 38px; }
+}

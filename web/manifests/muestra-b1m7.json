@@ -1,0 +1,13 @@
+{
+  "id": "muestra-b1m7",
+  "name": "Seshat — Fiestas y tradiciones (muestra)",
+  "content": {
+    "include": [{ "id": "b1m7" }]
+  },
+  "features": {
+    "ai": false, "exams": false, "missions": true, "interview": false, "review": true,
+    "challenges": true, "placement": false, "badges": false, "reference": true,
+    "certificates": false, "moduleTest": true, "tts": true
+  },
+  "policy": { "vocabularyClosure": "cards", "onMissingCard": "fail" }
+}

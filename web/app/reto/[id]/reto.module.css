@@ -1,0 +1,94 @@
+/* Reto: run roguelike — estilo sobre el esqueleto de lección */
+
+.lives {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.exitConfirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.introIcon {
+  width: 76px;
+  height: 76px;
+  border-radius: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.rules {
+  text-align: left;
+  margin: 14px auto 18px;
+  max-width: 30rem;
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+  color: var(--text-2);
+  font-size: 0.95rem;
+}
+
+.medalNow {
+  font-weight: 800;
+  margin: 6px 0 14px;
+}
+
+.escapedBox {
+  margin: 18px auto 0;
+  max-width: 30rem;
+  text-align: left;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: var(--panel);
+}
+.escapedTitle {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+.escapedRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  margin-bottom: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+.escapedRow:hover { border-color: var(--border-strong); }
+.escapedExpected { font-weight: 700; }
+.escapedPrompt {
+  font-size: 0.82rem;
+  color: var(--text-3);
+}
+.escapedNote {
+  font-size: 0.85rem;
+  color: var(--text-3);
+  margin: 6px 0 0;
+}
+
+
+/* ══ Vida ══
+   El reto es una carrera: el icono de entrada cae como una ficha y las vidas
+   que quedan no se mueven solas (bastante tensión hay ya). */
+.introIcon { animation: seshatPop 0.45s var(--ease) backwards; }
+.escapedBox { animation: seshatRise 0.3s var(--ease) 0.1s backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .escapedBox { animation-delay: 0s; }
+}

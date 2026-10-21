@@ -1,0 +1,1513 @@
+import type { Phase, VocabItem } from "@/lib/types";
+
+// B2 · MÓDULO 1 — Was man so hört: contar lo que dicen otros sin firmarlo.
+// Abre el nivel porque el B1 dejó la indirekte Rede a medias a propósito
+// (reconocer «habe/sei» en prensa, no producirla). Un texto de B2 casi nunca
+// afirma: atribuye. Sin Konjunktiv I el alumno no lee la prensa del Lesen ni
+// resume dos posturas sin mezclarlas con la suya.
+// Gramática ancla: K I de 3.ª sg (sei, habe, komme, könne, müsse) · regla de
+// sustitución por K II cuando K I = indicativo · pasado único de la indirecta
+// · sollen/wollen de distanciamiento · verbos y giros de atribución.
+// Clínica L5: el campo medio (pronombres delante, te-ka-mo-lo, Vorfeld).
+// Recicla, sin redefinir: sagen, b1m1dass, b1m12gzbehaupten, a2m6weil,
+// a2m6deshalb, a2m6finden, a2m6meinung, b1m1meinermeinungnach, lesen.
+// Todos los ids nuevos: prefijo b2m1. Elenco en Berlín; Clara Hofmann es la
+// periodista del módulo. Plurizentrismo POR TEXTO (Jänner, heuer).
+
+const RADIO_NACHGEFRAGT =
+  "Guten Morgen bei «Nachgefragt», mein Name ist Moderationsleitung, äh, ich heiße am Mikrofon einfach Mara. Unser Thema heute: Kann man einer Schlagzeile in den sozialen Netzen noch trauen? Bei mir sitzen Clara Hofmann, Redakteurin beim Berliner Abendblatt, und Tom Berger, Sprecher eines Nachrichtenportals. Frau Hofmann, Sie zuerst. | Ich fange mit einer Zahl an. Heute Morgen hatte ein unbestätigter Beitrag über eine Berliner Firma zweihunderttausend Klicks, bevor irgendjemand die Quelle geprüft hatte. Der Algorithmus belohnt Empörung, nicht Recherche. | Herr Berger, das hören Sie oft. | Ja, und ich halte dagegen: Die Reichweite ist kein Beweis für Falschmeldung. Viele unserer Nutzer lesen zuerst uns und danach die Stellungnahme. Das ist nicht dümmer als früher die Zeitung auf dem Tisch. | Clara Hofmann. | Es ist dümmer, wenn die Schlagzeile im Konjunktiv steht und trotzdem als Tatsache geteilt wird. Wir schreiben «eine Quelle habe bestätigt». Gelesen wird «hat bestätigt». Zwischen habe und hat liegt die Distanz, und genau die geht in den Netzen verloren. | Tom Berger. | Dann ist das ein Problem der Leser, nicht der Portale. Wir markieren unbestätigte Meldungen. Wer trotzdem teilt, teilt bewusst. | Frau Hofmann, ein konkreter Fall: Nordlicht, diese Woche. | Einer internen Quelle zufolge sollen Nutzerdaten weitergegeben worden sein. Die Firma bestreitet das und will nichts von einem Verkauf gewusst haben. Beides kann ich zitieren. Entscheiden muss der Leser. Was ich nicht tun werde, ist die Unterstellung als Tatsache in die Überschrift zu setzen. | Und Sie, Herr Berger, haben den Text trotzdem ganz oben gehalten. | Weil die Stellungnahme kam. Wer nur die erste Meldung sieht, hat nicht zu Ende gelesen — das gilt für uns genauso wie für die Abendblatt-Leser. Und Redaktionsschluss ist bei uns keine Entschuldigung: eine Gegendarstellung muss denselben Platz bekommen. | Letzte Runde, ein Satz. Frau Hofmann. | Ohne Quelle keine Schlagzeile. Und wenn die Quelle zweifelhaft ist, gehört der Konjunktiv nicht in die Überschrift, sondern in den dritten Absatz. | Herr Berger. | Glaubwürdigkeit entsteht nicht durch weniger Klicks. Sie entsteht, wenn man die Gegenseite auch zeigt. Das haben wir getan. | Danke Ihnen beiden. Hörerinnen und Hörer, merken Sie sich das Paar: «soll» ist Distanz, «will» ist Distanz der Quelle selbst. Wer das hört, weiß, wem die Behauptung gehört.";
+
+export const vocabB2m1: Record<string, VocabItem> = {
+  // ── L1 — paradigma corto del Konjunktiv I ──
+  b2m1sei: {
+    id: "b2m1sei", target: "er sei krank", source: "dice que está enfermo (K I: la cita es suya, no tuya)",
+    sound: "ea zai krank",
+    gram: { trap: "er ist krank", same: ["Er sagte, er sei krank"], k1: "sei" },
+  },
+  b2m1habe: {
+    id: "b2m1habe", target: "er habe keine Zeit", source: "dice que no tiene tiempo (K I de haben)",
+    sound: "ea HAA-be KAI-ne tsait",
+    gram: { trap: "er hat keine Zeit", k1: "habe" },
+  },
+  b2m1komme: {
+    id: "b2m1komme", target: "er komme später", source: "dice que viene más tarde (K I de kommen)",
+    sound: "ea KO-me SHPEE-ta",
+    gram: { k1: "komme" },
+  },
+  b2m1koenne: {
+    id: "b2m1koenne", target: "er könne helfen", source: "dice que puede ayudar (K I de können)",
+    sound: "ea KÖ-ne HEL-fen",
+    gram: { k2: "könnte", k1: "könne" },
+  },
+  b2m1muesse: {
+    id: "b2m1muesse", target: "er müsse bleiben", source: "dice que tiene que quedarse (K I de müssen)",
+    sound: "ea MÜ-se BLAI-ben",
+    gram: { k2: "müsste", k1: "müsse" },
+  },
+  b2m1schlagzeile: { id: "b2m1schlagzeile", target: "die Schlagzeile", source: "el titular", article: "die", plural: "Schlagzeilen", sound: "SHLAAK-tsai-le" },
+  b2m1quelle: { id: "b2m1quelle", target: "die Quelle", source: "la fuente (de una noticia)", article: "die", plural: "Quellen", sound: "KVE-le" },
+  b2m1meldung: { id: "b2m1meldung", target: "die Meldung", source: "la noticia / el comunicado breve", article: "die", plural: "Meldungen", sound: "MEL-dung" },
+
+  // ── L2 — sustitución por K II ──
+  b2m1haetten: {
+    id: "b2m1haetten", target: "sie hätten keine Zeit", source: "dicen que no tienen tiempo (K II: K I coincidiría con el indicativo)",
+    sound: "zii HE-ten KAI-ne tsait",
+    gram: { k2: "hätten", trap: "sie haben keine Zeit" },
+  },
+  b2m1waeren: {
+    id: "b2m1waeren", target: "sie wären einverstanden", source: "dicen que están de acuerdo (K II de sustitución de sein en plural)",
+    sound: "zii VEE-ren ain-fea-SHTAN-den",
+    gram: { k2: "wären", trap: "sie sind einverstanden" },
+  },
+  b2m1bericht: { id: "b2m1bericht", target: "der Bericht", source: "el reportaje / el informe", article: "der", plural: "Berichte", sound: "be-RIJT" },
+  b2m1recherche: { id: "b2m1recherche", target: "die Recherche", source: "la investigación periodística", article: "die", plural: "Recherchen", sound: "re-SHER-she" },
+  b2m1redaktion: { id: "b2m1redaktion", target: "die Redaktion", source: "la redacción (el equipo del periódico)", article: "die", plural: "Redaktionen", sound: "re-dak-TSIOON" },
+  b2m1laut: {
+    id: "b2m1laut", target: "laut der Polizei", source: "según la policía (la fuente manda; no es tu afirmación)",
+    sound: "laut dea po-li-TSAI",
+    gram: { same: ["der Polizei zufolge"] },
+  },
+  b2m1zufolge: {
+    id: "b2m1zufolge", target: "einem Bericht zufolge", source: "según un informe (zufolge va DETRÁS de la fuente)",
+    sound: "AI-nem be-RIJT tsu-FOL-gue",
+    gram: { trap: "zufolge einem Bericht" },
+  },
+
+  // ── L3 — pasado de la indirecta ──
+  b2m1seigekommen: {
+    id: "b2m1seigekommen", target: "er sei gekommen", source: "dice que vino / que ha venido (un solo pasado para Perfekt, Präteritum y Plusquamperfekt)",
+    sound: "ea zai gue-KO-men",
+    gram: { k1: "sei" },
+  },
+  b2m1habegearbeitet: {
+    id: "b2m1habegearbeitet", target: "er habe gearbeitet", source: "dice que trabajó / que ha trabajado",
+    sound: "ea HAA-be gue-AR-bai-tet",
+    gram: { k1: "habe" },
+  },
+  b2m1habegewusst: {
+    id: "b2m1habegewusst", target: "er habe nichts gewusst", source: "dice que no sabía nada",
+    sound: "ea HAA-be nijts gue-VUST",
+  },
+  b2m1betonen: { id: "b2m1betonen", target: "betonen", source: "subrayar / enfatizar (que otro lo dijo con fuerza)", sound: "be-TOO-nen" },
+  b2m1einraeumen: {
+    id: "b2m1einraeumen", target: "einräumen", source: "reconocer / admitir (a regañadientes)",
+    sound: "AIN-roi-men",
+    gram: { same: ["zugeben"] },
+  },
+  b2m1nachangaben: {
+    id: "b2m1nachangaben", target: "nach Angaben von", source: "según datos de / según declara",
+    sound: "naaj AN-gaa-ben fon",
+  },
+
+  // ── L4 — sollen / wollen de distanciamiento ──
+  b2m1sollsein: {
+    id: "b2m1sollsein", target: "Er soll reich sein", source: "Dicen que es rico (fuente ajena; tú no firmas)",
+    sound: "ea zol raij zain",
+    gram: { trap: "Er ist reich" },
+  },
+  b2m1willgewusst: {
+    id: "b2m1willgewusst", target: "Sie will nichts gewusst haben", source: "Ella sostiene que no sabía nada (la propia fuente se distancia)",
+    sound: "zii vil nijts gue-VUST HAA-ben",
+  },
+  b2m1bestreiten: { id: "b2m1bestreiten", target: "bestreiten", source: "negar / disputar (un hecho que otro afirma)", sound: "be-SHTRAI-ten" },
+  b2m1dementieren: { id: "b2m1dementieren", target: "dementieren", source: "desmentir (oficialmente, de una noticia)", sound: "de-men-TII-ren" },
+  b2m1angeblich: {
+    id: "b2m1angeblich", target: "angeblich", source: "supuestamente / según se dice (tú no lo firmas)",
+    sound: "AN-guee-blij",
+    gram: { same: ["Er soll … sein"] },
+  },
+  b2m1glaubwuerdig: { id: "b2m1glaubwuerdig", target: "glaubwürdig", source: "creíble / fidedigno", sound: "GLAUP-vür-dij" },
+  b2m1falschmeldung: { id: "b2m1falschmeldung", target: "die Falschmeldung", source: "la noticia falsa", article: "die", plural: "Falschmeldungen", sound: "FALSH-mel-dung" },
+
+  // ── L5 — campo medio ──
+  b2m1esihm: {
+    id: "b2m1esihm", target: "Ich habe es ihm gestern gegeben", source: "Se lo di ayer (pronombres: acusativo antes que dativo)",
+    sound: "ij HAA-be es iim GES-tan gue-GUEE-ben",
+    gram: { trap: "Ich habe gestern ihm es gegeben" },
+  },
+  b2m1nichtgesehen: {
+    id: "b2m1nichtgesehen", target: "Ich habe den Bericht nicht gelesen", source: "No he leído el informe (nicht delante del participio, no detrás de habe)",
+    sound: "ij HAA-be deen be-RIJT nijt gue-LEE-zen",
+    gram: { trap: "Ich habe nicht den Bericht gelesen" },
+  },
+  b2m1boulevardblatt: { id: "b2m1boulevardblatt", target: "das Boulevardblatt", source: "el periódico sensacionalista", article: "das", plural: "Boulevardblätter", sound: "buu-le-VAAR-blat" },
+  b2m1leitartikel: { id: "b2m1leitartikel", target: "der Leitartikel", source: "el editorial", article: "der", plural: "Leitartikel", sound: "LAIT-ar-tii-kel" },
+  b2m1korrespondent: { id: "b2m1korrespondent", target: "der Korrespondent / die Korrespondentin", source: "el corresponsal / la corresponsal", article: "der", plural: "Korrespondenten", sound: "ko-res-pon-DENT" },
+
+  // ── L6 — lectura ──
+  b2m1reichweite: { id: "b2m1reichweite", target: "die Reichweite", source: "el alcance (de una noticia, de una red)", article: "die", sound: "RAIJ-vai-te" },
+  b2m1algorithmus: { id: "b2m1algorithmus", target: "der Algorithmus", source: "el algoritmo (el que decide qué ves)", article: "der", plural: "Algorithmen", sound: "al-go-RIT-mus" },
+  b2m1sichherausstellen: {
+    id: "b2m1sichherausstellen", target: "Es hat sich herausgestellt, dass …", source: "Resultó que … / se ha comprobado que …",
+    sound: "es hat zij he-RAUS-shte-len, das",
+  },
+  b2m1unbestaetigt: { id: "b2m1unbestaetigt", target: "unbestätigt", source: "sin confirmar", sound: "UN-be-shtee-tijt" },
+  b2m1widersprechen: {
+    id: "b2m1widersprechen", target: "widersprechen (+ Dativ)", source: "llevar la contraria / contradecir",
+    sound: "VII-da-shpre-jen",
+    gram: { trap: "widersprechen gegen" },
+  },
+  b2m1glaubwuerdigkeit: { id: "b2m1glaubwuerdigkeit", target: "die Glaubwürdigkeit", source: "la credibilidad", article: "die", sound: "GLAUP-vür-dij-kait" },
+
+  // ── L7 — audio ──
+  b2m1esheisst: {
+    id: "b2m1esheisst", target: "Es heißt, die Firma sei pleite", source: "Se dice que la empresa está en quiebra",
+    sound: "es haist, dii FIR-ma zai PLAI-te",
+  },
+  b2m1stellungnahme: { id: "b2m1stellungnahme", target: "die Stellungnahme", source: "el comunicado / la toma de postura oficial", article: "die", plural: "Stellungnahmen", sound: "SHTE-lung-naa-me" },
+  b2m1gegenstimme: { id: "b2m1gegenstimme", target: "die Gegenstimme", source: "la voz contraria / la otra campana", article: "die", plural: "Gegenstimmen", sound: "GUEE-guen-shti-me" },
+
+  // ── L8 — escribir atribuyendo ──
+  b2m1zusammenfassen: { id: "b2m1zusammenfassen", target: "zusammenfassen", source: "resumir", sound: "tsu-ZA-men-fa-sen" },
+  b2m1sichdistanzieren: {
+    id: "b2m1sichdistanzieren", target: "sich distanzieren von", source: "distanciarse de (una afirmación, sin negarla)",
+    sound: "zij dis-tan-TSII-ren fon",
+    gram: { rektion: { prep: "von", case: "dat", stem: "sich distanzieren" } },
+  },
+  b2m1zitieren: { id: "b2m1zitieren", target: "zitieren", source: "citar", sound: "tsi-TII-ren" },
+  b2m1sichbelegen: {
+    id: "b2m1sichbelegen", target: "Das lässt sich so nicht belegen", source: "Eso no se puede demostrar así",
+    gram: { passiv: "sich-lassen" },
+    sound: "das lest zij zoo nijt be-LEE-guen",
+  },
+
+  // ── L9 ──
+  b2m1indirekterede: { id: "b2m1indirekterede", target: "die indirekte Rede", source: "el estilo indirecto", article: "die", sound: "in-di-REK-te REE-de" },
+  b2m1sachlich: { id: "b2m1sachlich", target: "sachlich", source: "objetivo / apegado a los hechos (sin opinar encima)", sound: "ZAJ-lij" },
+  b2m1pressekonferenz: { id: "b2m1pressekonferenz", target: "die Pressekonferenz", source: "la rueda de prensa", article: "die", plural: "Pressekonferenzen", sound: "PRE-se-kon-fe-rents" },
+  b2m1unterstellung: { id: "b2m1unterstellung", target: "die Unterstellung", source: "la insinuación / la acusación no demostrada", article: "die", plural: "Unterstellungen", sound: "un-ta-SHTE-lung" },
+  b2m1nutzerdaten: { id: "b2m1nutzerdaten", target: "die Nutzerdaten", source: "los datos de los usuarios", article: "die", sound: "NUTS-a-daa-ten" },
+  b2m1redaktionsschluss: { id: "b2m1redaktionsschluss", target: "der Redaktionsschluss", source: "el cierre de edición", article: "der", sound: "re-dak-TSIOONS-shlus" },
+
+  // ── nativo ──
+  b2m1natmeinte: { id: "b2m1natmeinte", target: "Er meinte, er ist krank", source: "Dijo que está enfermo (calle: indicativo, sin firmar el modo)", sound: "ea MAIN-te, ea ist krank" },
+  b2m1natesheisst: { id: "b2m1natesheisst", target: "Es heißt, die Firma ist pleite", source: "Se dice que la empresa está en quiebra (calle)", sound: "es haist, dii FIR-ma ist PLAI-te" },
+  b2m1natquatsch: { id: "b2m1natquatsch", target: "Das ist doch Quatsch", source: "Eso es una tontería (calle: desmientes sin argumentar)", sound: "das ist doj kvatsh" },
+  b2m1natstand: { id: "b2m1natstand", target: "Stand in der Zeitung", source: "Salió en el periódico (frase hecha, sin sujeto)", sound: "shtant in dea TSAI-tung" },
+};
+
+export const b2m1: Phase = {
+  id: "b2m1",
+  level: "b2",
+  n: 1,
+  title: "Was man so hört",
+  goal: "Contar lo que dijo otro sin firmarlo: Konjunktiv I, sustitución por K II, sollen/wollen de distanciamiento, y citar la fuente.",
+  color: "#6d28d9",
+  lessons: [
+    {
+      id: "b2m1l1",
+      phaseId: "b2m1",
+      title: "Er sei krank",
+      subtitle: "El Konjunktiv I corto: sei, habe, komme, könne, müsse",
+      minutes: 12,
+      sections: [
+        {
+          kind: "phrases",
+          title: "La cita que no es tuya",
+          itemIds: ["b2m1sei", "b2m1habe", "b2m1komme", "b2m1koenne", "b2m1muesse", "b2m1schlagzeile", "b2m1quelle", "b2m1meldung"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "La regla detrás: un modo para no firmar",
+            body: "En español cuentas lo que dijo otro con el <b>tiempo</b> («dijo que venía»). El alemán lo marca con un <b>modo</b> que el español no usa así: el [[Konjunktiv I|Konjunktiv I]]. Tras un verbo de decir, <i>Er sagte, er <b>sei</b> krank</i> no es duda ni deseo: es «esto lo dijo él, yo no lo firmo».<br/><br/>El paradigma que de verdad se escribe es corto. En la práctica el K I vivo es la <b>tercera persona del singular</b> más <b>sei-</b> entero. El resto coincide con el indicativo y por eso no sirve para marcar la cita — eso va en la lección 2.<br/><br/>Tres formas, y las tres son correctas:<br/>1. Con [[dass|dass]]: <i>Er sagte, dass er krank <b>sei</b>.</i> Verbo al final.<br/>2. Sin dass: <i>Er sagte, er <b>sei</b> krank.</i> El verbo vuelve a la segunda posición.<br/>3. Lo que ya traías del B1, el indicativo: <i>Er sagte, dass er krank <b>ist</b>.</i> Se entiende; en prensa y en el Schreiben de B2 <b>no puntúa igual</b>.<br/><br/>Y el aviso que el español no te da: «dijo que viniera» es otra cosa. Aquí no hay subjuntivo de deseo. Hay <b>atribución</b>.",
+            table: [
+              ["infinitivo", "indicativo 3.sg", "Konjunktiv I 3.sg"],
+              ["sein", "ist", "sei"],
+              ["haben", "hat", "habe"],
+              ["kommen", "kommt", "komme"],
+              ["können", "kann", "könne"],
+              ["müssen", "muss", "müsse"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l1e1", type: "fastmatch", prompt: "Calentamiento: esto ya es tuyo del B1",
+              pairs: [
+                { target: "sagen", source: "decir" },
+                { target: "dass", source: "que (frase entera)" },
+                { target: "behaupten", source: "afirmar (algo discutible)" },
+                { target: "weil", source: "porque" },
+                { target: "finden", source: "opinar / encontrar" },
+              ],
+              targetSeconds: 22,
+              itemIds: ["sagen", "b1m1dass", "b1m12gzbehaupten", "a2m6weil", "a2m6finden"],
+              tip: "El B2 no se gana añadiendo modos: se gana sacando más rápido lo que ya tienes, para que el Konjunktiv I quepa encima.",
+            },
+            {
+              id: "b2m1l1e2", type: "match", prompt: "Empareja la forma de Konjunktiv I",
+              pairs: [
+                { target: "er sei", source: "dice que es / está (sein)" },
+                { target: "er habe", source: "dice que tiene (haben)" },
+                { target: "er komme", source: "dice que viene" },
+                { target: "er könne", source: "dice que puede" },
+              ],
+              itemIds: ["b2m1sei", "b2m1habe", "b2m1komme", "b2m1koenne"],
+            },
+            {
+              id: "b2m1l1e3", type: "mc", prompt: "¿Qué marca el Konjunktiv I?",
+              question: "„Clara Hofmann schreibt, die Quelle sei glaubwürdig.“",
+              options: [
+                "Hofmann afirma que la fuente es creíble",
+                "Hofmann cita a alguien: la credibilidad la dice otro",
+                "Hofmann duda de que la fuente sea creíble",
+              ],
+              answer: 1,
+              whyWrong: [
+                "Si ella lo firmara, escribiría «ist glaubwürdig», en indicativo",
+                null,
+                "El K I no es duda: es distancia. La duda sería Konjunktiv II (wäre)",
+              ],
+              itemIds: ["b2m1sei", "b2m1quelle", "b2m1glaubwuerdig"],
+              tip: "sei no juzga. Solo cambia el dueño de la frase: de ti, al que citas.",
+            },
+            {
+              id: "b2m1l1e4", type: "transform", prompt: "Del estilo directo al Konjunktiv I",
+              source: "Er sagte: „Ich bin krank.“",
+              instruction: "Ponlo en estilo indirecto con Konjunktiv I",
+              answers: ["Er sagte, er sei krank", "Er sagte, dass er krank sei"],
+              translation: "Dijo que estaba enfermo.",
+              hints: ["La persona cambia: ich → er", "sein en K I 3.sg: sei"],
+              itemIds: ["b2m1sei", "sagen"],
+              strictUmlaut: true,
+            },
+            {
+              id: "b2m1l1e5", type: "cloze", prompt: "Completa el Konjunktiv I de haben",
+              text: "Die Sprecherin sagte, der Chef ___ keine Zeit.",
+              answers: ["habe"],
+              translation: "La portavoz dijo que el jefe no tiene tiempo.",
+              hints: ["No es hat: hat firmaría la frase", "K I de haben, 3.sg"],
+              itemIds: ["b2m1habe"],
+            },
+            {
+              id: "b2m1l1e6", type: "build", prompt: "Construye la cita de prensa",
+              target: "Er sagte, er könne später kommen",
+              altTargets: ["Er sagte, dass er später kommen könne"],
+              translation: "Dijo que podía venir más tarde",
+              distractors: ["kann", "kommt"],
+              itemIds: ["b2m1koenne", "b2m1komme"],
+              tip: "könne, no kann: kann sería tu afirmación. Y kommen se queda en infinitivo detrás del modal.",
+            },
+            {
+              id: "b2m1l1e7", type: "translate", prompt: "Del español al alemán: la cita, no tu opinión",
+              direction: "toTarget",
+              source: "Dijo que tenía que quedarse",
+              answers: ["Er sagte, er müsse bleiben", "Er sagte, dass er bleiben müsse"],
+              hint: "müssen en K I",
+              itemIds: ["b2m1muesse"],
+            },
+            {
+              id: "b2m1l1e8", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Er sagte, er ist krank.",
+              answers: ["Er sagte, er sei krank.", "Er sagte, dass er krank sei."],
+              why: "El indicativo «ist» hace tuya la afirmación. En B2, tras sagen/schreiben/berichten, el Konjunktiv I (sei) marca que la frase es de otro.",
+              translation: "Dijo que está enfermo.",
+              itemIds: ["b2m1sei"],
+            },
+            {
+              id: "b2m1l1e9", type: "speak", prompt: "Dilo en voz alta: es la frase del módulo",
+              text: "Er sagte, er sei krank.",
+              phonetic: "ea ZAAK-te, ea zai krank",
+              translation: "Dijo que está enfermo.",
+              itemIds: ["b2m1sei"],
+            },
+            {
+              id: "b2m1l1e10", type: "type", prompt: "Cierre de producción",
+              question: "El titular dice que la fuente no tiene tiempo",
+              answers: [
+                "Die Schlagzeile sagt, die Quelle habe keine Zeit",
+                "Die Schlagzeile sagt, dass die Quelle keine Zeit habe",
+              ],
+              hints: ["Schlagzeile + K I de haben", "…, die Quelle habe …"],
+              itemIds: ["b2m1schlagzeile", "b2m1quelle", "b2m1habe"],
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m1-1",
+            book: "Er hat gesagt, dass er krank ist.",
+            real: "Er meinte, er ist krank.",
+            meaning: "Dijo que está enfermo",
+            when: "Con amigos, al contar lo que te han dicho. El indicativo y «meinen» son la calle. En el Schreiben y en un resumen de prensa, el examinador espera Konjunktiv I: «Er sagte, er sei krank». Mezclar los dos registros baja la banda de Strukturen.",
+            register: "amigos",
+            exam: "Er sagte, er sei krank.",
+            note: "«meinen» aquí no es «opinar»: es «decir» recortado. Y el indicativo no es un error de calle, es la norma hablada.",
+            sound: "ea MAIN-te, ea ist krank",
+            level: "b2",
+            produce: true,
+            itemId: "b2m1natmeinte",
+          },
+        },
+      ],
+      resources: [
+        { label: "tagesschau — Startseite", url: "https://www.tagesschau.de/", note: "Lee tres titulares y busca sei/habe/solle: es el sonido de la prensa alemana." },
+      ],
+    },
+
+    {
+      id: "b2m1l2",
+      phaseId: "b2m1",
+      title: "Sie hätten keine Zeit",
+      subtitle: "Cuando el Konjunktiv I no se ve: se sustituye por K II",
+      minutes: 13,
+      sections: [
+        {
+          kind: "phrases",
+          title: "La sustitución y las fuentes",
+          itemIds: ["b2m1haetten", "b2m1waeren", "b2m1bericht", "b2m1recherche", "b2m1redaktion", "b2m1laut", "b2m1zufolge"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "La regla detrás: si no se distingue, se cambia de modo",
+            body: "En plural, el Konjunktiv I de haben es <b>sie haben</b> — idéntico al indicativo. Si escribes eso, el lector no puede saber si citas o afirmas. La regla de oro, y es la que hay que automatizar:<br/><br/><b>Cuando la forma de K I coincide con el indicativo, se usa Konjunktiv II.</b><br/><br/><i>sie haben</i> → <b>sie hätten</b><br/><i>sie sind</i> → <b>sie wären</b><br/><i>sie kommen</i> → <b>sie kämen</b> o <b>sie würden kommen</b><br/><br/>En 3.ª del singular casi nunca hace falta: <i>hat / habe</i>, <i>ist / sei</i>, <i>kommt / komme</i> ya se distinguen. Por eso el K I «de verdad» es tan corto.<br/><br/>Y dos giros de fuente que van con esto, porque un B2 no dice «yo he leído»:<br/>· <b>laut</b> + dativo (o genitivo): <i>laut der Polizei</i>, <i>laut eines Berichts</i><br/>· <b>zufolge</b> va <u>detrás</u> de la fuente: <i>einem Bericht <b>zufolge</b></i> — jamás «zufolge einem Bericht», que es calco del español «según».",
+            table: [
+              ["persona", "K I (¿se ve?)", "lo que se escribe"],
+              ["er / sie / es", "habe, sei, komme — se ve", "K I"],
+              ["sie (plural)", "haben, sind, kommen — NO se ve", "hätten, wären, kämen / würden"],
+              ["wir", "haben, sind — NO se ve", "hätten, wären"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l2e1", type: "bucket", prompt: "¿Se ve el Konjunktiv I o hay que sustituir?",
+              categories: ["K I se distingue (se queda)", "coincide con el indicativo → K II"],
+              items: [
+                { text: "er habe", bucket: 0 },
+                { text: "sie haben", bucket: 1 },
+                { text: "er sei", bucket: 0 },
+                { text: "sie sind", bucket: 1 },
+                { text: "er komme", bucket: 0 },
+                { text: "wir kommen", bucket: 1 },
+              ],
+              itemIds: ["b2m1habe", "b2m1haetten", "b2m1sei", "b2m1waeren"],
+              tip: "Pregunta única: ¿esta forma es distinta del indicativo? Si no, K II.",
+            },
+            {
+              id: "b2m1l2e2", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Sie sagten, sie haben keine Zeit.",
+              answers: ["Sie sagten, sie hätten keine Zeit."],
+              why: "«sie haben» es a la vez indicativo y Konjunktiv I: la cita se cae. En plural se sustituye por Konjunktiv II: hätten.",
+              translation: "Dijeron que no tienen tiempo.",
+              itemIds: ["b2m1haetten"],
+            },
+            {
+              id: "b2m1l2e3", type: "transform", prompt: "Sustituye para que se vea la cita",
+              source: "Die Zeugen sagten, sie sind einverstanden.",
+              instruction: "Haz visible la indirecta (K II de sustitución)",
+              answers: ["Die Zeugen sagten, sie wären einverstanden"],
+              translation: "Los testigos dijeron que están de acuerdo.",
+              hints: ["sind = K I de sein en plural, no se ve", "wären"],
+              itemIds: ["b2m1waeren"],
+              strictUmlaut: true,
+            },
+            {
+              id: "b2m1l2e4", type: "cloze", prompt: "Coloca zufolge",
+              text: "Einem Bericht ___ hat die Firma die Vorwürfe dementiert.",
+              answers: ["zufolge"],
+              translation: "Según un informe, la empresa ha desmentido las acusaciones.",
+              hints: ["Va DETRÁS de la fuente", "zu-folge"],
+              itemIds: ["b2m1zufolge", "b2m1bericht"],
+            },
+            {
+              id: "b2m1l2e5", type: "mc", prompt: "laut o zufolge",
+              question: "Elige la frase correcta:",
+              options: [
+                "Laut der Redaktion ist die Quelle glaubwürdig",
+                "Zufolge der Redaktion ist die Quelle glaubwürdig",
+                "Laut die Redaktion ist die Quelle glaubwürdig",
+              ],
+              answer: 0,
+              whyWrong: [
+                null,
+                "zufolge va DETRÁS: der Redaktion zufolge",
+                "laut pide dativo: der Redaktion, no die",
+              ],
+              itemIds: ["b2m1laut", "b2m1redaktion", "b2m1quelle"],
+            },
+            {
+              id: "b2m1l2e6", type: "gapbank", prompt: "Completa la entradilla de Clara Hofmann",
+              text: "___ der Polizei gab es keine Verletzten. Einem ersten Bericht ___ sollen zwei Personen befragt worden sein. Die ___ prüft die Angaben noch.",
+              answers: ["Laut", "zufolge", "Redaktion"],
+              bank: ["Laut", "zufolge", "Redaktion", "Wegen", "Bericht", "Quelle"],
+              translation: "Según la policía no hubo heridos. Según un primer informe, al parecer se interrogó a dos personas. La redacción sigue comprobando los datos.",
+              itemIds: ["b2m1laut", "b2m1zufolge", "b2m1redaktion"],
+              tip: "laut delante, zufolge detrás. El orden es la regla, no el gusto.",
+            },
+            {
+              id: "b2m1l2e7", type: "build", prompt: "Construye la atribución",
+              target: "Laut der Recherche sind die Vorwürfe unbelegt",
+              altTargets: ["Der Recherche zufolge sind die Vorwürfe unbelegt"],
+              translation: "Según la investigación, las acusaciones no están demostradas",
+              distractors: ["zufolge der", "ist"],
+              itemIds: ["b2m1laut", "b2m1recherche"],
+            },
+            {
+              id: "b2m1l2e8", type: "type", prompt: "Cierre de producción",
+              question: "Dijeron que no tienen tiempo (que se vea que es cita)",
+              answers: [
+                "Sie sagten, sie hätten keine Zeit",
+                "Sie sagten, dass sie keine Zeit hätten",
+              ],
+              hints: ["Plural de haben → K II", "hätten, no haben"],
+              itemIds: ["b2m1haetten"],
+              strictUmlaut: true,
+            },
+          ],
+        },
+      ],
+      resources: [
+        { label: "DW — Langsam gesprochene Nachrichten", url: "https://www.dw.com/de/langsam-gesprochene-nachrichten/s-32770", note: "Noticias leídas despacio: caza laut, zufolge y los hätte de plural." },
+      ],
+    },
+
+    {
+      id: "b2m1l3",
+      phaseId: "b2m1",
+      title: "Er sei gekommen",
+      subtitle: "El pasado de la indirecta: una sola forma para tres tiempos",
+      minutes: 13,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Lo que ya pasó, citado",
+          itemIds: ["b2m1seigekommen", "b2m1habegearbeitet", "b2m1habegewusst", "b2m1betonen", "b2m1einraeumen", "b2m1nachangaben"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "La regla detrás: un pasado, y es más fácil que el español",
+            body: "En español la consecutio te obliga a elegir: «dijo que venía», «dijo que había venido», «dijo que vino». El alemán de prensa tiene <b>una sola forma</b> de pasado en la indirecta, sirva el original de Perfekt, de Präteritum o de Plusquamperfekt:<br/><br/>· verbos con <b>sein</b> → <i>er <b>sei gekommen</b></i><br/>· verbos con <b>haben</b> → <i>er <b>habe gearbeitet</b></i> · <i>er <b>habe nichts gewusst</b></i><br/><br/>Es de lo poco del B2 que es <b>más fácil</b> que el español. No hay que calcular el tiempo: hay que poner sei/habe + Partizip.<br/><br/>Tres verbos de atribución que aparecen en cada reportaje:<br/>· <b>betonen</b> — lo dijo con fuerza: <i>Sie betonte, die Quelle sei unabhängig.</i><br/>· <b>einräumen</b> — lo admitió a regañadientes: <i>Er räumte ein, nicht alles sei sauber gelaufen.</i><br/>· <b>nach Angaben von</b> — según declara: <i>Nach Angaben der Polizei sei niemand verletzt worden.</i>",
+            table: [
+              ["directo", "indirecto (pasado único)"],
+              ["„Ich bin gekommen.“ / „Ich kam.“", "er sei gekommen"],
+              ["„Ich habe gearbeitet.“ / „Ich arbeitete.“", "er habe gearbeitet"],
+              ["„Ich wusste nichts.“", "er habe nichts gewusst"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l3e1", type: "transform", prompt: "Al pasado de la indirecta",
+              source: "Er sagte: „Ich bin gestern gekommen.“",
+              instruction: "Estilo indirecto, Konjunktiv I de pasado",
+              answers: ["Er sagte, er sei gestern gekommen", "Er sagte, dass er gestern gekommen sei"],
+              translation: "Dijo que había venido ayer.",
+              hints: ["kommen va con sein", "sei + gekommen"],
+              itemIds: ["b2m1seigekommen"],
+            },
+            {
+              id: "b2m1l3e2", type: "cloze", prompt: "Completa el auxiliar de la indirecta",
+              text: "Sie betonte, sie ___ bis Mitternacht gearbeitet.",
+              answers: ["habe"],
+              translation: "Subrayó que había trabajado hasta medianoche.",
+              hints: ["arbeiten pide haben", "K I: h-a-b-e, no hat"],
+              itemIds: ["b2m1habegearbeitet", "b2m1betonen"],
+            },
+            {
+              id: "b2m1l3e3", type: "mc", prompt: "¿Qué tiempo era el original? (trampa)",
+              question: "„Er sagte, er sei gekommen.“ El original podía ser…",
+              options: [
+                "Solo „Ich bin gekommen“ (Perfekt)",
+                "„Ich bin gekommen“, „Ich kam“ o „Ich war gekommen“: da igual",
+                "Solo „Ich kam“ (Präteritum)",
+              ],
+              answer: 1,
+              whyWrong: [
+                "El Präteritum y el Plusquamperfekt también desembocan aquí",
+                null,
+                "El Perfekt también. Hay un solo pasado de indirecta",
+              ],
+              itemIds: ["b2m1seigekommen"],
+              tip: "No intentes reconstruir el tiempo original: la prensa no te lo da, y no hace falta.",
+            },
+            {
+              id: "b2m1l3e4", type: "gapbank", prompt: "Completa el párrafo de atribución",
+              text: "Nach Angaben der Polizei ___ der Zeuge gegen 22 Uhr gekommen. Er ___ ein, er habe nicht alles gesagt. Die Sprecherin ___ , die Angaben seien geprüft.",
+              answers: ["sei", "räumte", "betonte"],
+              bank: ["sei", "räumte", "betonte", "war", "hat", "sagte"],
+              translation: "Según la policía, el testigo llegó hacia las 22:00. Admitió que no lo había dicho todo. La portavoz subrayó que los datos están comprobados.",
+              itemIds: ["b2m1seigekommen", "b2m1einraeumen", "b2m1betonen", "b2m1nachangaben"],
+            },
+            {
+              id: "b2m1l3e5", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Er sagte, er wäre gekommen.",
+              answers: ["Er sagte, er sei gekommen."],
+              why: "wäre es Konjunktiv II: introduce duda o irreal («como si hubiera venido»). Para citar un pasado real se usa el K I: sei gekommen.",
+              translation: "Dijo que había venido.",
+              itemIds: ["b2m1seigekommen"],
+            },
+            {
+              id: "b2m1l3e6", type: "paraphrase", prompt: "Dilo de otra manera — sin «sagen»",
+              source: "Er sagte, er habe nichts gewusst.",
+              forbid: ["sagte", "gesagt"],
+              answers: [
+                "Er betonte, er habe nichts gewusst",
+                "Nach seinen Angaben habe er nichts gewusst",
+                "Er räumte ein, er habe nichts gewusst",
+              ],
+              translation: "Dijo que no sabía nada.",
+              hints: ["Un verbo de atribución: betonen, einräumen, nach Angaben", "Er betonte, er habe …"],
+              itemIds: ["b2m1habegewusst", "b2m1betonen", "b2m1nachangaben"],
+            },
+            {
+              id: "b2m1l3e7", type: "listen", prompt: "Escucha y transcribe la cita",
+              text: "Sie betonte, sie sei pünktlich gekommen",
+              translation: "Subrayó que había llegado puntual",
+              hints: ["Empieza con Sie betonte", "sei + gekommen"],
+              itemIds: ["b2m1betonen", "b2m1seigekommen"],
+            },
+            {
+              id: "b2m1l3e8", type: "type", prompt: "Cierre de producción",
+              question: "Según sus datos, no había sabido nada",
+              answers: [
+                "Nach Angaben von ihm habe er nichts gewusst",
+                "Nach seinen Angaben habe er nichts gewusst",
+                "Nach Angaben des Zeugen habe er nichts gewusst",
+              ],
+              hints: ["nach Angaben + K I de pasado", "habe … gewusst"],
+              itemIds: ["b2m1nachangaben", "b2m1habegewusst"],
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m1-2",
+            book: "Man sagt, dass die Firma pleite ist.",
+            real: "Es heißt, die Firma ist pleite.",
+            meaning: "Se dice que la empresa está en quiebra",
+            when: "Al pasar un rumor, sin fuente. «Es heißt» es la calle y el pasillo. En el examen, o pones la fuente (laut, zufolge) o usas sollen/angeblich: «Die Firma soll pleite sein». Sin fuente y con indicativo, el texto parece tuyo.",
+            register: "neutral",
+            exam: "Die Firma soll pleite sein.",
+            note: "«Es heißt» traga el «man sagt, dass». El verbo de la cita, en la calle, vuelve al indicativo.",
+            sound: "es haist, dii FIR-ma ist PLAI-te",
+            level: "b2",
+            produce: true,
+            itemId: "b2m1natesheisst",
+          },
+        },
+      ],
+    },
+
+    {
+      id: "b2m1l4",
+      phaseId: "b2m1",
+      title: "Er soll reich sein",
+      subtitle: "sollen y wollen de distanciamiento: un modal en lugar de una oración",
+      minutes: 13,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Distancia sin negar",
+          itemIds: ["b2m1sollsein", "b2m1willgewusst", "b2m1bestreiten", "b2m1dementieren", "b2m1angeblich", "b2m1glaubwuerdig", "b2m1falschmeldung"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "La regla detrás: dos modales que no mandan ni quieren",
+            body: "«sollen» y «wollen» aquí <b>no</b> significan «deber» ni «querer». Hacen el trabajo de una oración entera en español.<br/><br/>· <b>soll</b> = lo dicen otros, yo no firmo. <i>Er <b>soll</b> reich sein</i> = «dicen que es rico». Fuente <u>ajena</u>.<br/>· <b>will</b> + infinitivo perfecto = la propia fuente sostiene algo, y tú te apartas. <i>Sie <b>will</b> nichts gewusst <b>haben</b></i> = «ella dice que no sabía nada» (y se te nota que no te lo crees del todo).<br/><br/>El español necesita «según parece», «ella sostiene que», «al parecer». El alemán, un modal.<br/><br/><b>angeblich</b> hace lo mismo que sollen, en adverbio: <i>Angeblich ist die Firma pleite.</i><br/><br/>Y dos verbos de la guerra de las noticias:<br/>· <b>bestreiten</b> — negar un hecho: <i>Die Firma bestreitet die Vorwürfe.</i><br/>· <b>dementieren</b> — desmentir una noticia, registro de gabinete de prensa.<br/><br/>Ojo: <i>Er soll reich sein</i> no es «debe de ser rico» de suposición tuya (eso es <b>muss</b>, módulo 7). Aquí la suposición la hacen <b>otros</b>.",
+            table: [
+              ["alemán", "quién afirma", "español"],
+              ["Er soll reich sein", "otros, no tú", "Dicen que es rico"],
+              ["Sie will nichts gewusst haben", "ella, y tú te apartas", "Sostiene que no sabía nada"],
+              ["Angeblich ist sie pleite", "rumor, sin fuente", "Supuestamente está en quiebra"],
+              ["Er muss reich sein", "tú, por indicios (aún no)", "Debe de ser rico"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l4e1", type: "mc", prompt: "¿De quién es la afirmación?",
+              question: "„Der Chef soll gekündigt haben.“",
+              options: [
+                "El jefe debe despedir a alguien (orden)",
+                "Dicen que el jefe ha dimitido / lo han echado: tú no lo firmas",
+                "El jefe quiere despedir",
+              ],
+              answer: 1,
+              whyWrong: [
+                "Eso sería soll + infinitivo con valor de deber, y aquí el sentido es rumor",
+                null,
+                "«querer» de la fuente sería will, no soll",
+              ],
+              itemIds: ["b2m1sollsein"],
+              tip: "soll + infinitivo en prensa = rumor con fuente ajena. El deber se lee por el contexto (instrucciones, no titulares).",
+            },
+            {
+              id: "b2m1l4e2", type: "bucket", prompt: "¿Fuente ajena o la propia fuente se distancia?",
+              categories: ["soll (lo dicen otros)", "will (ella/él sostiene)"],
+              items: [
+                { text: "Er soll reich sein.", bucket: 0 },
+                { text: "Sie will nichts gewusst haben.", bucket: 1 },
+                { text: "Die Firma soll pleite sein.", bucket: 0 },
+                { text: "Der Zeuge will das nicht gesagt haben.", bucket: 1 },
+                { text: "Angeblich war er krank.", bucket: 0 },
+                { text: "Er will nur geholfen haben.", bucket: 1 },
+              ],
+              itemIds: ["b2m1sollsein", "b2m1willgewusst", "b2m1angeblich"],
+            },
+            {
+              id: "b2m1l4e3", type: "transform", prompt: "Sustituye la oración entera por sollen",
+              source: "Man sagt, dass er reich ist.",
+              instruction: "Dilo con sollen de distanciamiento",
+              answers: ["Er soll reich sein"],
+              translation: "Dicen que es rico.",
+              hints: ["Sujeto el de la rumorología", "soll + infinitivo"],
+              itemIds: ["b2m1sollsein"],
+            },
+            {
+              id: "b2m1l4e4", type: "cloze", prompt: "Completa el modal de la fuente",
+              text: "Die Sprecherin ___ nichts von dem Vertrag gewusst haben.",
+              answers: ["will"],
+              translation: "La portavoz sostiene que no sabía nada del contrato.",
+              hints: ["Ella lo afirma, tú te apartas", "wollen de distanciamiento"],
+              itemIds: ["b2m1willgewusst"],
+            },
+            {
+              id: "b2m1l4e5", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Die Firma dementiert die Meldung nicht.",
+              answers: ["Die Firma dementiert die Meldung."],
+              why: "dementieren ya es desmentir: la negación extra es el calco de «desmiente que no». Sobran el nicht.",
+              translation: "La empresa desmiente la noticia.",
+              itemIds: ["b2m1dementieren", "b2m1meldung"],
+            },
+            {
+              id: "b2m1l4e6", type: "gapbank", prompt: "Completa el parte de prensa",
+              text: "Die Firma hat die Vorwürfe ___. Der Chef ___ nichts gewusst haben. ___ soll es sich um eine Falschmeldung handeln.",
+              answers: ["bestritten", "will", "Angeblich"],
+              bank: ["bestritten", "will", "Angeblich", "soll", "behauptet", "laut"],
+              translation: "La empresa ha negado las acusaciones. El jefe sostiene que no sabía nada. Supuestamente se trata de una noticia falsa.",
+              itemIds: ["b2m1bestreiten", "b2m1willgewusst", "b2m1angeblich", "b2m1falschmeldung"],
+            },
+            {
+              id: "b2m1l4e7", type: "hearreal", prompt: "Escucha: ¿libro o calle?",
+              book: "Man sagt, dass die Firma pleite ist.",
+              real: "Es heißt, die Firma ist pleite.",
+              translation: "Se dice que la empresa está en quiebra.",
+              itemIds: ["b2m1natesheisst", "b2m1esheisst"],
+            },
+            {
+              id: "b2m1l4e8", type: "type", prompt: "Cierre de producción",
+              question: "Dicen que la noticia es falsa; la empresa lo desmiente",
+              answers: [
+                "Die Meldung soll falsch sein. Die Firma dementiert sie",
+                "Die Meldung soll eine Falschmeldung sein. Die Firma dementiert sie",
+                "Angeblich ist die Meldung falsch. Die Firma dementiert sie",
+              ],
+              hints: ["soll o angeblich + dementieren", "Die Meldung soll …"],
+              itemIds: ["b2m1sollsein", "b2m1dementieren", "b2m1falschmeldung"],
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      id: "b2m1l5",
+      phaseId: "b2m1",
+      title: "Das Vorfeld und der Mittelfeld",
+      subtitle: "Clínica: dónde va todo lo que no es el verbo",
+      minutes: 14,
+      sections: [
+        {
+          kind: "phrases",
+          title: "El orden que no duele y fosiliza",
+          itemIds: ["b2m1esihm", "b2m1nichtgesehen", "b2m1boulevardblatt", "b2m1leitartikel", "b2m1korrespondent"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "La regla detrás: entre los dos verbos el orden es información",
+            body: "En B1 aprendiste dónde va el <b>verbo</b>. En B2 tienes que aprender dónde va <b>todo lo demás</b>. El español ordena el material posverbal casi a gusto; el alemán tiene el verbo clavado en dos sitios (la Satzklammer) y <b>entre esos dos sitios el orden informa</b>, no decora. Las frases que salen mal no son agramaticales: son raras. Y lo raro baja la nota de Kohärenz sin que sepas por qué.<br/><br/>Cinco reglas, y se cobran en los once módulos siguientes:<br/><br/>1. <b>Los pronombres van delante de todo</b>, y entre ellos acusativo antes que dativo: <i>Ich habe <b>es ihm</b> gestern gegeben</i> — no «gestern ihm es».<br/>2. <b>Lo conocido antes que lo nuevo.</b> El determinado tiende a ir antes que el indeterminado.<br/>3. <b>te-ka-mo-lo</b>: temporal → causal → modal → local. Es tendencia, no declinación: <i>Ich fahre <b>morgen</b> <b>wegen der Konferenz</b> <b>mit dem Zug</b> <b>nach München</b>.</i><br/>4. <b>nicht</b> se coloca según lo que niega; por defecto, al final del campo medio, <u>delante</u> de la segunda pieza del verbo: <i>Ich habe den Bericht <b>nicht gelesen</b>.</i> «Ich habe nicht den Bericht gelesen» niega el informe, no la lectura.<br/>5. El <b>Vorfeld admite una sola pieza</b>, y elegir cuál es la herramienta de cohesión más barata del alemán. Cinco frases seguidas con <i>Ich</i> suenan a redacción de instituto. <i>Einem Bericht zufolge …</i> ata con lo anterior.",
+            table: [
+              ["pieza", "sitio", "calco que suena raro"],
+              ["es ihm", "pronombres primero, Akk antes que Dat", "gestern ihm es"],
+              ["te-ka-mo-lo", "tiempo → causa → modo → lugar", "nach München morgen"],
+              ["nicht + Partizip", "delante de la segunda pieza", "habe nicht den Bericht"],
+              ["Vorfeld", "UNA pieza, y se elige", "Ich, Ich, Ich…"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l5e1", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Ich habe gestern ihm es gegeben.",
+              answers: ["Ich habe es ihm gestern gegeben."],
+              why: "Los pronombres van delante de todo, y el acusativo (es) delante del dativo (ihm). El español pone el tiempo primero; el alemán, los pronombres.",
+              translation: "Se lo di ayer.",
+              itemIds: ["b2m1esihm"],
+            },
+            {
+              id: "b2m1l5e2", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Ich habe nicht den Bericht gelesen.",
+              answers: ["Ich habe den Bericht nicht gelesen."],
+              why: "«nicht» delante de «den Bericht» niega el informe (leíste otra cosa). Para negar la lectura, «nicht» va delante del participio: nicht gelesen.",
+              translation: "No he leído el informe.",
+              itemIds: ["b2m1nichtgesehen", "b2m1bericht"],
+            },
+            {
+              id: "b2m1l5e3", type: "order", prompt: "Ordena el campo medio: te-ka-mo-lo",
+              sentences: [
+                "Clara fährt morgen",
+                "wegen der Pressekonferenz",
+                "mit dem Zug",
+                "nach Wien.",
+              ],
+              translation: "Clara va mañana a Viena en tren por la rueda de prensa.",
+              itemIds: ["b2m1pressekonferenz", "b2m1korrespondent"],
+              tip: "morgen (te) → wegen der Pressekonferenz (ka) → mit dem Zug (mo) → nach Wien (lo).",
+            },
+            {
+              id: "b2m1l5e4", type: "mc", prompt: "El Vorfeld que ata",
+              question: "Tras un párrafo sobre un informe, ¿qué apertura suena a B2?",
+              options: [
+                "Ich habe gelesen, dass die Firma dementiert.",
+                "Einem Bericht zufolge dementiert die Firma die Vorwürfe.",
+                "Die Firma dementiert die Vorwürfe, ich habe das gelesen.",
+              ],
+              answer: 1,
+              whyWrong: [
+                "Correcto y de instituto: cinco «Ich habe» seguidos bajan Kohärenz",
+                null,
+                "La información nueva al final y el «ich» colgado: al revés de lo que hace un texto",
+              ],
+              itemIds: ["b2m1zufolge", "b2m1bericht", "b2m1dementieren"],
+              tip: "Poner la fuente en el Vorfeld es cohesión gratis. El «ich» se reserva para cuando opinas de verdad.",
+            },
+            {
+              id: "b2m1l5e5", type: "bucket", prompt: "¿El «nicht» niega el verbo o el complemento?",
+              categories: ["niega la acción (nicht + Partizip)", "niega el complemento (nicht + sintagma)"],
+              items: [
+                { text: "Ich habe den Leitartikel nicht gelesen.", bucket: 0 },
+                { text: "Ich habe nicht den Leitartikel gelesen, sondern die Stellungnahme.", bucket: 1 },
+                { text: "Die Redaktion hat die Quelle nicht genannt.", bucket: 0 },
+                { text: "Die Redaktion hat nicht die Quelle genannt, sondern den Sprecher.", bucket: 1 },
+              ],
+              itemIds: ["b2m1nichtgesehen", "b2m1leitartikel", "b2m1stellungnahme"],
+            },
+            {
+              id: "b2m1l5e6", type: "build", prompt: "Pronombres en su sitio",
+              target: "Ich habe es ihm gestern gegeben",
+              translation: "Se lo di ayer",
+              distractors: ["ihm es", "gestern es"],
+              itemIds: ["b2m1esihm"],
+            },
+            {
+              id: "b2m1l5e7", type: "transform", prompt: "Mueve la fuente al Vorfeld",
+              source: "Die Firma dementiert die Vorwürfe. Das steht in einem Bericht.",
+              instruction: "Una sola frase, fuente en posición 1",
+              answers: [
+                "Einem Bericht zufolge dementiert die Firma die Vorwürfe",
+                "Laut einem Bericht dementiert die Firma die Vorwürfe",
+              ],
+              translation: "Según un informe, la empresa desmiente las acusaciones.",
+              hints: ["zufolge detrás de la fuente, y esa pieza abre", "Einem Bericht zufolge …"],
+              itemIds: ["b2m1zufolge", "b2m1dementieren"],
+            },
+            {
+              id: "b2m1l5e8", type: "paraphrase", prompt: "Dilo de otra manera — sin «ich»",
+              source: "Ich habe in einem Boulevardblatt gelesen, dass die Meldung falsch ist.",
+              forbid: ["Ich", "habe"],
+              answers: [
+                "Einem Boulevardblatt zufolge ist die Meldung falsch",
+                "Laut einem Boulevardblatt ist die Meldung falsch",
+                "In einem Boulevardblatt steht, die Meldung sei falsch",
+              ],
+              translation: "He leído en un sensacionalista que la noticia es falsa.",
+              hints: ["Fuente al Vorfeld", "Einem Boulevardblatt zufolge …"],
+              itemIds: ["b2m1boulevardblatt", "b2m1zufolge", "b2m1meldung"],
+              tip: "Quitar el «ich» es el primer gesto de un texto de B2. La información, no el lector, abre.",
+            },
+            {
+              id: "b2m1l5e9", type: "type", prompt: "Cierre de producción",
+              question: "No he leído el editorial; se lo di ayer al corresponsal",
+              answers: [
+                "Ich habe den Leitartikel nicht gelesen. Ich habe es ihm gestern gegeben",
+                "Ich habe den Leitartikel nicht gelesen und habe es dem Korrespondenten gestern gegeben",
+              ],
+              hints: ["nicht + Partizip; es ihm + tiempo", "Ich habe den Leitartikel nicht …"],
+              itemIds: ["b2m1nichtgesehen", "b2m1esihm", "b2m1leitartikel", "b2m1korrespondent"],
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m1-3",
+            book: "Das ist nicht wahr.",
+            real: "Das ist doch Quatsch.",
+            meaning: "Eso no es verdad / eso es una tontería",
+            when: "Con amigos, para tumbar un rumor. «doch» no se traduce: marca que contradices lo que se acaba de oír. En el examen no cabe: allí se desmiente con hechos, no con insultos. La versión que puntúa nombra la prueba.",
+            register: "amigos",
+            exam: "Das lässt sich so nicht belegen.",
+            note: "Quatsch es más seco que «Blödsinn» y menos grosero que «Scheiße». Sigue siendo calle.",
+            sound: "das ist doj kvatsh",
+            level: "b2",
+            produce: true,
+            itemId: "b2m1natquatsch",
+          },
+        },
+      ],
+    },
+
+    {
+      id: "b2m1l6",
+      phaseId: "b2m1",
+      title: "Zwei Stimmen, eine Meldung",
+      subtitle: "Lectura larga: dos textos que se contradicen",
+      minutes: 16,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Las palabras que cargan los dos textos",
+          itemIds: ["b2m1reichweite", "b2m1algorithmus", "b2m1sichherausstellen", "b2m1unbestaetigt", "b2m1widersprechen", "b2m1glaubwuerdigkeit", "b2m1unterstellung", "b2m1nutzerdaten", "b2m1redaktionsschluss"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "Antes de leer: contrastar, no comprender una sola voz",
+            body: "El Lesen Teil 1 y el Teil 4 del Goethe B2 no te preguntan «qué dice el texto». Te preguntan <b>quién dice qué</b>, y una misma persona puede ser la respuesta varias veces. Por eso aquí hay <b>dos textos que no se ponen de acuerdo</b>.<br/><br/>Lee primero las preguntas. Luego busca, en cada texto, no el dato: la <b>atribución</b>. ¿Va en indicativo (lo firma el periódico) o en Konjunktiv I / sollen (lo firma otro)?<br/><br/>Nota plurizéntrica, como en el examen: el segundo texto cita un periódico vienés. Verás <b>[[Jänner|enero — en Austria; en Alemania se dice Januar]]</b> y <b>[[heuer|este año — Austria y sur de Alemania; en el escrito estándar: dieses Jahr]]</b>. El Goethe los glosa a pie de página, igual que aquí. El elenco sigue en Berlín: Clara Hofmann no se ha mudado a Viena.",
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l6e1", type: "read", prompt: "Lee los dos textos y responde. Las palabras subrayadas suenan y traducen.",
+              title: "Zwei Stimmen, eine Meldung",
+              source: "Berliner Abendblatt (Clara Hofmann) und Stellungnahme der Nordlicht GmbH; mit einem Zitat aus «Der Standard», Wien",
+              text: "Am Dienstagmorgen las Sofía Marín in der S-Bahn eine [[Schlagzeile|titular]], die sie nicht losließ: «Berliner Softwarefirma verkauft Nutzerdaten». Darunter stand der Name Clara Hofmann, Redakteurin beim Berliner Abendblatt. Sofía programmiert nicht bei dieser Firma, aber sie kennt den Reflex: erst die Schlagzeile, dann — wenn überhaupt — der Rest. In ihrer eigenen Firma, ein paar Straßen weiter, reden die Kollegen den ganzen Vormittag über nichts anderes. Wer [[Nutzerdaten|datos de usuarios]] verarbeitet, liest so eine Überschrift anders als der Rest der Stadt.\n\nHofmann schreibt, eine interne [[Quelle|fuente]] habe bestätigt, dass das Unternehmen Kundendaten an einen Werbeanbieter weitergegeben habe. Laut der Quelle sei der Vertrag im [[Jänner|enero — en Austria; en Alemania se dice Januar]] geschlossen worden. Zwei Zeugen habe sie, betont Hofmann: einer wolle namentlich nicht genannt werden, der andere, ein ehemaliger Mitarbeiter, räumte ein, «nicht alles sei sauber gelaufen». Die Redaktion habe das Unternehmen um eine Stellungnahme gebeten; bis [[Redaktionsschluss|cierre de edición]] sei keine gekommen. Innerhalb von drei Stunden lag die Reichweite bei zweihunderttausend Klicks. Der Algorithmus, schreibt Hofmann später in einem Kommentar, habe den Text bevorzugt, weil er Empörung auslöse — nicht weil die Recherche fertig gewesen sei.\n\nWas der Text nicht sagt, sieht man erst beim zweiten Lesen. Hofmann schreibt nicht, die Daten seien verkauft worden. Sie schreibt, eine Quelle behaupte das. Der Konjunktiv I — «habe bestätigt», «sei geschlossen worden» — ist die Distanz zwischen der Behauptung und der Zeitung. Wer nur die Schlagzeile liest, unterschreibt. Wer den Konjunktiv liest, nicht. Genau diese Distanz, sagt Herr Vogel am Abend im Treppenhaus, fehle in dem Boulevardblatt, das er im Briefkasten gefunden habe. Dort stehe dieselbe Geschichte ohne sei und ohne Quelle.\n\nEinen Tag später erschien die Stellungnahme der Firma Nordlicht GmbH. «Die Meldung ist falsch.» Das Unternehmen bestreitet, personenbezogene Daten verkauft zu haben. Es räumt ein, im Januar einen Vertrag über anonymisierte Nutzungsstatistiken geschlossen zu haben. «Das lässt sich belegen. Die Behauptung der Zeitung lässt sich so nicht belegen.» Beigelegt sei, so der Sprecher, ein Auszug aus dem Vertrag. Ob das ausreicht, entscheidet nicht die Schlagzeile.\n\nNordlicht wirft der Redaktion vor, die Quelle nicht geprüft zu haben. Nach Angaben der Firma sei der Zeuge ein Mitarbeiter, dem in der Probezeit gekündigt worden sei. Er habe ein Motiv. Die Firma will nichts von einem Verkauf gewusst haben — und setzt das «will» genau so: als Distanz zu einer [[Unterstellung|insinuación no demostrada]], nicht als Geständnis. Sofía liest den Satz zweimal. Will ist hier kein Wunsch. Will ist eine Wand zwischen der Firma und der Anschuldigung.\n\nEin Bericht in der Wiener Zeitung «Der Standard» vom selben Tag fällt vorsichtiger aus. [[Heuer|este año — Austria y sur de Alemania; en el escrito estándar: dieses Jahr]] seien mehrere Berliner Firmen mit ähnlichen Vorwürfen konfrontiert worden, schreibt die Korrespondentin, es habe sich aber in mindestens zwei Fällen herausgestellt, dass die Meldung übertrieben gewesen sei. Die Glaubwürdigkeit hänge nicht von der Schlagzeile ab, sondern von der Quelle und von der Reichweite, die ein Algorithmus der Empörung schenkt. Lucía Ortega schickt Sofía den Link aus Valencia, mit einer einzigen Frage: «¿De quién es la frase?»\n\nNico schreibt Sofía: «Ist das wahr?» Sie antwortet nicht mit ja oder nein. Sie antwortet: «Einer Quelle zufolge. Laut der Firma nicht.» Zwischen den zwei Sätzen liegt das ganze B2.",
+              questions: [
+                {
+                  id: "b2m1l6e1q1",
+                  q: "Was behauptet Clara Hofmann — und was behauptet sie nicht?",
+                  options: [
+                    "Que los datos se han vendido: lo firma el periódico en indicativo.",
+                    "Que una fuente interna lo afirma: el periódico se distancia con Konjunktiv I.",
+                    "Que Nordlicht ha confesado la venta en un comunicado.",
+                  ],
+                  answer: 1,
+                  inference: true,
+                  why: "«habe bestätigt», «sei geschlossen worden»: K I. El periódico no escribe «hat verkauft». La Schlagzeile sí suena a hecho; el cuerpo, no.",
+                },
+                {
+                  id: "b2m1l6e1q2",
+                  q: "Was räumt Nordlicht ein, und was bestreitet die Firma?",
+                  options: [
+                    "Admite un contrato de estadísticas anónimas; niega la venta de datos personales.",
+                    "Admite la venta y niega que la fuente exista.",
+                    "No admite nada: desmiente el texto entero, incluido el contrato de enero.",
+                  ],
+                  answer: 0,
+                  why: "«Es räumt ein, im Januar einen Vertrag über anonymisierte Nutzungsstatistiken geschlossen zu haben» y, a la vez, «bestreitet, personenbezogene Daten verkauft zu haben».",
+                },
+                {
+                  id: "b2m1l6e1q3",
+                  q: "Warum setzt Nordlicht das Verb «will» in «will nichts gewusst haben»?",
+                  options: [
+                    "Porque el jefe quiere saber más.",
+                    "Porque la propia empresa se distancia de la acusación: sostiene que no sabía nada.",
+                    "Porque «will» aquí significa deber.",
+                  ],
+                  answer: 1,
+                  inference: true,
+                  why: "El propio texto lo dice: «setzt das will genau so: als Distanz zu einer Unterstellung». Es el wollen de distanciamiento de la lección 4.",
+                },
+                {
+                  id: "b2m1l6e1q4",
+                  q: "Welche Haltung nimmt «Der Standard» ein?",
+                  options: [
+                    "Da la razón entera a Hofmann.",
+                    "Da la razón entera a Nordlicht.",
+                    "Más cauta: este año ha habido casos parecidos y en al menos dos la noticia estaba hinchada.",
+                  ],
+                  answer: 2,
+                  why: "«vorsichtiger»; «es habe sich … herausgestellt, dass die Meldung übertrieben gewesen sei». Ni con uno ni con el otro.",
+                },
+                {
+                  id: "b2m1l6e1q5",
+                  q: "Was meint Sofía mit «Einer Quelle zufolge. Laut der Firma nicht»?",
+                  options: [
+                    "Que Nico tiene que elegir un bando.",
+                    "Que la verdad es la de la fuente interna.",
+                    "Que un B2 no afirma: atribuye las dos voces y deja el hueco a la vista.",
+                  ],
+                  answer: 2,
+                  inference: true,
+                  why: "Los dos giros de fuente (zufolge, laut) y ninguna de las dos frases en indicativo suyo. El módulo entero cabe en esa respuesta de WhatsApp.",
+                },
+              ],
+              itemIds: ["b2m1schlagzeile", "b2m1quelle", "b2m1sei", "b2m1willgewusst", "b2m1sichherausstellen", "b2m1algorithmus", "b2m1reichweite", "b2m1glaubwuerdigkeit", "b2m1nutzerdaten", "b2m1unterstellung", "b2m1redaktionsschluss"],
+              tip: "Si fallaste una de inferencia: vuelve al modo del verbo, no al vocabulario. El dueño de la frase está en sei/habe/soll/will, no en el sustantivo.",
+            },
+            {
+              id: "b2m1l6e2", type: "mc", prompt: "El austriacismo del texto",
+              question: "„im Jänner“ — ¿qué escribirías en un examen Goethe (estándar alemán)?",
+              options: ["im Januar", "im Jänner", "heuer"],
+              answer: 0,
+              whyWrong: [null, "Jänner es austriaco: se reconoce, no se produce en el Goethe", "heuer es «este año», no un mes"],
+              itemIds: ["b2m1nachangaben"],
+              tip: "Reconocer Jänner te da un punto de lectura. Escribirlo en el Forumsbeitrag te mete ruido. La norma de producción sigue siendo la alemana.",
+            },
+            {
+              id: "b2m1l6e3", type: "cloze", prompt: "Completa lo que resultó",
+              text: "Es hat sich ___ , dass die Meldung übertrieben war.",
+              answers: ["herausgestellt"],
+              translation: "Resultó que la noticia estaba hinchada.",
+              hints: ["sich herausstellen en Perfekt", "heraus-ge-stellt"],
+              itemIds: ["b2m1sichherausstellen"],
+            },
+            {
+              id: "b2m1l6e4", type: "transform", prompt: "De indicativo (tuyo) a K I (de Hofmann)",
+              source: "Die Quelle hat den Vertrag im Januar geschlossen.",
+              instruction: "Cítalo como lo escribiría Hofmann",
+              answers: [
+                "Die Quelle habe den Vertrag im Januar geschlossen",
+                "Laut Hofmann habe die Quelle den Vertrag im Januar geschlossen",
+              ],
+              translation: "La fuente (dice Hofmann) cerró el contrato en enero.",
+              hints: ["hat → habe", "Hofmann no firma el hecho"],
+              itemIds: ["b2m1habegearbeitet", "b2m1quelle"],
+            },
+            {
+              id: "b2m1l6e5", type: "gapbank", prompt: "Resume el conflicto con los giros de fuente",
+              text: "___ Hofmann soll die Firma Daten verkauft haben. ___ der Firma handelt es sich um anonymisierte Statistiken. Einem Bericht aus Wien ___ war die Meldung in zwei Fällen übertrieben.",
+              answers: ["Laut", "Laut", "zufolge"],
+              bank: ["Laut", "zufolge", "Wegen", "Trotz", "Angeblich"],
+              translation: "Según Hofmann, la empresa habría vendido datos. Según la empresa, se trata de estadísticas anónimas. Según un informe de Viena, en dos casos la noticia estaba hinchada.",
+              itemIds: ["b2m1laut", "b2m1zufolge"],
+              tip: "Dos «Laut» no son trampa: cada uno abre una voz distinta. zufolge, detrás, cierra la tercera.",
+            },
+            {
+              id: "b2m1l6e6", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Die Firma widerspricht gegen die Meldung.",
+              answers: ["Die Firma widerspricht der Meldung."],
+              why: "widersprechen rige dativo, sin preposición. El «gegen» es calco de «contradeci r CONTRA».",
+              translation: "La empresa contradice la noticia.",
+              itemIds: ["b2m1widersprechen", "b2m1meldung"],
+            },
+            {
+              id: "b2m1l6e7", type: "type", prompt: "Cierre de producción",
+              question: "Según una fuente, la noticia no está confirmada",
+              answers: [
+                "Einer Quelle zufolge ist die Meldung unbestätigt",
+                "Laut einer Quelle ist die Meldung unbestätigt",
+                "Einer Quelle zufolge sei die Meldung unbestätigt",
+              ],
+              hints: ["zufolge detrás o laut delante", "unbestätigt"],
+              itemIds: ["b2m1zufolge", "b2m1unbestaetigt", "b2m1quelle"],
+            },
+          ],
+        },
+      ],
+      resources: [
+        { label: "Der Standard — Startseite", url: "https://www.derstandard.at/", note: "Prensa austriaca: busca un titular y caza Jänner, heuer o sei/habe. Es el alemán del Lesen, no el de producción." },
+      ],
+    },
+
+    {
+      id: "b2m1l7",
+      phaseId: "b2m1",
+      title: "Nachgefragt",
+      subtitle: "Escucha larga: tertulia, una pasada, cuaderno",
+      minutes: 16,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Lo que oirás atribuir",
+          itemIds: ["b2m1esheisst", "b2m1stellungnahme", "b2m1gegenstimme"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "La regla detrás: una sola pasada, y hay que atribuir",
+            body: "En el Goethe B2, el Hören Teil 1 y el Teil 3 suenan <b>una sola vez</b>. El Teil 3 es además una tertulia con varias voces: la tarea es <b>quién dice qué</b>. Por eso aquí el audio es largo, el cuaderno está abierto y no hay botón de repetir.<br/><br/>Antes de darle al play: lee la pregunta y subraya la palabra que la decide (un nombre, un modal, una cifra). Mientras suena, apunta <b>quién</b> y <b>el modal</b> (soll / will / sei). El dato suelto sin dueño no vale.<br/><br/>Limitación honesta: el TTS de la app no te da tres voces distintas. El audio nombra a los hablantes por eso. En el examen real esa muleta <b>no está</b>: ahí reconoces por el timbre. Entrena el oído a la etiqueta («Clara Hofmann:», «Tom Berger:») y, el día del examen, sustitúyela por la voz.",
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l7e1", type: "audiomc", prompt: "Hören de tertulia · pregunta 1 de 5. UNA sola pasada. Cuaderno abierto: apunta quién habla.",
+              audio: RADIO_NACHGEFRAGT,
+              question: "Was ist Clara Hofmanns erste These?",
+              options: [
+                "Que el algoritmo premia la indignación, no la investigación, y por eso una noticia sin confirmar puede tener 200.000 clics antes de que nadie compruebe la fuente",
+                "Que los lectores de portales son más tontos que los del papel",
+                "Que Nordlicht ha confesado la venta de datos",
+              ],
+              answer: 0,
+              plays: 1,
+              notepad: true,
+              whyWrong: [
+                null,
+                "Eso se lo achaca Berger a ella; ella habla del algoritmo y de la Recherche",
+                "Nordlicht aparece después, y ella no lo da por hecho",
+              ],
+              itemIds: ["b2m1algorithmus", "b2m1recherche", "b2m1unbestaetigt", "b2m1reichweite"],
+              tip: "La cifra (zweihunderttausend) llega en la primera intervención. Si no la apuntas, la pregunta 1 se cae.",
+            },
+            {
+              id: "b2m1l7e2", type: "audiomc", prompt: "Misma tertulia · pregunta 2 de 5. Una pasada.",
+              audio: RADIO_NACHGEFRAGT,
+              question: "Womit widerspricht Tom Berger?",
+              options: [
+                "Que la redacción del Abendblatt no marca las noticias sin confirmar",
+                "Que el alcance no prueba que una noticia sea falsa, y que muchos usuarios leen también el comunicado",
+                "Que el Konjunktiv I sobra en los titulares",
+              ],
+              answer: 1,
+              plays: 1,
+              notepad: true,
+              whyWrong: [
+                "Lo de marcar las unbestätigte Meldungen lo dice él de su portal, no del Abendblatt",
+                null,
+                "Eso es Hofmann, no Berger",
+              ],
+              itemIds: ["b2m1widersprechen", "b2m1stellungnahme", "b2m1reichweite"],
+            },
+            {
+              id: "b2m1l7e3", type: "audiomc", prompt: "Misma tertulia · pregunta 3 de 5. Una pasada. Atiende a Nordlicht.",
+              audio: RADIO_NACHGEFRAGT,
+              question: "Wie referiert Hofmann den Fall Nordlicht?",
+              options: [
+                "Como un hecho: la empresa vendió datos",
+                "Atribuyendo las dos voces: una fuente dice que se cedieron datos; la empresa lo niega y sostiene que no sabía nada de una venta",
+                "Como un rumor de Berger",
+              ],
+              answer: 1,
+              plays: 1,
+              notepad: true,
+              whyWrong: [
+                "Usa sollen y will: no firma el hecho",
+                null,
+                "Berger habla del portal, no de Nordlicht",
+              ],
+              itemIds: ["b2m1sollsein", "b2m1willgewusst", "b2m1bestreiten"],
+              tip: "soll + will en la misma intervención: las dos distancias de la lección 4, una por cada lado.",
+            },
+            {
+              id: "b2m1l7e4", type: "audiomc", prompt: "Misma tertulia · pregunta 4 de 5. Una pasada. La ronda final.",
+              audio: RADIO_NACHGEFRAGT,
+              question: "Was fordert Hofmann für die Schlagzeile?",
+              options: [
+                "Que no haya titular sin fuente, y que si la fuente es dudosa el Konjunktiv no vaya en el titular sino más abajo",
+                "Que se prohíban los titulares",
+                "Que Berger ponga menos clics",
+              ],
+              answer: 0,
+              plays: 1,
+              notepad: true,
+              whyWrong: [null, "Pide disciplina de fuente, no silencio", "Los clics son el argumento de Berger, no su petición"],
+              itemIds: ["b2m1schlagzeile", "b2m1quelle", "b2m1sei"],
+            },
+            {
+              id: "b2m1l7e5", type: "audiomc", prompt: "Misma tertulia · pregunta 5 de 5. Una pasada. Cierre de la moderadora.",
+              audio: RADIO_NACHGEFRAGT,
+              question: "Was sollen sich die Hörer merken?",
+              options: [
+                "Que soll y will son la misma cosa",
+                "Que «soll» distancia una fuente ajena y «will» distancia a la propia fuente: quien lo oye sabe de quién es la afirmación",
+                "Que hay que leer menos portales",
+              ],
+              answer: 1,
+              plays: 1,
+              notepad: true,
+              whyWrong: [
+                "La moderadora los distingue justo al final",
+                null,
+                "No es la tesis de nadie en la mesa",
+              ],
+              itemIds: ["b2m1sollsein", "b2m1willgewusst"],
+              tip: "En el Teil 3 real la última pregunta cae en los últimos veinte segundos. Por eso se entrena la resistencia, no solo el oído.",
+            },
+            {
+              id: "b2m1l7e6", type: "shadow", prompt: "Sombrea la fórmula de atribución",
+              text: "Einer Quelle zufolge soll das stimmen.",
+              phonetic: "AI-na KVE-le tsu-FOL-gue zol das shti-men",
+              translation: "Según una fuente, parece que es así.",
+              reps: 2,
+              itemIds: ["b2m1zufolge", "b2m1sollsein", "b2m1quelle"],
+            },
+            {
+              id: "b2m1l7e7", type: "cloze", prompt: "Completa lo que oíste atribuir",
+              text: "Die Firma will nichts von einem Verkauf gewusst ___.",
+              answers: ["haben"],
+              translation: "La empresa sostiene que no sabía nada de una venta.",
+              hints: ["Infinitivo perfecto: gewusst + …", "h-a-b-e-n"],
+              itemIds: ["b2m1willgewusst"],
+            },
+            {
+              id: "b2m1l7e8", type: "type", prompt: "Cierre: atribuye las dos voces en una frase",
+              question: "Según Hofmann hay que citar; según Berger, mostrar la otra campana",
+              answers: [
+                "Laut Hofmann muss man zitieren, laut Berger muss man die Gegenstimme zeigen",
+                "Hofmann zufolge muss man zitieren, Berger zufolge muss man die Gegenstimme zeigen",
+              ],
+              hints: ["laut / zufolge dos veces", "Gegenstimme"],
+              itemIds: ["b2m1laut", "b2m1zitieren", "b2m1gegenstimme"],
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      id: "b2m1l8",
+      phaseId: "b2m1",
+      title: "Schreiben: zitieren, ohne zu unterschreiben",
+      subtitle: "Dos textos: mensaje formal (~100) y foro argumentativo (~150)",
+      minutes: 20,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Las piezas del Schreiben",
+          itemIds: ["b2m1zusammenfassen", "b2m1sichdistanzieren", "b2m1zitieren", "b2m1sichbelegen"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "La regla detrás: dos géneros, dos relojes, una sola trampa",
+            body: "El Goethe B2 escribe <b>dos</b> textos en 75 minutos, y más de la mitad de la nota se juega en uno solo.<br/><br/>· <b>Aufgabe 2</b> (~100 palabras, ~25 min, 40 puntos): mensaje a un superior. <b>Anrede y Gruß obligatorios</b>, Sie sostenido, puntos de contenido en orden. Género: Nachricht.<br/>· <b>Aufgabe 1</b> (~150 palabras, ~50 min, 60 puntos): Forumsbeitrag. Introducción y cierre explícitos, argumentar, proponer, ventajas e inconvenientes.<br/><br/>La regla que tumba la tarea entera: <b>menos del 50 % de las palabras pedidas = Erfüllung E = 0 puntos</b>, por brillante que sea el alemán. 99 palabras bien atribuidas valen más que 140 que mezclan tu voz con la de la fuente.<br/><br/>Y la trampa de este módulo: un párrafo que afirma lo que otro dijo. Cada hecho ajeno lleva <b>laut / zufolge / sollen / Konjunktiv I</b>. Si falta el dueño, el examinador lee tu opinión donde tú querías una cita.",
+            table: [
+              ["tarea", "palabras", "registro", "lo que no puede faltar"],
+              ["Nachricht an Vorgesetzte", "~100", "Sie", "Anrede, Gruß, puntos en orden"],
+              ["Forumsbeitrag", "~150", "neutro escrito / du al hilo", "intro, pros/contras, propuesta, cierre"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l8e1", type: "errorfix", prompt: "Un hispanohablante escribió esto. Arréglalo.",
+              wrong: "Ich distanziere mich die Behauptung.",
+              answers: ["Ich distanziere mich von der Behauptung."],
+              why: "sich distanzieren rige von + dativo. Sin la preposición es calco de «me distancio LA afirmación».",
+              translation: "Me distancio de la afirmación.",
+              itemIds: ["b2m1sichdistanzieren"],
+            },
+            {
+              id: "b2m1l8e2", type: "gapbank", prompt: "Completa el borrador del mensaje formal",
+              text: "Einem Bericht ___ soll unser Team Daten weitergegeben haben. Das lässt sich so nicht ___. Ich bitte Sie, die Angaben intern prüfen zu ___ und der Presse eine Stellungnahme zu geben.",
+              answers: ["zufolge", "belegen", "lassen"],
+              bank: ["zufolge", "belegen", "lassen", "laut", "sagen", "haben"],
+              translation: "Según un informe, nuestro equipo habría cedido datos. Eso no se puede demostrar así. Le pido que haga comprobar los datos dentro y que dé un comunicado a la prensa.",
+              itemIds: ["b2m1zufolge", "b2m1sichbelegen", "b2m1stellungnahme"],
+            },
+            {
+              id: "b2m1l8e3", type: "mc", prompt: "Registro: ¿qué cierre vale en Sie?",
+              question: "Mensaje a la jefa sobre una noticia falsa. ¿Qué cierre?",
+              options: [
+                "Meld dich mal, ja?",
+                "Mit freundlichen Grüßen",
+                "Das ist doch Quatsch, oder?",
+              ],
+              answer: 1,
+              whyWrong: [
+                "Calle y du: fuga de registro. En Sie es 0 en Textsorte",
+                null,
+                "Es la píldora Nativo de amigos: aquí tumba la banda",
+              ],
+              itemIds: ["b2m1natquatsch"],
+            },
+            {
+              id: "b2m1l8e4", type: "write", prompt: "Aufgabe 2 · Nachricht an die Vorgesetzte. Lee el esqueleto antes de escribir.",
+              scenario: "Eres Sofía Marín. En el periódico ha salido que tu equipo ha cedido datos de usuarios. Escribe un mensaje a tu jefa, Frau Keller, con tratamiento de Sie. Trata LOS TRES puntos: dejarte uno te baja de banda en Erfüllung.",
+              genre: "mail-formal",
+              register: "Sie",
+              bullets: [
+                "Resume la noticia atribuyéndola (laut / zufolge / sollen): no la firmes tú.",
+                "Di que eso no está demostrado y pide que se compruebe internamente.",
+                "Propón un comunicado breve a la prensa y cierra con Grußformel.",
+              ],
+              checks: [
+                { re: "(laut|zufolge|soll)", label: "atribuyes la noticia (laut / zufolge / soll)" },
+                { re: "(belegen|pr[üu]fen|unbest[äa]tigt|bestreit)", label: "pides comprobar o marcas que no está demostrado" },
+                { re: "(Stellungnahme|Presse|klarstell)", label: "propones un comunicado" },
+              ],
+              frame: [
+                "Anrede: «Sehr geehrte Frau Keller,»",
+                "Lead: «Einem Bericht zufolge soll …»",
+                "Distancia: «Das lässt sich so nicht belegen.»",
+                "Petición: «Ich bitte Sie, … prüfen zu lassen.»",
+                "Propuesta: «Eine kurze Stellungnahme an die Presse …»",
+                "Gruß: «Mit freundlichen Grüßen» + nombre",
+              ],
+              requireConnectors: { min: 2, bank: ["deshalb", "außerdem", "weil", "allerdings"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              minWords: 90,
+              maxWords: 120,
+              model: "Sehr geehrte Frau Keller,\neinem Bericht der Berliner Morgenpost zufolge soll unser Team interne Nutzerdaten weitergegeben haben. Das lässt sich so nicht belegen. Die Redaktion hat uns nicht um eine Stellungnahme gebeten, und die Quelle bleibt ungenannt. Ich bitte Sie deshalb, die Behauptung intern prüfen zu lassen, bevor wir darauf öffentlich reagieren. Außerdem kursiert der Text bereits in den sozialen Netzen; eine kurze, sachliche Klarstellung an die Presse wäre wichtig, weil die Reichweite sonst weiter steigt. Ich distanziere mich von dieser Unterstellung und stehe für Rückfragen gern zur Verfügung.\nMit freundlichen Grüßen\nSofía Marín",
+              itemIds: ["b2m1zufolge", "b2m1sollsein", "b2m1sichbelegen", "b2m1stellungnahme", "b2m1sichdistanzieren", "b2m1nutzerdaten", "b2m1unterstellung"],
+              tip: "Cuenta las palabras. Menos de 50 = 0. Y ni un «du»: el detector de registro no perdona.",
+            },
+            {
+              id: "b2m1l8e5", type: "write", prompt: "Aufgabe 1 · Forumsbeitrag. Reacciona al texto y argumenta.",
+              scenario: "En un foro de lengua alemana alguien afirma que las redes sociales han matado el periodismo. Escribe un comentario de foro: introduce, da ventajas e inconvenientes, propón algo concreto y cierra. Atribuye lo que no sea tuyo.",
+              genre: "forum",
+              stimulus: {
+                author: "Markus B.",
+                text: "Ohne soziale Netze wäre die Presse ehrlicher. Heute zählt nur die Reichweite, nicht die Recherche. Wer Klicks will, schreibt laut, nicht laut der Quelle.",
+              },
+              bullets: [
+                "Reacciona a Markus: concede algo y marca dónde no estás de acuerdo.",
+                "Da una ventaja y un inconveniente de las redes para las noticias, con ejemplo.",
+                "Propón una regla concreta (p. ej. citar la fuente en el titular) y cierra.",
+              ],
+              checks: [
+                { re: "(zwar|allerdings|jedoch|stimme .* zu|verstehe)", label: "concedas algo antes de rebatir" },
+                { re: "(Vorteil|Nachteil|einerseits|andererseits|allerdings)", label: "hay ventaja e inconveniente" },
+                { re: "(sollte|müsste|würde ich|schlage vor|Vorschlag)", label: "hay una propuesta" },
+              ],
+              frame: [
+                "Apertura: «Zu dem Beitrag von Markus B. möchte ich Folgendes sagen:»",
+                "Concesión: «Zwar stimmt, dass … Allerdings …»",
+                "Ventaja / inconveniente con ejemplo (Sofía, Clara, un clic)",
+                "Propuesta: «Schlagzeilen sollten die Quelle nennen.»",
+                "Cierre: «Deshalb plädiere ich dafür, …»",
+              ],
+              requireConnectors: { min: 3, bank: ["zwar", "allerdings", "deshalb", "weil", "außerdem", "dennoch"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              minWords: 140,
+              maxWords: 180,
+              model: "Zu dem Beitrag von Markus B. möchte ich Folgendes sagen: Zwar stimmt, dass die Reichweite oft lauter ist als die Recherche. Allerdings sterben die Zeitungen nicht an den Netzen, sondern an Schlagzeilen ohne Quelle. Ein Vorteil der Portale ist die Gegenstimme: Stellungnahmen erreichen uns in Minuten, und der Leser kann beide Seiten halten. Ein Nachteil ist der Algorithmus, der Empörung belohnt und unbestätigte Meldungen nach oben schiebt. Clara Hofmann schreibt «eine Quelle habe bestätigt», und gelesen wird «hat bestätigt». Wer teilt, ohne die Stellungnahme zu lesen, unterschreibt eine Unterstellung. Deshalb sollte jede Schlagzeile die Quelle nennen oder den Konjunktiv sichtbar machen. Außerdem müssten unbestätigte Meldungen klar markiert werden, nicht erst im dritten Absatz. Ich plädiere dafür, weniger zu behaupten und mehr zu zitieren. Nur so bleibt die Glaubwürdigkeit der Presse, und nur so weiß man noch, wem ein Satz gehört.",
+              itemIds: ["b2m1reichweite", "b2m1recherche", "b2m1algorithmus", "b2m1schlagzeile", "b2m1gegenstimme", "b2m1zusammenfassen"],
+              tip: "150 palabras no son 80 con adjetivos. Son intro + concesión + dos argumentos + propuesta + cierre. Si te comes la concesión, el texto suena a panfleto y baja Strukturen.",
+            },
+
+            {
+              id: "b2m1l8extra1", type: "write", prompt: "Aufgabe 2 · Nachricht Sie. Off-topic = 0.",
+              scenario: "Eres Sofía Marín. Escribes a Frau Keller: en un titular interno se ha colado el indicativo donde iba Konjunktiv I. Sie. Pide revisión antes del cierre de redacción. Tema equivocado o menos de 50 palabras = 0.",
+              genre: "mail-formal",
+              register: "Sie",
+              bullets: [
+                "Nombra el motivo en la primera frase, con Sie.",
+                "Pide una acción concreta y un plazo.",
+                "Cierra con Grußformel.",
+              ],
+              checks: [
+                { re: "(Sehr geehrte|Guten Tag)", label: "hay Anrede" },
+                { re: "(bitte|könnten|würde ich)", label: "hay una petición" },
+                { re: "(Mit freundlichen Grüßen|Freundliche Grüße)", label: "hay Gruß" },
+              ],
+              frame: ["Anrede Sie", "motivo", "petición + plazo", "Gruß + nombre"],
+              requireConnectors: { min: 2, bank: ["deshalb", "außerdem", "weil", "allerdings"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              minWords: 90,
+              maxWords: 120,
+              model: "Sehr geehrte Frau Keller,\nlaut einer internen Notiz soll unser Team in der Schlagzeile den Konjunktiv gestrichen haben. Das lässt sich so nicht belegen, weil die Distanz zwischen «habe bestätigt» und «hat bestätigt» genau der Punkt der Redaktion ist. Deshalb bitte ich Sie, die Titelformulierung bis Donnerstag prüfen zu lassen. Außerdem bräuchte die Presse eine kurze Klarstellung, dass wir zitieren und nicht unterschreiben. Allerdings darf die Gegendarstellung nicht kleiner stehen als die erste Meldung. Ich stehe für Rückfragen gern zur Verfügung. Eine kurze schriftliche Bestätigung reicht.\nMit freundlichen Grüßen\nSofía Marín",
+              itemIds: [],
+              tip: "Menos de 50 palabras o tema equivocado: 0. Ni un du.",
+            },
+            {
+              id: "b2m1l8extra2", type: "write", prompt: "Aufgabe 1 · Forumsbeitrag. Off-topic = 0.",
+              scenario: "Foro de lengua: Tom Berger dice que el Konjunktiv en el titular confunde al lector. Reacciona: concede, ventaja e inconveniente, propuesta. Off-topic = 0.",
+              genre: "forum",
+              stimulus: { author: "Tom Berger", text: "Der Konjunktiv in der Überschrift verwirrt den Leser. Wer «habe bestätigt» liest, denkt, die Redaktion sei unsicher. Schreibt Indikativ, dann weiß man, woran man ist." },
+              bullets: [
+                "Concede un punto a Tom Berger y marca el desacuerdo.",
+                "Una ventaja y un inconveniente, con ejemplo.",
+                "Una propuesta concreta y un cierre.",
+              ],
+              checks: [
+                { re: "(zwar|allerdings|jedoch)", label: "concedes antes de rebatir" },
+                { re: "(Vorteil|Nachteil|einerseits|andererseits)", label: "ventaja e inconveniente" },
+                { re: "(sollte|müsste|schlage vor|Vorschlag)", label: "hay propuesta" },
+              ],
+              frame: ["Apertura", "concesión", "pro/contra", "propuesta", "cierre"],
+              requireConnectors: { min: 3, bank: ["zwar", "allerdings", "deshalb", "weil", "außerdem", "dennoch"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              minWords: 140,
+              maxWords: 180,
+              model: "Zu dem Beitrag von Tom Berger möchte ich Folgendes sagen: Zwar stimmt, dass manche Leser «habe» überlesen. Allerdings ist das kein Freibrief für den Indikativ, wenn die Quelle nur «soll» gesagt hat. Ein Vorteil der Portale ist die Gegendarstellung in Minuten, und der Leser kann beide Seiten halten. Ein Nachteil ist der Algorithmus, der Empörung belohnt und den Konjunktiv unsichtbar macht. Clara Hofmann schreibt «eine Quelle habe bestätigt», und gelesen wird «hat bestätigt». Deshalb sollte jede Schlagzeile die Distanz zeigen oder die Quelle nennen. Außerdem müssten unbestätigte Meldungen markiert bleiben, nicht erst im dritten Absatz. Ich plädiere dafür, weniger zu behaupten und mehr zu zitieren, weil nur so klar bleibt, wem ein Satz gehört. Wer das nicht will, soll sagen, warum, und zwar schriftlich. Nur so bleibt die Sache nachvollziehbar. Das ist die Mindestanforderung an ein Protokoll, das jemand in drei Monaten noch verstehen soll.",
+              itemIds: [],
+              tip: "150 palabras: intro, concesión, dos argumentos, propuesta, cierre. Off-topic = 0.",
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m1-4",
+            book: "Ich habe es in der Zeitung gelesen.",
+            real: "Stand in der Zeitung.",
+            meaning: "Lo he leído en el periódico / salió en el periódico",
+            when: "Al pasar una noticia en el pasillo, sin sujeto y sin auxiliar. En el Schreiben no cabe: allí la fuente se nombra entera y, si puedes, con Konjunktiv I. «Stand in der Zeitung» es un encogimiento de hombros, no una cita.",
+            register: "neutral",
+            exam: "Einem Bericht zufolge …",
+            note: "El alemán hablado se come el es y el artículo: «Stand in der Zeitung» = «Es stand in der Zeitung». Reconocerlo evita buscar un sujeto que no está.",
+            sound: "shtant in dea TSAI-tung",
+            level: "b2",
+            produce: true,
+            itemId: "b2m1natstand",
+          },
+        },
+      ],
+      resources: [
+        { label: "Goethe — Modellsatz B2 (Schreiben)", url: "https://www.goethe.de/pro/relaunch/prf/materialien/B2/b2_modellsatz_erwachsene.pdf", note: "Las dos tareas reales: Forumsbeitrag ~150 y Nachricht an den Vorgesetzten ~100. Compara tu texto con los criterios de la hoja de evaluación." },
+      ],
+    },
+
+    {
+      id: "b2m1l9",
+      phaseId: "b2m1",
+      title: "Sofía zitiert, ohne zu unterschreiben",
+      subtitle: "La historia del módulo y tu primer Vortrag de cuatro minutos",
+      minutes: 18,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Las últimas piezas",
+          itemIds: ["b2m1indirekterede", "b2m1sachlich", "b2m1pressekonferenz"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "Sofía zitiert: drei Stimmen, ein Chat",
+            body: "<i>Lee la historia en voz alta. Lo nuevo va glosado.</i><br/><br/>1. Am Dienstag um acht las Sofía die Schlagzeile in der S-Bahn. Clara Hofmann, eine Journalistin, die sie vom Kiez kennt, hatte über Nordlicht geschrieben.<br/>2. Nico schrieb als Erster: «Ist das wahr?» Sofía tippte, löschte, tippte noch einmal. Sie schrieb nicht ja. Sie schrieb: «Einer Quelle zufolge.»<br/>3. Anna, die Nachbarin, war klarer: «Das ist doch Quatsch. Die Firma will doch nur ablenken.» Anna ist Krankenschwester, nicht Juristin, und «Quatsch» ist ihre Form von dementieren.<br/>4. Leo kam zu spät, wie immer, und hatte den Leitartikel nicht gelesen. «Stand in der Zeitung», sagte er, als hätte das die Sache erledigt.<br/>5. Am Abend gab Nordlicht eine kurze Pressekonferenz. Der Sprecher betonte, die Firma habe anonymisierte Statistiken weitergegeben, nicht personenbezogene Daten. Die Vorwürfe bestritten sie. Eine interne Quelle wolle namentlich nicht genannt werden, räumte er ein — und setzte hinterher: sie habe ein Motiv.<br/>6. Clara Hofmann saß in der ersten Reihe. Sie notierte im Konjunktiv I. Nicht aus Eleganz: aus Handwerk. Was der Sprecher sagte, gehörte dem Sprecher.<br/>7. Lucía Ortega schrieb aus Valencia: «Y tú qué opinas?» Sofía antwortete auf Spanisch, und dann noch einmal auf Deutsch, sachlich: «Ich distanziere mich von der Schlagzeile. Die Recherche ist nicht fertig.»<br/>8. Herr Vogel, der Nachbar, hatte das Boulevardblatt im Briefkasten. «Die schreiben laut», sagte er. Sofía lächelte. Laut der Quelle, dachte sie. Nicht laut.<br/>9. Drei Tage später stellte sich heraus, dass die Meldung übertrieben gewesen war. Sofía öffnete den Chat mit Nico und schrieb nur: «Siehste. Deshalb sei, nicht ist.»",
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m1l9e1", type: "mc", prompt: "Comprensión (frases 2-3)",
+              question: "Warum schreibt Sofía nicht einfach «ja»?",
+              options: [
+                "Porque no ha leído la noticia",
+                "Porque no quiere firmar lo que una fuente afirma",
+                "Porque Anna le ha dicho que es Quatsch",
+              ],
+              answer: 1,
+              whyWrong: ["La ha leído en la S-Bahn", null, "Anna escribe después, y Sofía ya había contestado a Nico"],
+              itemIds: ["b2m1zufolge", "b2m1quelle"],
+            },
+            {
+              id: "b2m1l9e2", type: "mc", prompt: "Inferencia (frase 6)",
+              question: "Warum notiert Clara Hofmann im Konjunktiv I?",
+              options: [
+                "Porque el Konjunktiv I suena más elegante",
+                "Porque así el enunciado sigue siendo del portavoz, no suyo",
+                "Porque no se fía de su propio alemán",
+              ],
+              answer: 1,
+              whyWrong: [
+                "El texto dice «Nicht aus Eleganz: aus Handwerk»",
+                null,
+                "Es periodista nativa: el modo es oficio, no inseguridad",
+              ],
+              itemIds: ["b2m1indirekterede", "b2m1sei"],
+            },
+            {
+              id: "b2m1l9e3", type: "order", prompt: "Ordena lo que pasó",
+              sentences: [
+                "Sofía las die Schlagzeile in der S-Bahn.",
+                "Nico fragte, ob das wahr sei.",
+                "Nordlicht gab eine Pressekonferenz.",
+                "Es stellte sich heraus, dass die Meldung übertrieben war.",
+                "Sofía schrieb: «Deshalb sei, nicht ist.»",
+              ],
+              translation: "Sofía leyó el titular. Nico preguntó si era verdad. Nordlicht dio una rueda de prensa. Resultó que la noticia estaba hinchada. Sofía escribió: por eso sei, no ist.",
+              itemIds: ["b2m1schlagzeile", "b2m1pressekonferenz", "b2m1sichherausstellen"],
+            },
+            {
+              id: "b2m1l9e4", type: "fastmatch", prompt: "Velocidad sobre lo de este módulo",
+              pairs: [
+                { target: "die Schlagzeile", source: "el titular" },
+                { target: "die Quelle", source: "la fuente" },
+                { target: "angeblich", source: "supuestamente" },
+                { target: "dementieren", source: "desmentir" },
+                { target: "die Recherche", source: "la investigación periodística" },
+              ],
+              targetSeconds: 20,
+              itemIds: ["b2m1schlagzeile", "b2m1quelle", "b2m1angeblich", "b2m1dementieren", "b2m1recherche"],
+            },
+            {
+              id: "b2m1l9e5", type: "paraphrase", prompt: "Dilo de otra manera — sin «sagen» ni «ist wahr»",
+              source: "Nico sagte: «Ist das wahr?»",
+              forbid: ["sagte", "wahr", "Ist"],
+              answers: [
+                "Nico wollte wissen, ob die Meldung stimme",
+                "Nico fragte, ob sich die Meldung belegen lasse",
+                "Nico fragte nach der Glaubwürdigkeit der Meldung",
+              ],
+              translation: "Nico dijo: «¿Es verdad?»",
+              hints: ["fragen / wissen wollen + K I", "ob die Meldung stimme"],
+              itemIds: ["b2m1meldung", "b2m1glaubwuerdigkeit"],
+            },
+            {
+              id: "b2m1l9e6", type: "gapbank", prompt: "Completa el resumen con K I y fuentes",
+              text: "Laut Hofmann ___ eine Quelle die Vorwürfe bestätigt. Die Firma ___ die Meldung und ___ nichts gewusst haben. Einem späteren Bericht ___ war die Meldung übertrieben.",
+              answers: ["habe", "dementiert", "will", "zufolge"],
+              bank: ["habe", "dementiert", "will", "zufolge", "hat", "soll", "laut"],
+              translation: "Según Hofmann, una fuente confirmó las acusaciones. La empresa desmiente la noticia y sostiene que no sabía nada. Según un informe posterior, la noticia estaba hinchada.",
+              itemIds: ["b2m1habe", "b2m1dementieren", "b2m1willgewusst", "b2m1zufolge"],
+            },
+            {
+              id: "b2m1l9e7", type: "monologue", prompt: "Tu primer Vortrag de B2: cuatro minutos, estructura tuya, dos pasadas.",
+              topic: "Kann man Nachrichten in sozialen Netzen noch trauen?",
+              slides: [
+                { title: "1. Einstieg", hint: "Presenta el tema y el plan: «Ich möchte heute der Frage nachgehen, ob … Zuerst …, dann …, zum Schluss …». Nada de «Ich spreche über Nachrichten» pelado." },
+                { title: "2. Ein Fall", hint: "Cuenta un caso concreto (Nordlicht, o uno tuyo) atribuyendo: laut / zufolge / sollen. Un hecho ajeno sin dueño no cuenta." },
+                { title: "3. Vorteil und Nachteil", hint: "Una ventaja (rapidez, Gegenstimme) y un inconveniente (Algorithmus, Schlagzeile sin fuente). «Zwar …, allerdings …»." },
+                { title: "4. Meine Position", hint: "Tu postura, con una regla concreta: qué debería hacer un titular, un portal, un lector. Konjunktiv I o sollen si citas." },
+                { title: "5. Schluss", hint: "Cierra y ábrete a preguntas: «Damit bin ich am Ende. Ich beantworte gern Ihre Fragen.»" },
+              ],
+              planSeconds: 180,
+              speakSeconds: 240,
+              reps: 2,
+              checklist: [
+                "Traté las 5 partes, ninguna en menos de 20 segundos",
+                "Hablé al menos 3:30 sin cortar en seco",
+                "Atribuí al menos dos afirmaciones ajenas (laut / zufolge / sollen / K I)",
+                "Concedí algo antes de rebatir (zwar / allerdings)",
+                "Di una propuesta concreta, no solo una queja",
+                "En la 2.ª pasada hablé sin leer las pistas",
+              ],
+              model: "Diapositiva 2 como modelo (solo una, para que el resto sea tuyo): „Am Dienstag las ich eine Schlagzeile über eine Berliner Firma. Laut einer internen Quelle sollen Daten weitergegeben worden sein. Die Firma dementierte das noch am selben Tag. Zwischen diesen zwei Sätzen liegt genau die Distanz, über die ich sprechen möchte.“",
+              itemIds: ["b2m1schlagzeile", "b2m1laut", "b2m1sollsein", "b2m1dementieren", "b2m1algorithmus"],
+              tip: "En B2 no hay cinco diapositivas fijas: hay quince minutos y un esqueleto que te inventas. La segunda pasada libera atención para el Konjunktiv I. El motor cronometra; no puntúa lo que dices.",
+            },
+            {
+              id: "b2m1l9e8", type: "type", prompt: "Cierre del módulo",
+              question: "Según un informe, la noticia era falsa; yo me distancio de ese titular",
+              answers: [
+                "Einem Bericht zufolge war die Meldung falsch. Ich distanziere mich von dieser Schlagzeile",
+                "Laut einem Bericht war die Meldung falsch. Ich distanziere mich von der Schlagzeile",
+              ],
+              hints: ["zufolge o laut + sich distanzieren von", "Einem Bericht zufolge …"],
+              itemIds: ["b2m1zufolge", "b2m1falschmeldung", "b2m1sichdistanzieren", "b2m1schlagzeile", "b2m1sachlich"],
+              tip: "Fuente + distancia. El módulo entero en dos frases. A partir de aquí, un texto de B2 que afirma sin citar suena a B1.",
+            },
+            {
+              id: "b2m1l9e9", type: "hearreal", prompt: "Última discriminación: ¿calle o libro?",
+              book: "Ich habe es in der Zeitung gelesen.",
+              real: "Stand in der Zeitung.",
+              translation: "Lo he leído en el periódico.",
+              itemIds: ["b2m1natstand"],
+            },
+          ],
+        },
+      ],
+      resources: [
+        { label: "tagesschau in 100 Sekunden", url: "https://www.tagesschau.de/multimedia/sendung/tagesschau_in_100_sekunden/", note: "Cien segundos de noticias reales: caza un sei o un sollen al día. Es el oído que el Hören Teil 4 te va a pedir." },
+      ],
+    },
+  ],
+};

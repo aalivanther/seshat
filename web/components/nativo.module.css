@@ -1,0 +1,87 @@
+/* Tarjeta Nativo: marco cálido diferenciado — es el postre, no un ítem */
+
+/* El marco cálido salía de tres ámbares escritos a mano y de un apaño aparte
+   para el modo oscuro. Ahora sale del acento: el degradado va del ámbar más
+   suave al papel, y de noche eso mismo es tinta ámbar sobre papel apagado. */
+.card {
+  border: 2px solid color-mix(in srgb, var(--accent) 42%, transparent);
+  background: linear-gradient(180deg, var(--accent-soft), var(--surface));
+  border-radius: 16px;
+  padding: 16px 18px;
+  display: grid;
+  gap: 8px;
+}
+.compact { padding: 12px 14px; }
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.brand {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--accent-text);
+}
+.register {
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 999px;
+  padding: 2px 10px;
+  color: var(--text-2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rowReal { margin-top: -2px; }
+.tag {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-3);
+  min-width: 7.5em;
+}
+.text { font-weight: 650; font-size: 1.05rem; }
+.textReal { font-weight: 800; font-size: 1.15rem; color: var(--accent-text); }
+
+.sound {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-3);
+  font-style: italic;
+}
+.meaning { margin: 0; color: var(--text-2); }
+.when {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text-2);
+  border-left: 3px solid var(--accent);
+  padding-left: 10px;
+}
+.note {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-3);
+}
+.promise {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--text-2);
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+/* La tercera fila: lo que puntúa en el examen. Va con el verde del acierto y
+   no con el ámbar de la calle — el alumno tiene que distinguirlas de un
+   vistazo, porque escribir la de la calle en el Schreiben le baja la banda. */
+.rowExam { margin-top: 2px; }
+.textExam { font-weight: 700; color: var(--ok); }

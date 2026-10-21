@@ -1,0 +1,9 @@
+{
+  "id": "drop-6",
+  "dropNumber": 6,
+  "name": "Seshat — Alemán A1+A2+B1 · Inglés A1+A2",
+  "extends": "drop-5",
+  "content": {
+    "include": [{ "lang": "en", "level": "a2" }]
+  }
+}

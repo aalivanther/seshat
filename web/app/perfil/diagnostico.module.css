@@ -1,0 +1,294 @@
+/* El diagnóstico: radar, símbolos y módulos. Vive aparte de perfil.module.css
+   porque es una vista con vida propia y así no se mezcla con la ficha. */
+
+.wrap { display: grid; gap: 18px; }
+
+/* ── panel de arriba: radar + resumen ───────────────────────────────── */
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.radarCol {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  min-width: 0;
+  /* aire para las etiquetas del radar, que asoman del cuadro (ver abajo) */
+  padding: 0 14px;
+}
+
+/* El SVG dibuja los nombres de los ejes a 1,2 radios del centro, o sea FUERA
+   de su propio viewBox: con el recorte que trae de serie, «Pruebas» se leía
+   «uebas», «Memoria» «moria» y «Léxico» «Léxicc». Dejarlo desbordar es lo que
+   las hace legibles; el padding de arriba es el sitio por el que asoman. El
+   arreglo de fondo (que quepan dentro) va en components/Art.tsx. */
+.radarCol svg { max-width: 100%; height: auto; overflow: visible; }
+.radarPie {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text-3);
+  text-align: center;
+  max-width: 30ch;
+}
+.radarVacio {
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+  padding: 16px;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-3);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.radarVacio p { margin: 0; }
+
+.resumenCol { display: grid; gap: 14px; align-content: start; min-width: 0; }
+
+.pruebaCaja {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+}
+.pruebaEtiqueta {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.pruebaNivel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-size: 1.3rem;
+}
+.pruebaNivel b { font-size: 1.6rem; color: var(--accent-text); }
+.pruebaConf {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.pruebaVeredicto { margin: 0; font-size: 0.92rem; line-height: 1.5; color: var(--text-2); }
+.pruebaFecha { margin: 0; font-size: 0.8rem; color: var(--text-3); }
+.enlace { position: relative; color: var(--accent-text); font-weight: 700; }
+/* «repetir y comparar» va dentro de una frase pero es la única vuelta a la
+   prueba de nivel: zona de dedo de 44 px sin engordar el párrafo */
+.enlace::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+.btnPrueba {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 10px 18px;
+  border-radius: var(--radius-hand, 12px);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: var(--shadow-btn);
+}
+
+.marcadores {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.marcador {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-align: center;
+}
+.marcador b { font-size: 1.35rem; line-height: 1; }
+.marcador span { font-size: 0.75rem; color: var(--text-3); }
+
+/* ── grupos de temas ────────────────────────────────────────────────── */
+.grupo {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.f_fuerte { border-left-color: var(--ok); }
+.f_medio { border-left-color: var(--warn); }
+.f_flojo { border-left-color: var(--err); }
+
+.grupoTitulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 1.02rem;
+}
+.grupoCuenta {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text-2);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel);
+  font-size: 0.86rem;
+}
+.chipLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 44px;
+  color: inherit;
+  text-decoration: none;
+}
+.chipLink:hover .chipTexto { text-decoration: underline; }
+.chipTexto {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.chipPct { color: var(--text-3); font-size: 0.78rem; }
+.grupoPie { margin: 10px 0 0; font-size: 0.82rem; line-height: 1.5; color: var(--text-3); }
+
+/* ── módulos ────────────────────────────────────────────────────────── */
+.subtitulo { margin: 6px 0 2px; font-size: 1.05rem; }
+.subtituloPie { margin: 0 0 6px; font-size: 0.84rem; line-height: 1.5; color: var(--text-3); }
+
+.modulos { display: grid; gap: 8px; }
+.modulo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(80px, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+}
+.modulo:hover { background: var(--panel); }
+.moduloNombre { min-width: 0; font-weight: 700; overflow-wrap: anywhere; }
+.moduloTrack {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.moduloFill { display: block; height: 100%; border-radius: 999px; }
+.moduloEstado {
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.st_sin-empezar { background: var(--locked-soft); color: var(--locked); }
+.st_en-marcha { background: var(--warn-soft); color: var(--warn); }
+.st_asentado { background: var(--near-soft); color: var(--near); }
+.st_dominado { background: var(--ok-soft); color: var(--ok); }
+.moduloCifras { font-size: 0.8rem; color: var(--text-3); white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .panel { grid-template-columns: minmax(0, 1fr); }
+  .modulo { grid-template-columns: minmax(0, 1fr) auto; grid-auto-rows: auto; }
+  .moduloTrack { grid-column: 1 / -1; order: 3; }
+  .moduloCifras { order: 4; grid-column: 1 / -1; }
+}
+
+/* ── plegado por nivel ──────────────────────────────────────────────── */
+.nivel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+.nivel + .nivel { margin-top: 8px; }
+.nivelResumen {
+  display: grid;
+  grid-template-columns: auto minmax(60px, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 10px 14px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 800;
+}
+.nivelResumen::-webkit-details-marker { display: none; }
+.nivelResumen::after {
+  content: "▾";
+  grid-column: 4;
+  color: var(--text-3);
+  transition: transform 0.15s var(--ease);
+}
+.nivel[open] .nivelResumen::after { transform: rotate(180deg); }
+.nivelResumen:hover { background: var(--panel); }
+.nivelNombre {
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--accent-text);
+}
+.nivelTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.nivelFill { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+.nivelCifras { font-size: 0.78rem; font-weight: 700; color: var(--text-3); white-space: nowrap; }
+.nivel .modulos { padding: 0 10px 10px; }
+
+@media (max-width: 560px) {
+  .nivelResumen { grid-template-columns: auto minmax(40px, 1fr) auto; gap: 8px; }
+  .nivelCifras { font-size: 0.72rem; }
+}

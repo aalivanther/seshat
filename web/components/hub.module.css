@@ -1,0 +1,640 @@
+/* Estilos compartidos de las páginas de navegación: nivel → módulos → lecciones */
+
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-3);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.crumbs a { color: var(--text-2); position: relative; }
+.crumbs a:hover { color: var(--accent-text); }
+
+/* Las migas son navegación, no un enlace suelto dentro de un párrafo: tienen
+   que poder tocarse. La zona crece con una capa invisible que NO ocupa sitio,
+   así la fila sigue midiendo lo que mide y no se come media pantalla de móvil.
+   Se centra y se queda en 44 exactos de alto: una miga que ya es alta (la
+   insignia del idioma) no se pasa de rosca. A lo ancho no sobresale, para no
+   invadir la miga de al lado ni ensanchar la fila. */
+.crumbs a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  color: var(--text-2);
+  margin-top: 4px;
+  max-width: 56ch;
+}
+
+.statChips { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.chipVal { font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+
+.reviewBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 24px 0;
+  padding: 16px 20px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: var(--radius);
+  flex-wrap: wrap;
+}
+
+.reviewText { color: var(--accent-text); font-weight: 500; }
+
+.reviewBtn {
+  padding: 10px 20px;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 600;
+  transition: background 0.15s var(--ease);
+}
+
+.reviewBtn:hover { background: var(--accent-strong); }
+
+.warnBanner {
+  margin: 24px 0;
+  padding: 14px 20px;
+  border: 1px solid var(--warn);
+  background: var(--warn-soft);
+  border-radius: var(--radius);
+  color: var(--warn);
+  font-size: 0.9375rem;
+}
+
+/* --- Barra de progreso reutilizable --- */
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar {
+  flex: 1;
+  height: 8px;
+  background: var(--panel);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.7s var(--ease-spring);
+}
+
+.barPct {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  min-width: 38px;
+  text-align: right;
+}
+
+/* --- Cards de nivel --- */
+.levelGrid { display: grid; gap: 12px; margin-top: 24px; }
+
+.levelCard {
+  display: block;
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color 0.15s var(--ease), transform 0.15s var(--ease);
+}
+
+.levelCard:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+.levelCardLocked {
+  color: var(--locked);
+  border-color: var(--locked);
+  background: var(--locked-soft);
+  pointer-events: none;
+}
+
+.levelTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  /* en móvil el título no comparte línea con la meta: se apilan */
+  .levelTop { flex-direction: column; align-items: flex-start; gap: 4px; }
+
+  /* filas de lección: la meta baja a su propia línea y el texto respira */
+  .lessonRow { flex-wrap: wrap; }
+  .lessonInfo { flex: 1 1 70%; }
+  .lessonMeta { flex-basis: 100%; text-align: left; padding-left: 50px; }
+}
+
+.levelName {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.levelTag {
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+
+/* En la portada esta etiqueta ES un enlace («Probar mi nivel de alemán →»), y
+   en la tarjeta de «¿No sabes por dónde empiezo?» van dos, uno debajo del otro
+   y a 30 px de paso. Ahí no vale la zona táctil invisible de las migas: dos
+   zonas de 44 px se pisarían y el dedo entraría en el idioma equivocado. Se le
+   da altura de verdad, que además los separa. */
+a.levelTag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.levelDesc { color: var(--text-2); font-size: 0.9375rem; margin-bottom: 14px; max-width: 60ch; }
+
+/* --- Cards de módulo --- */
+.moduleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (max-width: 640px) {
+  .toolsGrid { grid-template-columns: 1fr 1fr; gap: 10px; }
+}
+
+.moduleCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s var(--ease), transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+  position: relative;
+  height: 100%;
+}
+
+.moduleCard:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.moduleCard:active { transform: scale(0.98); }
+
+/* Herramientas: compactas y a 2 columnas en móvil */
+@media (max-width: 640px) {
+  .toolCard { padding: 14px; gap: 6px; }
+  .toolDesc {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* .moduleGoal lleva `flex: 1` para empujar la meta al pie de la tarjeta.
+       Aquí eso estiraba la caja del recorte hasta el alto sobrante y el
+       `overflow: hidden` cortaba la frase A MEDIA LÍNEA — media fila de letras
+       partidas, que es peor que no verla. Sin crecer, el recorte hace lo suyo:
+       dos líneas exactas y puntos suspensivos. */
+    flex: 0 0 auto;
+    max-height: calc(1.45em * 2);
+  }
+}
+
+.moduleCardNext { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.moduleBadge {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  /* fondo = color de la fase (siempre oscuro y saturado): blanco en los dos temas */
+  color: #fff;
+}
+
+.moduleName { font-size: 1.125rem; font-weight: 800; letter-spacing: -0.01em; font-family: var(--font-hand); }
+
+.moduleIconWrap {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.moduleGoal {
+  color: var(--text-2);
+  font-size: 0.875rem;
+  flex: 1;
+}
+
+.moduleMeta {
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Hero del módulo --- */
+.moduleHero {
+  border: 1px solid;
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 8px;
+}
+
+.moduleHeroTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* --- Filas de lección --- */
+.lessons { display: grid; gap: 8px; margin-top: 24px; }
+
+.lessonRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color 0.15s var(--ease), transform 0.15s var(--ease);
+}
+
+.lessonRow:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+
+.lessonNext { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.lessonState {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid var(--border-strong);
+  color: var(--text-3);
+  background: var(--panel);
+}
+
+.lessonStateDone { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+
+.lessonInfo { flex: 1; min-width: 0; }
+.lessonName { font-weight: 600; letter-spacing: -0.01em; }
+.lessonSub { color: var(--text-2); font-size: 0.875rem; }
+
+.lessonMeta {
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.lessonScore { font-weight: 700; color: var(--text-2); font-size: 0.9375rem; }
+
+.skeleton {
+  height: 72px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--panel) 25%, var(--surface) 50%, var(--panel) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* mismo criterio que las migas: el enlace del pie es navegación */
+.footer a { position: relative; }
+.footer a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+.footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-3);
+  font-size: 0.8125rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ══ Relieve de papelería escolar (cartas y CTA) ══ */
+
+.levelCard,
+.moduleCard,
+.lessonRow {
+  border-width: 2px;
+  border-radius: 19px 15px 20px 16px;
+  box-shadow: 4px 5px 0 var(--paper-edge);
+  transition: transform 0.1s var(--ease), box-shadow 0.1s var(--ease), border-color 0.15s var(--ease);
+}
+
+.levelCard:hover,
+.moduleCard:hover,
+.lessonRow:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 6px 8px 0 var(--paper-edge-strong);
+}
+
+.levelCard:active,
+.moduleCard:active,
+.lessonRow:active {
+  transform: translate(1px, 2px);
+  box-shadow: 2px 2px 0 var(--paper-edge);
+}
+
+.levelCardLocked,
+.levelCardLocked:hover {
+  transform: none;
+  box-shadow: none;
+  border-style: dashed; /* nivel aún por escribir: contorno a lápiz */
+}
+
+.moduleHero {
+  border-width: 2px;
+  border-radius: 21px 17px 22px 18px;
+  box-shadow: 5px 6px 0 var(--paper-edge);
+}
+
+.moduleBadge {
+  transform: rotate(-2deg); /* pegatina de módulo puesta a mano */
+  box-shadow: 1px 2px 0 var(--paper-edge-strong);
+}
+
+.reviewBanner {
+  border-width: 2px;
+  border-radius: 17px 14px 18px 15px;
+  box-shadow: 3px 4px 0 var(--paper-edge);
+}
+
+.reviewBtn {
+  box-shadow: 0 4px 0 var(--accent-strong), 0 8px 18px var(--accent-glow);
+  border-radius: var(--radius-hand);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), background 0.15s var(--ease);
+}
+
+.reviewBtn:hover { transform: translateY(-1px); box-shadow: 0 5px 0 var(--accent-strong), 0 10px 22px var(--accent-glow); }
+.reviewBtn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-strong); }
+
+.chip {
+  box-shadow: 0 2px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), border-color 0.15s var(--ease);
+}
+
+a.chip:hover { transform: translateY(-1px); box-shadow: 0 3px 0 var(--border-strong); }
+a.chip:active { transform: translateY(1.5px); box-shadow: 0 0.5px 0 var(--border); }
+
+.lessonState { box-shadow: 0 2px 0 var(--border); }
+
+/* ══ Cards de módulo con vida: cinta washi y CTA manuscritos ══ */
+
+.moduleCard { position: relative; overflow: visible; }
+
+.moduleCard::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 26px;
+  width: 58px;
+  height: 17px;
+  background: var(--marker); /* cinta adhesiva translúcida, la del subrayador */
+  border-left: 1px dashed var(--border-strong);
+  border-right: 1px dashed var(--border-strong);
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+.reviewBtn {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 4px 0 var(--accent-strong),
+    0 8px 18px var(--accent-glow);
+}
+
+.reviewBtn:hover {
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 5px 0 var(--accent-strong),
+    0 10px 22px var(--accent-glow);
+}
+
+.reviewBtn:active {
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 1px 0 var(--accent-strong);
+}
+
+.moduleMeta,
+.lessonMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+/* módulo aún bloqueado: contorno a lápiz, sin relieve ni tape */
+.moduleCardLocked,
+.moduleCardLocked:hover {
+  border-style: dashed;
+  border-color: var(--locked);
+  background: var(--locked-soft);
+  color: var(--locked);
+  box-shadow: none;
+  transform: none;
+  cursor: default;
+}
+
+.moduleCardLocked::after { display: none; }
+
+/* ── Pestañas de carpeta (compartidas) ─────────────────────────────────────
+   Mismas que las del perfil: una pantalla con varias cosas dentro se lee mucho
+   mejor como carpeta con lengüetas que como lista larga de bloques seguidos.
+   Se desplazan en horizontal para que en el móvil no se corte ninguna. */
+.folderTabs {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.folderTabs::-webkit-scrollbar { display: none; }
+.folderTabs { overscroll-behavior-x: contain; }
+
+@media (max-width: 640px) {
+  /* misma señal que en el perfil: si la fila de lengüetas sobra, que se vea */
+  .folderTabs {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  }
+}
+
+.folderTab {
+  flex: 0 0 auto;
+  padding: 9px 16px;
+  min-height: 44px;
+  border: 2px solid var(--border);
+  border-bottom-color: transparent;
+  border-radius: 12px 10px 0 0;
+  background: var(--panel);
+  color: var(--text-2);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.folderTab:hover { color: var(--text); }
+
+.folderTabActive {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-strong);
+  border-bottom-color: var(--surface);
+}
+
+/* el cuerpo de la carpeta: continúa la lengüeta activa */
+.folderBody {
+  border: 2px solid var(--border-strong);
+  border-radius: 0 14px 16px 14px;
+  background: var(--surface);
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+/* el contador que llevan algunas lengüetas («Practicar 3») */
+.folderCount {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--panel);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+.folderTabActive .folderCount { background: var(--accent-soft); color: var(--accent-text); }
+
+@media (max-width: 640px) {
+  .folderTab { padding: 8px 12px; font-size: 0.875rem; }
+  .folderBody { padding: 14px; }
+}
+
+
+/* ══ Vida ══════════════════════════════════════════════════════════════════
+   Las tarjetas entran escalonadas, como si alguien fuera dejándolas sobre la
+   mesa. `backwards` y no `both`: con `both` el transform del último fotograma
+   se queda pegado y anula el levantón del :hover. */
+
+.levelCard,
+.moduleCard,
+.lessonRow {
+  animation: seshatRise 0.34s var(--ease) backwards;
+}
+
+.levelCard:nth-child(2), .moduleCard:nth-child(2), .lessonRow:nth-child(2) { animation-delay: 0.04s; }
+.levelCard:nth-child(3), .moduleCard:nth-child(3), .lessonRow:nth-child(3) { animation-delay: 0.08s; }
+.levelCard:nth-child(4), .moduleCard:nth-child(4), .lessonRow:nth-child(4) { animation-delay: 0.12s; }
+.levelCard:nth-child(5), .moduleCard:nth-child(5), .lessonRow:nth-child(5) { animation-delay: 0.16s; }
+.levelCard:nth-child(n + 6), .moduleCard:nth-child(n + 6), .lessonRow:nth-child(n + 6) { animation-delay: 0.2s; }
+
+/* Cambio de pestaña: lo que hay dentro de la carpeta entra de nuevo. Solo se
+   nota cuando React rehace el contenido (que es lo normal al cambiar de
+   lengüeta); si reaprovecha el nodo, simplemente no anima y no pasa nada. */
+.folderBody > * { animation: seshatRise 0.26s var(--ease) backwards; }
+
+.folderTab {
+  transition: transform 0.08s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.folderTab:active { transform: translateY(1.5px); }
+/* la lengüeta abierta asoma un pelo, como el cartón levantado de una carpeta */
+.folderTabActive { transform: translateY(-1px); }
+
+/* El banner de repaso pide paso una vez al entrar y se calla */
+.reviewBanner { animation: seshatPop 0.4s var(--ease) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .levelCard, .moduleCard, .lessonRow, .folderBody > * { animation-delay: 0s; }
+}
+
+/* Los colores de fase (los de data/) son tonos pensados para papel blanco: de
+   noche el icono del módulo se hundía en el fondo. Como el color entra en
+   línea desde el TSX, aquí solo se le puede dar brillo — y con eso basta. */
+:global(html[data-theme="dark"]) .moduleIconWrap { filter: brightness(1.6) saturate(0.95); }
+
+@media (prefers-color-scheme: dark) {
+  :global(html[data-theme="auto"]) .moduleIconWrap { filter: brightness(1.6) saturate(0.95); }
+}
+
+
+/* El botón del reto trae su morado escrito en línea desde el TSX, pero la
+   tinta se la sigue dando esta clase: --accent-contrast, que de noche es
+   oscura porque el ámbar es claro. Morado con tinta oscura se queda en 2.9:1.
+   Hasta que ese color viaje como prop y no como style, aquí se le devuelve el
+   blanco, que sobre ese morado da 5.5:1. */
+.reviewBtn[style*="7c3aed"] { color: #fff; }

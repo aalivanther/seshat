@@ -1,0 +1,229 @@
+// ⚠️ GENERADO por scripts/gen-course.mjs — NO editar a mano.
+// Drop horneado: 7. Regenerar: node scripts/gen-course.mjs <drop>
+import type { Course, Mission } from "@/lib/types";
+import type { ExamSet } from "@/lib/examTypes";
+import type * as RefT_verbs from "./verbs";
+import type * as RefT_questions from "./questions";
+import type * as RefT_pronunciation from "./pronunciation";
+import type * as RefT_a2 from "./referenceA2";
+import type * as RefT_en from "./en/referenceEn";
+import type * as RefT_b1 from "./referenceB1";
+import type * as RefT_ena2 from "./en/referenceEnA2";
+import type * as RefT_enb1 from "./en/referenceEnB1";
+import type * as RefT_b2 from "./referenceB2";
+import type * as RefT_enb2 from "./en/referenceEnB2";
+import { phaseIntro, vocabIntro } from "./phaseIntro";
+import { phase0, vocab0 } from "./phase0";
+import { phase1, vocab1 } from "./phase1";
+import { phase2, vocab2 } from "./phase2";
+import { phase3, vocab3 } from "./phase3";
+import { phase4, vocab4 } from "./phase4";
+import { phase5, vocab5 } from "./phase5";
+import { phase7, vocab7 } from "./phase7";
+import { phase8, vocab8 } from "./phase8";
+import { phase9, vocab9 } from "./phase9";
+import { phase10, vocab10 } from "./phase10";
+import { phase11, vocab11 } from "./phase11";
+import { phase6, vocab6 } from "./phaseExam";
+import { a2m1, vocabA2m1 } from "./a2m1";
+import { a2m2, vocabA2m2 } from "./a2m2";
+import { a2m3, vocabA2m3 } from "./a2m3";
+import { a2m4, vocabA2m4 } from "./a2m4";
+import { a2m5, vocabA2m5 } from "./a2m5";
+import { a2m6, vocabA2m6 } from "./a2m6";
+import { a2m7, vocabA2m7 } from "./a2m7";
+import { a2m8, vocabA2m8 } from "./a2m8";
+import { a2m9, vocabA2m9 } from "./a2m9";
+import { a2m10, vocabA2m10 } from "./a2m10";
+import { a2exam, vocabA2exam } from "./a2exam";
+import { b1m1, vocabB1m1 } from "./b1m1";
+import { b1m2, vocabB1m2 } from "./b1m2";
+import { b1m3, vocabB1m3 } from "./b1m3";
+import { b1m4, vocabB1m4 } from "./b1m4";
+import { b1m5, vocabB1m5 } from "./b1m5";
+import { b1m6, vocabB1m6 } from "./b1m6";
+import { b1m7, vocabB1m7 } from "./b1m7";
+import { b1m8, vocabB1m8 } from "./b1m8";
+import { b1m9, vocabB1m9 } from "./b1m9";
+import { b1m10, vocabB1m10 } from "./b1m10";
+import { b1m11, vocabB1m11 } from "./b1m11";
+import { b1m12, vocabB1m12 } from "./b1m12";
+import { ena1m1, vocabEnA1m1 } from "./en/ena1m1";
+import { ena1m2, vocabEnA1m2 } from "./en/ena1m2";
+import { ena1m3, vocabEnA1m3 } from "./en/ena1m3";
+import { ena1m4, vocabEnA1m4 } from "./en/ena1m4";
+import { ena1m5, vocabEnA1m5 } from "./en/ena1m5";
+import { ena1m6, vocabEnA1m6 } from "./en/ena1m6";
+import { ena1m7, vocabEnA1m7 } from "./en/ena1m7";
+import { ena1m8, vocabEnA1m8 } from "./en/ena1m8";
+import { ena1m9, vocabEnA1m9 } from "./en/ena1m9";
+import { ena1m10, vocabEnA1m10 } from "./en/ena1m10";
+import { ena1m11, vocabEnA1m11 } from "./en/ena1m11";
+import { ena1m12, vocabEnA1m12 } from "./en/ena1m12";
+import { ena2m1, vocabEnA2m1 } from "./en/ena2m1";
+import { ena2m2, vocabEnA2m2 } from "./en/ena2m2";
+import { ena2m3, vocabEnA2m3 } from "./en/ena2m3";
+import { ena2m4, vocabEnA2m4 } from "./en/ena2m4";
+import { ena2m5, vocabEnA2m5 } from "./en/ena2m5";
+import { ena2m6, vocabEnA2m6 } from "./en/ena2m6";
+import { ena2m7, vocabEnA2m7 } from "./en/ena2m7";
+import { ena2m8, vocabEnA2m8 } from "./en/ena2m8";
+import { ena2m9, vocabEnA2m9 } from "./en/ena2m9";
+import { ena2m10, vocabEnA2m10 } from "./en/ena2m10";
+import { ena2m11, vocabEnA2m11 } from "./en/ena2m11";
+import { ena2m12, vocabEnA2m12 } from "./en/ena2m12";
+import { enb1m1, vocabEnB1m1 } from "./en/enb1m1";
+import { enb1m2, vocabEnB1m2 } from "./en/enb1m2";
+import { enb1m3, vocabEnB1m3 } from "./en/enb1m3";
+import { enb1m4, vocabEnB1m4 } from "./en/enb1m4";
+import { enb1m5, vocabEnB1m5 } from "./en/enb1m5";
+import { enb1m6, vocabEnB1m6 } from "./en/enb1m6";
+import { enb1m7, vocabEnB1m7 } from "./en/enb1m7";
+import { enb1m8, vocabEnB1m8 } from "./en/enb1m8";
+import { enb1m9, vocabEnB1m9 } from "./en/enb1m9";
+import { enb1m10, vocabEnB1m10 } from "./en/enb1m10";
+import { enb1m11, vocabEnB1m11 } from "./en/enb1m11";
+import { enb1m12, vocabEnB1m12 } from "./en/enb1m12";
+import { missionsDeA1 } from "./missionsDeA1";
+import { missionsDeA2 } from "./missionsDeA2";
+import { missionsEn } from "./en/missionsEn";
+import { missionsDeB1 } from "./missionsDeB1";
+import { missionsEnA2 } from "./en/missionsEnA2";
+import { missionsEnB1 } from "./en/missionsEnB1";
+import { examA } from "./examA";
+import { examB } from "./examB";
+import { examC } from "./examC";
+import { examEnA } from "./en/examEnA";
+import { examEnB } from "./en/examEnB";
+import { examB1A } from "./examB1A";
+import { examEnA2A } from "./en/examEnA2A";
+import { examEnA2B } from "./en/examEnA2B";
+import { examEnA2C } from "./en/examEnA2C";
+import { examEnB1A } from "./en/examEnB1A";
+import { examEnB1B } from "./en/examEnB1B";
+import { examEnB1C } from "./en/examEnB1C";
+import * as ref_verbs from "./verbs";
+import * as ref_questions from "./questions";
+import * as ref_pronunciation from "./pronunciation";
+import * as ref_a2 from "./referenceA2";
+import * as ref_en from "./en/referenceEn";
+import * as ref_b1 from "./referenceB1";
+import * as ref_ena2 from "./en/referenceEnA2";
+import * as ref_enb1 from "./en/referenceEnB1";
+
+/** el drop de contenido incluido en ESTE build (fuente única) */
+export const BUILT_DROP = 7;
+
+/** registry idioma → curso: SOLO los idiomas con contenido en este drop */
+export const courses: Record<string, Course> = {
+  de: {
+    phases: [
+      phaseIntro, phase0, phase1, phase2, phase3, phase4, phase5, phase7, phase8, phase9, phase10, phase11, phase6, a2m1, a2m2, a2m3, a2m4, a2m5, a2m6, a2m7, a2m8, a2m9, a2m10, a2exam, b1m1, b1m2, b1m3, b1m4, b1m5, b1m6, b1m7, b1m8, b1m9, b1m10, b1m11, b1m12,
+    ],
+    vocab: {
+      ...vocabIntro,
+      ...vocab0,
+      ...vocab1,
+      ...vocab2,
+      ...vocab3,
+      ...vocab4,
+      ...vocab5,
+      ...vocab7,
+      ...vocab8,
+      ...vocab9,
+      ...vocab10,
+      ...vocab11,
+      ...vocab6,
+      ...vocabA2m1,
+      ...vocabA2m2,
+      ...vocabA2m3,
+      ...vocabA2m4,
+      ...vocabA2m5,
+      ...vocabA2m6,
+      ...vocabA2m7,
+      ...vocabA2m8,
+      ...vocabA2m9,
+      ...vocabA2m10,
+      ...vocabA2exam,
+      ...vocabB1m1,
+      ...vocabB1m2,
+      ...vocabB1m3,
+      ...vocabB1m4,
+      ...vocabB1m5,
+      ...vocabB1m6,
+      ...vocabB1m7,
+      ...vocabB1m8,
+      ...vocabB1m9,
+      ...vocabB1m10,
+      ...vocabB1m11,
+      ...vocabB1m12,
+    },
+  },
+  en: {
+    phases: [
+      ena1m1, ena1m2, ena1m3, ena1m4, ena1m5, ena1m6, ena1m7, ena1m8, ena1m9, ena1m10, ena1m11, ena1m12, ena2m1, ena2m2, ena2m3, ena2m4, ena2m5, ena2m6, ena2m7, ena2m8, ena2m9, ena2m10, ena2m11, ena2m12, enb1m1, enb1m2, enb1m3, enb1m4, enb1m5, enb1m6, enb1m7, enb1m8, enb1m9, enb1m10, enb1m11, enb1m12,
+    ],
+    vocab: {
+      ...vocabEnA1m1,
+      ...vocabEnA1m2,
+      ...vocabEnA1m3,
+      ...vocabEnA1m4,
+      ...vocabEnA1m5,
+      ...vocabEnA1m6,
+      ...vocabEnA1m7,
+      ...vocabEnA1m8,
+      ...vocabEnA1m9,
+      ...vocabEnA1m10,
+      ...vocabEnA1m11,
+      ...vocabEnA1m12,
+      ...vocabEnA2m1,
+      ...vocabEnA2m2,
+      ...vocabEnA2m3,
+      ...vocabEnA2m4,
+      ...vocabEnA2m5,
+      ...vocabEnA2m6,
+      ...vocabEnA2m7,
+      ...vocabEnA2m8,
+      ...vocabEnA2m9,
+      ...vocabEnA2m10,
+      ...vocabEnA2m11,
+      ...vocabEnA2m12,
+      ...vocabEnB1m1,
+      ...vocabEnB1m2,
+      ...vocabEnB1m3,
+      ...vocabEnB1m4,
+      ...vocabEnB1m5,
+      ...vocabEnB1m6,
+      ...vocabEnB1m7,
+      ...vocabEnB1m8,
+      ...vocabEnB1m9,
+      ...vocabEnB1m10,
+      ...vocabEnB1m11,
+      ...vocabEnB1m12,
+    },
+  },
+};
+
+/** misiones de práctica real por idioma (drop-gated como las fases) */
+export const missionsByLang: Record<string, Record<string, Mission>> = {
+  de: { ...missionsDeA1, ...missionsDeA2, ...missionsDeB1 },
+  en: { ...missionsEn, ...missionsEnA2, ...missionsEnB1 },
+};
+
+/** simulacros por idioma (drop-gated — U1 aplica a TODO contenido) */
+export const genExamsByLang: Record<string, ExamSet[]> = {
+  de: [examA, examB, examC, examB1A],
+  en: [examEnA, examEnB, examEnA2A, examEnA2B, examEnA2C, examEnB1A, examEnB1B, examEnB1C],
+};
+
+/** libretas de referencia incluidas (type-only para las ausentes: cero bundle) */
+export const refModules: { verbs?: typeof RefT_verbs; questions?: typeof RefT_questions; pronunciation?: typeof RefT_pronunciation; a2?: typeof RefT_a2; en?: typeof RefT_en; b1?: typeof RefT_b1; ena2?: typeof RefT_ena2; enb1?: typeof RefT_enb1; b2?: typeof RefT_b2; enb2?: typeof RefT_enb2 } = {
+  verbs: ref_verbs,
+  questions: ref_questions,
+  pronunciation: ref_pronunciation,
+  a2: ref_a2,
+  en: ref_en,
+  b1: ref_b1,
+  ena2: ref_ena2,
+  enb1: ref_enb1,
+};

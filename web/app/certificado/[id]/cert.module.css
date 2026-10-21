@@ -1,0 +1,178 @@
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 11px 20px;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover { background: var(--accent-strong); }
+
+.ghost {
+  padding: 11px 18px;
+  min-height: 44px;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- El certificado ---
+   Esto es un documento para imprimir, no una pantalla: se queda en papel claro
+   también con el tema oscuro, igual que una hoja encima de la mesa de noche.
+   Por eso sus colores van escritos a mano y no salen de la paleta. */
+.cert {
+  position: relative;
+  background: #fffdf6;
+  border-radius: 6px;
+  padding: clamp(28px, 6vw, 64px);
+  box-shadow: 0 4px 10px rgba(87, 63, 25, 0.12), 0 18px 50px rgba(87, 63, 25, 0.14);
+  overflow: hidden;
+  color: #33302b;
+  text-align: center;
+}
+
+/* marco doble ornamental */
+.cert::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 3px double var(--certColor, #b45309);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.cert::after {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border: 1px solid rgba(87, 63, 25, 0.25);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.inner { position: relative; z-index: 1; }
+
+.watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.05;
+  pointer-events: none;
+  color: var(--certColor, #b45309);
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #6d6d75;
+}
+
+.title {
+  font-family: var(--font-hand);
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--certColor, #b45309);
+  margin-top: 8px;
+  line-height: 1.15;
+}
+
+.certifies { color: #5f594f; margin-top: 18px; font-size: 1rem; }
+
+.name {
+  font-family: var(--font-hand);
+  font-size: clamp(1.875rem, 6vw, 3rem);
+  font-weight: 800;
+  margin: 8px 0;
+  border-bottom: 2px solid rgba(87, 63, 25, 0.25);
+  display: inline-block;
+  padding: 0 28px 6px;
+}
+
+.body {
+  max-width: 56ch;
+  margin: 14px auto 0;
+  color: #5f594f;
+  line-height: 1.7;
+}
+
+.body b { color: #33302b; }
+
+.sealRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.dates { text-align: left; font-size: 0.875rem; color: #5f594f; }
+.dates b { display: block; font-size: 1rem; color: #33302b; }
+
+.seal {
+  position: relative;
+  width: 108px;
+  height: 108px;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+.signature { text-align: right; font-size: 0.875rem; color: #5f594f; }
+
+.sigName {
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #33302b;
+  border-bottom: 1px solid rgba(87, 63, 25, 0.3);
+  padding-bottom: 2px;
+}
+
+.validity {
+  margin-top: 26px;
+  font-size: 0.8125rem;
+  color: #6d6d75;
+  font-style: italic;
+}
+
+.deniedWrap { text-align: center; padding: 60px 0; }
+
+@media print {
+  .actions, .crumbs { display: none !important; }
+  .wrap { padding: 0; max-width: none; }
+  .cert { box-shadow: none; }
+  :global(body) { background: #fff !important; }
+}
+
+@media (max-width: 640px) {
+  .sealRow { justify-content: center; text-align: center; }
+  .dates, .signature { text-align: center; }
+}

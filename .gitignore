@@ -1,0 +1,37 @@
+# Qué no viaja al repositorio de Seshat. Todo esto se regenera o es personal; en disco se queda.
+
+# --- Dependencias y salidas de build de la web ---
+node_modules/
+/web/.next/
+/web/out/
+# Copia temporal que arma web/scripts/build-demo.mjs.
+/web/.demo/
+/web/test-results/
+/web/playwright-report/
+*.tsbuildinfo
+next-env.d.ts
+
+# --- Binarios y empaquetado (se publican como Release, no en el historial) ---
+/dist/
+/backend/backend
+# La UI embebida la copia build-app.sh desde web/out; solo se versiona el marcador que necesita go:embed.
+/backend/webdist/*
+!/backend/webdist/PLACEHOLDER.txt
+
+# --- Datos personales y de ejecución ---
+# Progreso real de cada perfil: es de quien estudia, no del código.
+/backend/profiles/
+*.log
+
+# --- Notas de trabajo que el README no cita (ver backend/readme_test.go) ---
+/PULIDO.md
+/PLAN-STREET-TALK.md
+
+# --- Sistema ---
+.DS_Store
+
+# --- Instrucciones para agentes de IA: se quedan en disco, fuera del repositorio público ---
+CLAUDE.md
+AGENTS.md
+/.claude/
+/.grok/

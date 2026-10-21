@@ -1,0 +1,222 @@
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  min-height: 44px;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-weight: 700;
+  color: var(--text-2);
+  transition: all 0.15s var(--ease);
+}
+
+.tab:hover { border-color: var(--border-strong); }
+.tabActive { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-text); }
+
+.search {
+  width: 100%;
+  max-width: 420px;
+  min-height: 44px;
+  padding: 12px 16px;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  margin-bottom: 8px;
+}
+
+.search:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.groupTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 28px 0 12px;
+}
+
+.verbGrid, .qGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+}
+
+.verbCard, .qCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 18px 18px 56px;
+  box-shadow: var(--shadow);
+}
+
+.verbHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.verbInf {
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.verbEs { color: var(--text-2); font-size: 0.9375rem; margin: 2px 0 10px; }
+.verbSound { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-3); }
+
+.sayBtn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sayBtn:hover { border-color: var(--accent); color: var(--accent-text); }
+
+.sayInline {
+  position: relative;
+  border: none;
+  background: none;
+  color: var(--text-3);
+  padding: 2px;
+  vertical-align: -2px;
+}
+
+/* el altavoz va incrustado en la línea de un ejemplo: no puede engordarla, pero
+   sí puede tener debajo una zona de dedo como todo lo demás */
+.sayInline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.sayInline:hover { color: var(--accent-text); }
+
+.conjTable { border-collapse: collapse; width: 100%; font-size: 0.9375rem; }
+.conjTable td { padding: 3px 8px 3px 0; }
+.pronoun { color: var(--text-3); width: 40%; }
+
+.perfekt {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  color: var(--text-2);
+}
+
+.example { margin-top: 10px; line-height: 1.7; }
+.exampleEs { color: var(--text-3); font-size: 0.875rem; }
+
+.trap {
+  margin-top: 8px;
+  color: var(--err);
+  font-size: 0.9375rem;
+}
+
+.patternCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px 18px 56px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+
+.patternTitle { font-size: 1.0625rem; font-weight: 800; margin-bottom: 6px; font-family: var(--font-hand); }
+.patternBody { color: var(--text-2); margin-bottom: 10px; }
+.patternBody b { color: var(--text); }
+.patternList { margin-left: 18px; display: grid; gap: 6px; }
+
+.soundTableWrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 16px 8px 56px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  box-shadow: var(--shadow);
+}
+
+.soundTable { border-collapse: collapse; width: 100%; }
+.soundTable th {
+  text-align: left;
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  padding: 10px 12px 6px 0;
+}
+.soundTable td {
+  padding: 9px 12px 9px 0;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.grapheme {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.soundExamples { color: var(--text-2); }
+
+@media (max-width: 640px) {
+  .verbCard, .qCard, .patternCard, .soundTableWrap { padding-left: 18px; }
+}
+
+/* ══ Renglones sincronizados + relieve en las tarjetas de la libreta ══ */
+
+.verbCard,
+.qCard,
+.patternCard,
+.soundTableWrap {
+  padding-top: 32px;
+  line-height: 32px;
+  border-width: 2px;
+  border-radius: 17px 14px 18px 15px;
+  box-shadow: 4px 5px 0 var(--paper-edge);
+}
+
+.conjTable td { padding-top: 0; padding-bottom: 0; height: 32px; line-height: 32px; }
+
+.tab {
+  box-shadow: 0 2.5px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease),
+    border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.tab:active { transform: translateY(2px); box-shadow: 0 0.5px 0 var(--border); }
+.tabActive { box-shadow: 0 2.5px 0 color-mix(in srgb, var(--accent) 45%, var(--tint-base)); }
+
+.sayBtn { min-width: 44px; min-height: 44px; }
+
+
+/* ══ Vida ══
+   La referencia es una consulta rápida: las fichas entran a la vez que el
+   texto que se buscaba, sin escalonar nada más allá de lo que se ve. */
+.verbCard, .qCard, .patternCard { animation: seshatRise 0.26s var(--ease) backwards; }
+.verbCard:nth-child(2), .qCard:nth-child(2) { animation-delay: 0.04s; }
+.verbCard:nth-child(3), .qCard:nth-child(3) { animation-delay: 0.08s; }
+.verbCard:nth-child(n + 4), .qCard:nth-child(n + 4) { animation-delay: 0.12s; }
+
+.tabActive { transform: translateY(-1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .verbCard, .qCard { animation-delay: 0s; }
+}

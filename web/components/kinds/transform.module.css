@@ -1,0 +1,10 @@
+/* Solo la etiqueta de la instrucción. La caja la usa también Translate y se queda en ex.module.css. */
+
+.transformLabel {
+  display: block;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--accent-text);
+  margin-bottom: 6px;
+}

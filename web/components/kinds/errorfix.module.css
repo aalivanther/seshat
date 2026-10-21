@@ -1,0 +1,24 @@
+/* Solo la frase mala y la buena. El campo y los botones siguen compartidos. */
+
+/* ══ B1: errorfix ══ */
+.errorWrong {
+  font-size: 1.08rem;
+  font-weight: 700;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px dashed var(--err);
+  color: var(--err);
+  background: var(--surface);
+}
+
+.errorFixed {
+  font-size: 1.08rem;
+  font-weight: 700;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid var(--ok);
+  color: var(--ok);
+  background: var(--surface);
+}
+
+.errorWhy { margin-top: 10px; color: var(--text-2); padding-left: 10px; border-left: 3px solid var(--border-strong); }

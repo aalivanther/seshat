@@ -1,0 +1,1451 @@
+import type { Phase, VocabItem } from "@/lib/types";
+
+const DEBATTE_WENDE =
+  "«Stadttakt», guten Abend. Heute: die Verkehrswende in Berlin — Rettung oder Schikane? Bei mir sitzen Clara Hofmann von der Lokalredaktion und Kai Bergmann vom Betriebsrat einer Großküche. Frau Hofmann, woran liegt es, dass so viele im Kiez das Auto nicht aufgeben? | An der Voraussetzung, die niemand ausspricht: Der Nahverkehr muss erst funktionieren, bevor man den Verzicht verlangt. Die Auswirkung auf die Luftqualität ist messbar, aber wer nachts um vier zur Schicht muss, hat kein Argument, sondern ein Problem. | Kai Bergmann, Sie vertreten Leute, die um vier aufstehen. | Genau. Ich bin überzeugt von der Energiewende, das ist nicht die Frage. Aber zuständig für den Arbeitsweg ist am Ende jeder selbst, und der Fernverkehr nach Brandenburg hängt von zwei Linien ab. Wenn eine ausfällt, stehen zwölf Kolleginnen da. | Die Grafik der Stadt zeigt trotzdem einen Rückgang der Emissionen dort, wo der Radweg gebaut worden ist. | Laut der Grafik, ja. Im Vergleich zu 2019 sinkt der CO2-Ausstoß. Das liegt daran, dass weniger Kurzstrecken mit dem Auto gefahren werden — nicht daran, dass die Pendler umgestiegen sind. | Also hängt es davon ab, über wen man spricht. | Es geht darum, dass man zwei Gruppen in einen Topf wirft. Wer im Kiez wohnt, kann umsteigen auf das Rad. Wer aus Bernau kommt, nicht. | Frau Hofmann, Sie schreiben oft, die Politik sei verantwortlich für den Stau. | Verantwortlich ist sie für die Infrastruktur. Reich an guten Absichten ist Berlin schon lange. Arm an Taktzeiten nach Mitternacht. | Und was fordern Sie vom Betriebsrat, Herr Bergmann? | Ein Jobticket, das den Umstieg lohnt. Ich gehe davon aus, dass sich das nach einem Jahr rechnet. Die Umweltbelastung sinkt, und die Leute kommen pünktlich. | Kurzer Einwand: Carsharing statt eigenes Auto. | Kommt drauf an. Für Einkäufe ja. Für die Schicht um vier: da fährt keins. | Ein Satz zum Schluss. | Clara Hofmann: Die Wende gelingt nur, wenn der Nahverkehr die Voraussetzung erfüllt, nicht das schlechte Gewissen. | Kai Bergmann: Und wenn die, die nachts arbeiten, in der Grafik endlich vorkommen. | Eine letzte Zahl, Frau Hofmann, dann sind wir durch. | Der Rückgang von zwölf Prozent ist kein Argument gegen den Takt. Er ist der Beweis, dass Einsparen geht — nur nicht für alle zur selben Uhrzeit.";
+
+// B2 · MÓDULO 9 — Woran es liegt. Precisión: la rección como sistema.
+// Gramática ancla: rección de SUSTANTIVOS (Frage nach, Grund für, Interesse an,
+// Auswirkung auf, Voraussetzung für, Einfluss auf) y de ADJETIVOS (stolz auf,
+// abhängig von, zuständig für, überzeugt von, verantwortlich für, reich an,
+// beteiligt an); verbos con DOS complementos preposicionales; da-Komposita
+// anticipador (davon ausgehen, dass…); wo(r)- en pregunta indirecta.
+// Recicla el campo de b1m5 (Klimawandel, recyceln, verzichten auf, abhängen
+// von, öffentliche Verkehrsmittel) sin redeclararlo: una palabra, una tarjeta.
+// Clínica L5: el da-Komposita que el español no tiene (*Ich gehe aus, dass…).
+// Campo: medio ambiente, energía y movilidad. Prefijo b2m9.
+
+export const vocabB2m9: Record<string, VocabItem> = {
+  // ── L1 · rección de sustantivos ──
+  b2m9fragenach: {
+    id: "b2m9fragenach", target: "die Frage nach (+ Dativ)", source: "la pregunta por / la cuestión de", article: "die", sound: "di FRAA-gue naaj",
+    gram: { rektion: { prep: "nach", case: "dat", stem: "Frage" }, trap: "die Frage über" },
+  },
+  b2m9grundfuer: {
+    id: "b2m9grundfuer", target: "der Grund für (+ Akkusativ)", source: "el motivo de / la razón de", article: "der", sound: "dea grunt füa",
+    gram: { rektion: { prep: "für", case: "akk", stem: "Grund" }, trap: "der Grund von" },
+  },
+  b2m9interessean: {
+    id: "b2m9interessean", target: "das Interesse an (+ Dativ)", source: "el interés por", article: "das", sound: "das in-te-RE-se an",
+    gram: { rektion: { prep: "an", case: "dat", stem: "Interesse" }, trap: "das Interesse für" },
+  },
+  b2m9auswirkungauf: {
+    id: "b2m9auswirkungauf", target: "die Auswirkung auf (+ Akkusativ)", source: "el efecto sobre / la repercusión en", article: "die", sound: "di AUS-vir-kung auf",
+    gram: { rektion: { prep: "auf", case: "akk", stem: "Auswirkung" }, trap: "die Auswirkung in" },
+  },
+  b2m9voraussetzungfuer: {
+    id: "b2m9voraussetzungfuer", target: "die Voraussetzung für (+ Akkusativ)", source: "el requisito para / la condición previa de", article: "die", sound: "di FOA-aus-se-tsung füa",
+    gram: { rektion: { prep: "für", case: "akk", stem: "Voraussetzung" } },
+  },
+  b2m9einflussauf: {
+    id: "b2m9einflussauf", target: "der Einfluss auf (+ Akkusativ)", source: "la influencia en / sobre", article: "der", sound: "dea AIN-flus auf",
+    gram: { rektion: { prep: "auf", case: "akk", stem: "Einfluss" }, trap: "der Einfluss in" },
+  },
+  b2m9co2ausstoss: { id: "b2m9co2ausstoss", target: "der CO2-Ausstoß", source: "las emisiones de CO₂", article: "der", sound: "tse-o-TSVAI-AUS-shtos" },
+  b2m9erneuerbare: { id: "b2m9erneuerbare", target: "erneuerbare Energien", source: "las energías renovables", sound: "ea-NOI-a-baa-re e-nea-GII-en" },
+  b2m9natdavonaus: {
+    id: "b2m9natdavonaus", target: "Ich gehe davon aus, dass …", source: "Parto de que… / Doy por hecho que…", sound: "ij GEE-e da-FON aus, das",
+    gram: { same: ["Ich nehme an, dass …", "Ich rechne damit, dass …"], trap: "Ich gehe aus, dass …" },
+  },
+
+  // ── L2 · rección de adjetivos ──
+  b2m9stolzauf: {
+    id: "b2m9stolzauf", target: "stolz auf (+ Akkusativ)", source: "orgulloso de", sound: "shtolts auf",
+    gram: { rektion: { prep: "auf", case: "akk", stem: "stolz" }, trap: "stolz von" },
+  },
+  b2m9abhaengigvon: {
+    id: "b2m9abhaengigvon", target: "abhängig von (+ Dativ)", source: "dependiente de", sound: "ap-HEN-gij fon",
+    gram: { rektion: { prep: "von", case: "dat", stem: "abhängig" } },
+  },
+  b2m9zustaendigfuer: {
+    id: "b2m9zustaendigfuer", target: "zuständig für (+ Akkusativ)", source: "competente para / encargado de", sound: "TSÜ-shten-dij füa",
+    gram: { rektion: { prep: "für", case: "akk", stem: "zuständig" }, trap: "zuständig von" },
+  },
+  b2m9ueberzeugtvon: {
+    id: "b2m9ueberzeugtvon", target: "überzeugt von (+ Dativ)", source: "convencido de", sound: "ü-ba-TSOIKT fon",
+    gram: { rektion: { prep: "von", case: "dat", stem: "überzeugt" }, trap: "überzeugt über" },
+  },
+  b2m9verantwortlichfuer: {
+    id: "b2m9verantwortlichfuer", target: "verantwortlich für (+ Akkusativ)", source: "responsable de", sound: "fea-ANT-vort-lij füa",
+    gram: { rektion: { prep: "für", case: "akk", stem: "verantwortlich" }, trap: "verantwortlich von" },
+  },
+  b2m9reichan: {
+    id: "b2m9reichan", target: "reich an (+ Dativ)", source: "rico en", sound: "raij an",
+    gram: { rektion: { prep: "an", case: "dat", stem: "reich" } },
+  },
+  b2m9beteiligtan: {
+    id: "b2m9beteiligtan", target: "beteiligt an (+ Dativ)", source: "implicado en / partícipe de", sound: "be-TAI-likt an",
+    gram: { rektion: { prep: "an", case: "dat", stem: "beteiligt" } },
+  },
+  b2m9emissionen: { id: "b2m9emissionen", target: "die Emissionen", source: "las emisiones (gases, ruido)", article: "die", sound: "e-mi-SIOO-nen" },
+
+  // ── L3 · dos complementos + da-Komposita ──
+  b2m9sichbedanken: {
+    id: "b2m9sichbedanken", target: "sich bei jdm. für etw. bedanken", source: "dar las gracias a alguien por algo", sound: "zij bai YEE-man-dem füa ET-vas be-DAN-ken",
+    gram: { rektion: { prep: "für", case: "akk", stem: "sich bedanken" }, trap: "sich bei jdm. von etw. bedanken" },
+  },
+  b2m9davonausgehen: {
+    id: "b2m9davonausgehen", target: "davon ausgehen, dass …", source: "partir de que… / dar por sentado que…", sound: "da-FON AUS-gee-en, das",
+    gram: { trap: "ausgehen, dass …" },
+  },
+  b2m9haengtdavonab: {
+    id: "b2m9haengtdavonab", target: "Es hängt davon ab, ob …", source: "Depende de si…", sound: "es hengt da-FON ap, op",
+    gram: { same: ["Das ist abhängig davon, ob …"] },
+  },
+  b2m9sichauswirkenauf: {
+    id: "b2m9sichauswirkenauf", target: "sich auswirken auf (+ Akkusativ)", source: "repercutir en / tener efecto sobre", sound: "zij AUS-vir-ken auf",
+    gram: { rektion: { prep: "auf", case: "akk", stem: "sich auswirken" } },
+  },
+  b2m9umsteigenauf: {
+    id: "b2m9umsteigenauf", target: "umsteigen auf (+ Akkusativ)", source: "pasarse a (otro medio, otra energía)", sound: "UM-shtai-guen auf",
+    gram: { rektion: { prep: "auf", case: "akk", stem: "umsteigen" } },
+  },
+
+  // ── L4 · wo(r)- y datos de un gráfico ──
+  b2m9woranliegtes: {
+    id: "b2m9woranliegtes", target: "Woran liegt es, dass …?", source: "¿A qué se debe que…?", sound: "vo-RAN leekt es, das",
+    gram: { trap: "An was liegt es, dass …?" },
+  },
+  b2m9womithaengt: { id: "b2m9womithaengt", target: "Womit hängt das zusammen?", source: "¿Con qué guarda relación eso?", sound: "VO-mit hengt das tsu-ZA-men" },
+  b2m9wogegenrichtet: { id: "b2m9wogegenrichtet", target: "Wogegen richtet sich die Kritik?", source: "¿Contra qué se dirige la crítica?", sound: "vo-GEE-guen RIJtet zij di kri-TIIK" },
+  b2m9nahverkehr: { id: "b2m9nahverkehr", target: "der Nahverkehr", source: "el transporte de cercanías / urbano", article: "der", sound: "NAA-fea-keea" },
+  b2m9recycling: { id: "b2m9recycling", target: "das Recycling", source: "el reciclaje (el sistema, no el verbo)", article: "das", sound: "ri-SAI-kling" },
+  b2m9natliegtdaran: {
+    id: "b2m9natliegtdaran", target: "Das liegt daran, dass …", source: "Eso se debe a que…", sound: "das leekt da-RAN, das",
+    gram: { same: ["Der Grund dafür ist, dass …"] },
+  },
+
+  // ── L5 · clínica del anticipador ──
+  b2m9darauf: { id: "b2m9darauf", target: "Ich bin stolz darauf, dass …", source: "Estoy orgulloso de que…", sound: "ij bin shtolts da-RAUF, das" },
+  b2m9daran: { id: "b2m9daran", target: "Ich bin interessiert daran, dass …", source: "Me interesa que…", sound: "ij bin in-te-re-SIIRT da-RAN, das" },
+  b2m9esgehtdarum: {
+    id: "b2m9esgehtdarum", target: "Es geht darum, dass …", source: "Se trata de que…", sound: "es geet da-RUM, das",
+    gram: { trap: "Es geht um, dass …" },
+  },
+  b2m9sichfreuenaufdass: {
+    id: "b2m9sichfreuenaufdass", target: "Ich freue mich darauf, dass …", source: "Me alegro de que… (anticipador)", sound: "ij FROI-e mij da-RAUF, das",
+  },
+  b2m9natstolzdrauf: { id: "b2m9natstolzdrauf", target: "Da bin ich schon stolz drauf", source: "De eso sí que estoy orgulloso", sound: "da bin ij shoon shtolts DRAUF" },
+
+  // ── L6–L9 · campo: energía, movilidad, datos ──
+  b2m9energieverbrauch: { id: "b2m9energieverbrauch", target: "der Energieverbrauch", source: "el consumo de energía", article: "der", sound: "e-nea-GII-fea-brauj" },
+  b2m9verzichtauf: {
+    id: "b2m9verzichtauf", target: "der Verzicht auf (+ Akkusativ)", source: "la renuncia a", article: "der", sound: "dea fea-TSIJT auf",
+    gram: { rektion: { prep: "auf", case: "akk", stem: "Verzicht" } },
+  },
+  b2m9energiewende: { id: "b2m9energiewende", target: "die Energiewende", source: "el giro energético (el plan alemán de salir del fósil)", article: "die", sound: "e-nea-GII-ven-de" },
+  b2m9nachhaltig: { id: "b2m9nachhaltig", target: "nachhaltig", source: "sostenible / duradero (no «sostenido»)", sound: "NAAJ-hal-tij" },
+  b2m9umweltbelastung: { id: "b2m9umweltbelastung", target: "die Umweltbelastung", source: "la carga ambiental / la contaminación", article: "die", sound: "UM-velt-be-las-tung" },
+  b2m9einsparen: { id: "b2m9einsparen", target: "Energie einsparen", source: "ahorrar energía (recortar consumo)", sound: "e-nea-GII AIN-shpaa-ren" },
+  b2m9grafik: { id: "b2m9grafik", target: "die Grafik", source: "el gráfico / la gráfica", article: "die", plural: "Grafiken", sound: "GRAA-fik" },
+  b2m9rueckgang: { id: "b2m9rueckgang", target: "der Rückgang", source: "el descenso / la caída (de una cifra)", article: "der", sound: "RÜK-gang" },
+  b2m9fossile: { id: "b2m9fossile", target: "fossile Brennstoffe", source: "los combustibles fósiles", sound: "FO-si-le BREN-shto-fe" },
+  b2m9waermepumpe: { id: "b2m9waermepumpe", target: "die Wärmepumpe", source: "la bomba de calor", article: "die", plural: "Wärmepumpen", sound: "VÉR-me-pum-pe" },
+  b2m9luftqualitaet: { id: "b2m9luftqualitaet", target: "die Luftqualität", source: "la calidad del aire", article: "die", sound: "LUFT-kva-li-téet" },
+  b2m9fuehrenzu: {
+    id: "b2m9fuehrenzu", target: "führen zu (+ Dativ)", source: "conducir a / provocar", sound: "FÜ-ren tsu",
+    gram: { rektion: { prep: "zu", case: "dat", stem: "führen" } },
+  },
+  b2m9imvergleichzu: { id: "b2m9imvergleichzu", target: "im Vergleich zu", source: "en comparación con", sound: "im fea-GLAIJ tsu", gram: { konn: "adv" } },
+  b2m9lautgrafik: { id: "b2m9lautgrafik", target: "laut der Grafik", source: "según el gráfico", sound: "laut dea GRAA-fik" },
+  b2m9folgenfuer: {
+    id: "b2m9folgenfuer", target: "die Folgen für (+ Akkusativ)", source: "las consecuencias para", article: "die", sound: "di FOL-guen füa",
+    gram: { rektion: { prep: "für", case: "akk", stem: "Folgen" } },
+  },
+  b2m9carsharing: { id: "b2m9carsharing", target: "das Carsharing", source: "el coche compartido (sistema)", article: "das", sound: "KAR-shee-ring" },
+  b2m9fernverkehr: { id: "b2m9fernverkehr", target: "der Fernverkehr", source: "el tráfico de larga distancia", article: "der", sound: "FÉRN-fea-keea" },
+};
+
+export const b2m9: Phase = {
+  id: "b2m9",
+  level: "b2",
+  n: 9,
+  title: "Woran es liegt",
+  goal: "Explicar causas y consecuencias con la rección justa — de sustantivo, de adjetivo y con da-Komposita — y leer un gráfico sin inventar el dato.",
+  color: "#15803d",
+  lessons: [
+    // ─────────────────────────── L1 ───────────────────────────
+    {
+      id: "b2m9l1",
+      phaseId: "b2m9",
+      title: "Die Frage nach dem Grund",
+      subtitle: "La rección de los sustantivos: el nombre arrastra su preposición",
+      minutes: 14,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Seis bloques que se aprenden pegados",
+          itemIds: ["b2m9fragenach", "b2m9grundfuer", "b2m9interessean", "b2m9auswirkungauf", "b2m9voraussetzungfuer", "b2m9einflussauf"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "No hay regla: hay lista, y el caso va pegado",
+            body: "En B1 aprendiste que el <b>verbo</b> rige preposición (<i>warten auf</i>, <i>sich kümmern um</i>). En cuanto escribes en estilo nominal —y en B2 se escribe así— aparece la otra mitad: el <b>sustantivo</b> también rige. <i>fragen nach</i> se convierte en <b>die Frage nach</b>; <i>beeinflussen</i>, en <b>der Einfluss auf</b>. El español resuelve casi todo con «de» («la pregunta de», «el motivo de», «el interés de») y por eso el calco sale siempre: <i>*die Frage von</i>, <i>*der Grund von</i>.<br/><br/>Los seis de esta lección, con el caso marcado:<br/>· die Frage <mark class=\"dat\">nach</mark> + Dativ<br/>· der Grund <mark class=\"akk\">für</mark> + Akkusativ<br/>· das Interesse <mark class=\"dat\">an</mark> + Dativ<br/>· die Auswirkung <mark class=\"akk\">auf</mark> + Akkusativ<br/>· die Voraussetzung <mark class=\"akk\">für</mark> + Akkusativ<br/>· der Einfluss <mark class=\"akk\">auf</mark> + Akkusativ<br/><br/>No se deducen. Se memorizan con un ejemplo pegado, y el repaso te los va a devolver con hueco. El campo de esta semana es el clima y la movilidad: [[der Klimawandel|el cambio climático]] ya lo tienes desde B1; lo nuevo es decir <b>con precisión</b> de qué depende, a qué se debe y sobre qué actúa.",
+            table: [
+              ["die Frage nach", "Dativ", "die Frage nach dem Grund"],
+              ["der Grund für", "Akkusativ", "der Grund für den Anstieg"],
+              ["das Interesse an", "Dativ", "das Interesse an erneuerbaren Energien"],
+              ["die Auswirkung auf", "Akkusativ", "die Auswirkung auf die Luftqualität"],
+              ["die Voraussetzung für", "Akkusativ", "die Voraussetzung für die Wende"],
+              ["der Einfluss auf", "Akkusativ", "der Einfluss auf den CO2-Ausstoß"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l1e1", type: "match", prompt: "Empareja cada sustantivo con su preposición y su caso",
+              pairs: [
+                { target: "die Frage nach + Dativ", source: "la cuestión de" },
+                { target: "der Grund für + Akkusativ", source: "el motivo de" },
+                { target: "das Interesse an + Dativ", source: "el interés por" },
+                { target: "die Auswirkung auf + Akkusativ", source: "el efecto sobre" },
+                { target: "die Voraussetzung für + Akkusativ", source: "el requisito para" },
+              ],
+              itemIds: ["b2m9fragenach", "b2m9grundfuer", "b2m9interessean", "b2m9auswirkungauf", "b2m9voraussetzungfuer"],
+            },
+            {
+              id: "b2m9l1e2", type: "mc", prompt: "El calco del «de» español",
+              question: "«El motivo del aumento» en alemán de examen es…",
+              options: ["der Grund von dem Anstieg", "der Grund für den Anstieg", "der Grund an dem Anstieg"],
+              answer: 1,
+              whyWrong: ["«von» es el calco de «de»; el sustantivo rige für + Akkusativ", null, "an lo rige Interesse, no Grund"],
+              itemIds: ["b2m9grundfuer"],
+              tip: "Grund für. Siempre für. Si te sale «von», estás pensando en español.",
+            },
+            {
+              id: "b2m9l1e3", type: "cloze", prompt: "Completa con la preposición que rige Frage",
+              text: "Die Frage ___ den Ursachen des CO2-Ausstoßes bleibt offen.",
+              answers: ["nach"],
+              translation: "La pregunta por las causas de las emisiones de CO₂ sigue abierta.",
+              hints: ["Frage rige la misma preposición que fragen", "n___ + Dativ"],
+              itemIds: ["b2m9fragenach", "b2m9co2ausstoss"],
+            },
+            {
+              id: "b2m9l1e4", type: "errorfix", prompt: "Un solo error: la preposición del interés",
+              wrong: "Das Interesse für erneuerbare Energien wächst.",
+              answers: ["Das Interesse an erneuerbaren Energien wächst.", "Das Interesse an erneuerbaren Energien wächst"],
+              why: "Interesse rige an + Dativ, no für. Für se cuela porque el español dice «interés por» y «por» a veces es für. Aquí no.",
+              translation: "Crece el interés por las energías renovables.",
+              itemIds: ["b2m9interessean", "b2m9erneuerbare"],
+            },
+            {
+              id: "b2m9l1e5", type: "transform", prompt: "Del verbo al sustantivo, con su preposición",
+              source: "Der Klimawandel beeinflusst die Luftqualität.",
+              instruction: "Dilo con «der Einfluss auf»",
+              answers: [
+                "Der Klimawandel hat einen Einfluss auf die Luftqualität.",
+                "Der Einfluss des Klimawandels auf die Luftqualität ist groß.",
+              ],
+              translation: "El cambio climático influye en la calidad del aire.",
+              hints: ["Einfluss auf + Akkusativ", "Der Klimawandel hat einen Einfluss auf …"],
+              itemIds: ["b2m9einflussauf", "b1m5klimawandel"],
+            },
+            {
+              id: "b2m9l1e6", type: "gapbank", prompt: "Tres huecos, tres recciones distintas",
+              text: "Die Voraussetzung ___ die Wende ist politischer Wille. Die Auswirkung ___ das Klima ist bereits messbar. Die Frage ___ den Kosten bleibt.",
+              answers: ["für", "auf", "nach"],
+              bank: ["für", "auf", "nach", "von", "über", "mit"],
+              translation: "El requisito para el giro es voluntad política. El efecto sobre el clima ya es medible. La pregunta por los costes queda.",
+              itemIds: ["b2m9voraussetzungfuer", "b2m9auswirkungauf", "b2m9fragenach"],
+            },
+            {
+              id: "b2m9l1e7", type: "translate", prompt: "Al alemán, con la rección pegada",
+              direction: "toTarget",
+              source: "El efecto sobre las emisiones es claro.",
+              answers: [
+                "Die Auswirkung auf die Emissionen ist klar.",
+                "Die Auswirkung auf die Emissionen ist deutlich.",
+              ],
+              hint: "Auswirkung auf + Akkusativ",
+              itemIds: ["b2m9auswirkungauf", "b2m9emissionen"],
+            },
+            {
+              id: "b2m9l1e8", type: "type", prompt: "Cierre: una frase de examen",
+              question: "Parto de que las renovables son el requisito para el giro energético",
+              answers: [
+                "Ich gehe davon aus, dass erneuerbare Energien die Voraussetzung für die Energiewende sind",
+                "Ich gehe davon aus, dass erneuerbare Energien die Voraussetzung für die Energiewende sind.",
+              ],
+              hints: ["Ich gehe davon aus, dass …", "Voraussetzung für + Akkusativ"],
+              itemIds: ["b2m9natdavonaus", "b2m9voraussetzungfuer", "b2m9erneuerbare"],
+              tip: "«Ich gehe davon aus, dass…» es la fila de examen de «yo creo / yo pienso». En el Schreiben puntúa; «ich denke» no está mal, pero suena a B1.",
+            },
+            {
+              id: "b2m9l1e9", type: "fastmatch", prompt: "Velocidad sobre lo que ya es tuyo: el campo de b1m5",
+              pairs: [
+                { target: "der Klimawandel", source: "el cambio climático" },
+                { target: "die Umwelt", source: "el medio ambiente" },
+                { target: "recyceln", source: "reciclar" },
+                { target: "Ich verzichte auf das Auto", source: "Renuncio al coche" },
+                { target: "die öffentlichen Verkehrsmittel", source: "el transporte público" },
+              ],
+              targetSeconds: 25,
+              itemIds: ["b1m5klimawandel", "b1m5umwelt", "b1m5recyceln", "b1m5verzichtenauf", "b1m5oeffentlichverkehrsmittel"],
+              tip: "Estas cinco ya las tienes. Aquí solo tienen que salir sin traducir por dentro: son el suelo sobre el que se construye la rección nueva.",
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m9-1",
+            book: "Ich denke, dass…",
+            real: "Ich geh mal davon aus, dass…",
+            meaning: "Parto de que… / Doy por hecho que…",
+            when: "Para marcar una hipótesis de trabajo, no una ocurrencia. Con amigos vale la forma reducida («geh mal davon aus»). En el Schreiben y en el Vortrag, la forma completa. Nunca para una opinión moral: para eso está «meiner Meinung nach».",
+            register: "neutral",
+            exam: "Ich gehe davon aus, dass…",
+            note: "El da-Komposita «davon» anticipa la oración de dass. Sin él (*Ich gehe aus, dass…) la frase se cae: es exactamente el error de la clínica de este módulo.",
+            sound: "ij gee mal da-FON aus, das",
+            level: "b2",
+            produce: true,
+            itemId: "b2m9natdavonaus",
+          },
+        },
+      ],
+    },
+
+    // ─────────────────────────── L2 ───────────────────────────
+    {
+      id: "b2m9l2",
+      phaseId: "b2m9",
+      title: "Stolz darauf, abhängig davon",
+      subtitle: "La rección de los adjetivos: el traje que lleva el adjetivo",
+      minutes: 13,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Siete adjetivos que no salen desnudos",
+          itemIds: ["b2m9stolzauf", "b2m9abhaengigvon", "b2m9zustaendigfuer", "b2m9ueberzeugtvon", "b2m9verantwortlichfuer", "b2m9reichan", "b2m9beteiligtan"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "El adjetivo también rige, y el español vuelve a poner «de»",
+            body: "«Orgulloso <b>de</b>», «dependiente <b>de</b>», «responsable <b>de</b>», «convencido <b>de</b>»: el español usa la misma preposición para cuatro relaciones distintas. El alemán no. Si pones <i>von</i> en todas, aciertas dos y fallas dos.<br/><br/>· stolz <mark class=\"akk\">auf</mark> + Akkusativ — orgulloso de<br/>· abhängig <mark class=\"dat\">von</mark> + Dativ — dependiente de<br/>· zuständig <mark class=\"akk\">für</mark> + Akkusativ — competente para (no es «zuständig von»)<br/>· überzeugt <mark class=\"dat\">von</mark> + Dativ — convencido de<br/>· verantwortlich <mark class=\"akk\">für</mark> + Akkusativ — responsable de<br/>· reich <mark class=\"dat\">an</mark> + Dativ — rico en<br/>· beteiligt <mark class=\"dat\">an</mark> + Dativ — implicado en<br/><br/>La trampa de <b>zuständig</b>: el sustantivo <i>die Zuständigkeit</i> ya puede haberte salido en un módulo anterior; el adjetivo se usa con <b>für</b>. Y <b>verantwortlich für</b> no es «culpable»: es «quien responde de». En una reclamación, esa diferencia vale puntos.",
+            table: [
+              ["stolz auf", "Akk", "stolz auf die Energiewende"],
+              ["abhängig von", "Dat", "abhängig von fossilen Brennstoffen"],
+              ["zuständig für", "Akk", "zuständig für den Nahverkehr"],
+              ["überzeugt von", "Dat", "überzeugt von der Maßnahme"],
+              ["verantwortlich für", "Akk", "verantwortlich für die Emissionen"],
+              ["reich an / beteiligt an", "Dat", "reich an Daten · beteiligt an dem Projekt"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l2e1", type: "bucket", prompt: "Separa por la preposición que rigen",
+              categories: ["auf / für (Akkusativ)", "von / an (Dativ)"],
+              items: [
+                { text: "stolz ___ die Ergebnisse", bucket: 0 },
+                { text: "zuständig ___ den Nahverkehr", bucket: 0 },
+                { text: "verantwortlich ___ die Emissionen", bucket: 0 },
+                { text: "abhängig ___ fossilen Brennstoffen", bucket: 1 },
+                { text: "überzeugt ___ der Maßnahme", bucket: 1 },
+                { text: "beteiligt ___ dem Projekt", bucket: 1 },
+                { text: "reich ___ erneuerbaren Energien", bucket: 1 },
+              ],
+              itemIds: ["b2m9stolzauf", "b2m9zustaendigfuer", "b2m9verantwortlichfuer", "b2m9abhaengigvon", "b2m9ueberzeugtvon", "b2m9beteiligtan", "b2m9reichan"],
+              tip: "auf y für llevan acusativo; von y an, dativo. Si recuerdas el caso, la preposición ya no es una lotería.",
+            },
+            {
+              id: "b2m9l2e2", type: "cloze", prompt: "El adjetivo de la competencia",
+              text: "Für den Nahverkehr ist die Stadt Berlin ___.",
+              answers: ["zuständig"],
+              translation: "Del transporte urbano es competente la ciudad de Berlín.",
+              hints: ["Adjetivo + für", "zu___"],
+              itemIds: ["b2m9zustaendigfuer", "b2m9nahverkehr"],
+            },
+            {
+              id: "b2m9l2e3", type: "errorfix", prompt: "El calco de «orgulloso de»",
+              wrong: "Anna ist stolz von ihrer Arbeit in der Pflege.",
+              answers: ["Anna ist stolz auf ihre Arbeit in der Pflege.", "Anna ist stolz auf ihre Arbeit in der Pflege"],
+              why: "stolz rige auf + Akkusativ, nunca von. Von se cuela porque «de» a veces es von — y porque abhängig y überzeugt sí llevan von. Hay que mirar el adjetivo, no el español.",
+              translation: "Anna está orgullosa de su trabajo en los cuidados.",
+              itemIds: ["b2m9stolzauf"],
+            },
+            {
+              id: "b2m9l2e4", type: "mc", prompt: "¿Quién responde de las emisiones?",
+              question: "«El gobierno es responsable de las emisiones»",
+              options: ["Die Regierung ist verantwortlich von den Emissionen.", "Die Regierung ist verantwortlich für die Emissionen.", "Die Regierung ist zuständig von den Emissionen."],
+              answer: 1,
+              whyWrong: ["verantwortlich rige für, no von", null, "zuständig también rige für, y «von» sigue mal"],
+              itemIds: ["b2m9verantwortlichfuer", "b2m9emissionen"],
+            },
+            {
+              id: "b2m9l2e5", type: "build", prompt: "Construye la frase con el adjetivo en su sitio",
+              target: "Deutschland ist noch abhängig von fossilen Brennstoffen.",
+              translation: "Alemania aún depende de los combustibles fósiles.",
+              distractors: ["für", "auf", "an"],
+              itemIds: ["b2m9abhaengigvon", "b2m9fossile"],
+            },
+            {
+              id: "b2m9l2e6", type: "gapbank", prompt: "Tres adjetivos, tres preposiciones",
+              text: "Kai ist überzeugt ___ der Energiewende, zuständig ___ das Jobticket und beteiligt ___ den Verhandlungen.",
+              answers: ["von", "für", "an"],
+              bank: ["von", "für", "an", "auf", "über", "mit"],
+              translation: "Kai está convencido del giro energético, es competente para el abono de empresa y participa en las negociaciones.",
+              itemIds: ["b2m9ueberzeugtvon", "b2m9zustaendigfuer", "b2m9beteiligtan"],
+            },
+            {
+              id: "b2m9l2e7", type: "translate", prompt: "Del alemán al español, con la preposición bien leída",
+              direction: "toEs",
+              source: "Berlin ist reich an Daten und arm an Taktzeiten nach Mitternacht.",
+              answers: [
+                "Berlín es rico en datos y pobre en frecuencias después de medianoche.",
+                "Berlín es rico en datos y pobre en intervalos de paso después de medianoche.",
+              ],
+              itemIds: ["b2m9reichan"],
+            },
+            {
+              id: "b2m9l2e8", type: "type", prompt: "Cierre de la lección",
+              question: "Estoy convencido de la medida y orgulloso del resultado",
+              answers: [
+                "Ich bin überzeugt von der Maßnahme und stolz auf das Ergebnis",
+                "Ich bin überzeugt von der Maßnahme und stolz auf das Ergebnis.",
+              ],
+              hints: ["überzeugt von + Dativ · stolz auf + Akkusativ", "Ich bin überzeugt von der Maßnahme und …"],
+              itemIds: ["b2m9ueberzeugtvon", "b2m9stolzauf", "b1m5massnahme"],
+            },
+          ],
+        },
+      ],
+    },
+
+    // ─────────────────────────── L3 ───────────────────────────
+    {
+      id: "b2m9l3",
+      phaseId: "b2m9",
+      title: "Davon ausgehen, dass",
+      subtitle: "Dos complementos, y el da-Komposita que anticipa la frase",
+      minutes: 14,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Verbos que no caben en una preposición",
+          itemIds: ["b2m9sichbedanken", "b2m9davonausgehen", "b2m9haengtdavonab", "b2m9sichauswirkenauf", "b2m9umsteigenauf"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "Cuando el complemento es una frase, aparece davon / darauf / daran",
+            body: "Algunos verbos rigen <b>dos</b> preposiciones a la vez: <i>sich <mark class=\"dat\">bei</mark> jdm. <mark class=\"akk\">für</mark> etw. bedanken</i>. El español tiene «dar las gracias a alguien por algo» y transfiere mal el orden.<br/><br/>Lo que el español no tiene en absoluto es el <b>da-Komposita anticipador</b>. Si el complemento no es un nombre sino una oración de <i>dass</i> o <i>ob</i>, el alemán no dice <i>*Ich gehe aus, dass…</i>. Pone un <b>da-</b> pegado a la preposición y deja la frase detrás:<br/>· Ich gehe <b>davon</b> aus, <i>dass</i> der Nahverkehr reicht.<br/>· Es hängt <b>davon</b> ab, <i>ob</i> die Linie fährt.<br/>· Das wirkt sich <b>darauf</b> aus, <i>wie</i> wir pendeln.<br/><br/>Sin el da-Komposita, la única frase larga que sabes construir es <i>Ich freue mich, dass…</i>. Con él, puedes argumentar. Es la pieza de esta lección y el error de la clínica.",
+            table: [
+              ["sich bedanken", "bei + Dat · für + Akk", "sich beim Betriebsrat für das Ticket bedanken"],
+              ["ausgehen von", "davon ausgehen, dass", "Ich gehe davon aus, dass …"],
+              ["abhängen von", "davon abhängen, ob", "Es hängt davon ab, ob …"],
+              ["sich auswirken auf", "auf + Akk / darauf, dass", "sich auf die Luftqualität auswirken"],
+              ["umsteigen auf", "auf + Akk", "auf den Nahverkehr umsteigen"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l3e1", type: "mc", prompt: "Las dos preposiciones de bedanken",
+              question: "«Sofía da las gracias a Kai por el Jobticket.»",
+              options: [
+                "Sofía bedankt sich von Kai für das Jobticket.",
+                "Sofía bedankt sich bei Kai für das Jobticket.",
+                "Sofía bedankt sich an Kai um das Jobticket.",
+              ],
+              answer: 1,
+              whyWrong: ["bei, no von: von es el calco de «de»", null, "an/um no rigen este verbo"],
+              itemIds: ["b2m9sichbedanken"],
+            },
+            {
+              id: "b2m9l3e2", type: "cloze", prompt: "El anticipador que el español se salta",
+              text: "Ich gehe ___, dass der CO2-Ausstoß weiter sinkt.",
+              answers: ["davon aus"],
+              translation: "Parto de que las emisiones de CO₂ seguirán bajando.",
+              hints: ["da-Komposita + partícula separable", "da___ aus"],
+              itemIds: ["b2m9davonausgehen", "b2m9natdavonaus"],
+              tip: "Zwei Wörter: davon + aus. *Ich gehe aus, dass… es la frase que delata al hispanohablante en el Schreiben.",
+            },
+            {
+              id: "b2m9l3e3", type: "errorfix", prompt: "Falta el anticipador",
+              wrong: "Ich gehe aus, dass der Nahverkehr reicht.",
+              answers: ["Ich gehe davon aus, dass der Nahverkehr reicht.", "Ich gehe davon aus, dass der Nahverkehr reicht"],
+              why: "ausgehen von necesita su «von» aunque el complemento sea una frase. Cuando el complemento es dass/ob, von se convierte en davon y se adelanta: Ich gehe DAVON aus, dass…",
+              translation: "Parto de que el transporte urbano basta.",
+              itemIds: ["b2m9davonausgehen", "b2m9nahverkehr"],
+            },
+            {
+              id: "b2m9l3e4", type: "transform", prompt: "Del nombre a la frase anticipada",
+              source: "Das hängt von vielen Faktoren ab.",
+              instruction: "Anticipa con «davon … ob»",
+              answers: [
+                "Es hängt davon ab, ob viele Faktoren eine Rolle spielen.",
+                "Das hängt davon ab, ob viele Faktoren zusammenkommen.",
+              ],
+              translation: "Depende de si intervienen muchos factores.",
+              hints: ["Es hängt davon ab, ob …", "ob manda el verbo al final"],
+              itemIds: ["b2m9haengtdavonab", "b1m5abhaengenvon"],
+            },
+            {
+              id: "b2m9l3e5", type: "gapbank", prompt: "Tres verbos, tres huecos",
+              text: "Wer auf den Nahverkehr ___, wirkt sich das auf die Luftqualität ___. Es hängt ___ ab, ob die Taktzeiten stimmen.",
+              answers: ["umsteigt", "aus", "davon"],
+              bank: ["umsteigt", "aus", "davon", "ein", "darauf", "umsteigt auf"],
+              translation: "Si uno se pasa al transporte urbano, eso repercute en la calidad del aire. Depende de si las frecuencias cuadran.",
+              itemIds: ["b2m9umsteigenauf", "b2m9sichauswirkenauf", "b2m9haengtdavonab"],
+            },
+            {
+              id: "b2m9l3e6", type: "build", prompt: "La frase con el verbo separable y su preposición",
+              target: "Viele Berliner steigen auf das Rad um.",
+              translation: "Muchos berlineses se pasan a la bici.",
+              distractors: ["in", "an", "für"],
+              itemIds: ["b2m9umsteigenauf"],
+            },
+            {
+              id: "b2m9l3e7", type: "listen", prompt: "Escucha y transcribe el anticipador",
+              text: "Es hängt davon ab, ob die Linie nach Mitternacht fährt.",
+              translation: "Depende de si la línea circula después de medianoche.",
+              itemIds: ["b2m9haengtdavonab"],
+            },
+            {
+              id: "b2m9l3e8", type: "type", prompt: "Cierre",
+              question: "Eso repercute en la calidad del aire",
+              answers: [
+                "Das wirkt sich auf die Luftqualität aus",
+                "Das wirkt sich auf die Luftqualität aus.",
+                "Das wirkt sich auf die Luftqualität aus",
+              ],
+              hints: ["sich auswirken auf + Akkusativ, partícula al final", "Das wirkt sich auf die Luftqualität …"],
+              itemIds: ["b2m9sichauswirkenauf", "b2m9luftqualitaet"],
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m9-2",
+            book: "Das hängt von vielen Dingen ab.",
+            real: "Kommt drauf an.",
+            meaning: "Depende.",
+            when: "Respuesta corta entre amigos cuando no quieres cerrar. En el examen no: una palabra sola no argumenta. Ahí se espera el complemento o la frase de ob.",
+            register: "amigos",
+            exam: "Das ist von zahlreichen Faktoren abhängig.",
+            note: "drauf = darauf, fundido. El examen no quiere el fundido: quiere el adjetivo abhängig von, que es exactamente la rección de L2 dicha en registro escrito.",
+            sound: "komt DRAUF an",
+            level: "b2",
+            produce: true,
+            itemId: "b1m2natkommtdraufan",
+          },
+        },
+      ],
+    },
+
+    // ─────────────────────────── L4 ───────────────────────────
+    {
+      id: "b2m9l4",
+      phaseId: "b2m9",
+      title: "Woran es liegt",
+      subtitle: "wo(r)- para preguntar, y cómo se lee un gráfico sin inventar el dato",
+      minutes: 13,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Preguntar por el complemento, no por la cosa",
+          itemIds: ["b2m9woranliegtes", "b2m7stuetzt", "b2m9womithaengt", "b2m9wogegenrichtet", "b2m9lautgrafik", "b2m9imvergleichzu"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "An was? No. Woran?",
+            body: "Cuando la preposición va pegada al verbo o al adjetivo, la pregunta no se hace con <i>was</i> suelto. El alemán funde <b>wo + preposición</b>: <i>woran, worauf, womit, wogegen, wodurch</i>. Si la preposición empieza por vocal, se cuela una <b>r</b>: wo<b>r</b>an, wo<b>r</b>auf.<br/><br/>· Woran liegt es, dass der Ausstoß sinkt?<br/>· Worauf stützt sich diese Aussage?<br/>· Womit hängt der Rückgang zusammen?<br/>· Wogegen richtet sich die Kritik?<br/><br/>El calco <i>*An was liegt es?</i> se entiende y está mal. En el oral del B2, <i>woran / worauf</i> suena a quien ha leído prensa de verdad.<br/><br/>Y el gráfico: en el Schreiben y en el Vortrag hay que <b>presentar datos</b> sin hincharlos. Tres muletillas honestas: <b>laut der Grafik</b>, <b>im Vergleich zu</b>, <b>der Rückgang / der Anstieg</b>. Si el gráfico no dice la causa, tú tampoco.",
+            table: [
+              ["an + was", "woran", "Woran liegt es, dass …?"],
+              ["auf + was", "worauf", "Worauf stützt sich …?"],
+              ["mit + was", "womit", "Womit hängt das zusammen?"],
+              ["gegen + was", "wogegen", "Wogegen richtet sich …?"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l4e1", type: "match", prompt: "De la preposición suelta al wo(r)-",
+              pairs: [
+                { target: "Woran liegt es, dass …?", source: "¿A qué se debe que…?" },
+                { target: "Worauf stützt sich diese Aussage?", source: "¿En qué se basa esa afirmación?" },
+                { target: "Womit hängt das zusammen?", source: "¿Con qué guarda relación?" },
+                { target: "Wogegen richtet sich die Kritik?", source: "¿Contra qué va la crítica?" },
+              ],
+              itemIds: ["b2m9woranliegtes", "b2m7stuetzt", "b2m9womithaengt", "b2m9wogegenrichtet"],
+            },
+            {
+              id: "b2m9l4e2", type: "errorfix", prompt: "El calco de «¿en qué?»",
+              wrong: "An was liegt es, dass weniger Auto gefahren wird?",
+              answers: ["Woran liegt es, dass weniger Auto gefahren wird?", "Woran liegt es, dass weniger Auto gefahren wird"],
+              why: "an + was se funde en woran. La r aparece porque an empieza por vocal. *An was se entiende en la calle y en el examen resta registro.",
+              translation: "¿A qué se debe que se circule menos en coche?",
+              itemIds: ["b2m9woranliegtes"],
+            },
+            {
+              id: "b2m9l4e3", type: "cloze", prompt: "Presentar el dato sin hincharlo",
+              text: "___ der Grafik sinkt der CO2-Ausstoß im Vergleich zu 2019 um zwölf Prozent.",
+              answers: ["Laut"],
+              translation: "Según el gráfico, las emisiones de CO₂ bajan un doce por ciento respecto a 2019.",
+              hints: ["La preposición de «según un documento»", "L___"],
+              itemIds: ["b2m9lautgrafik", "b2m9co2ausstoss", "b2m9imvergleichzu"],
+            },
+            {
+              id: "b2m9l4e4", type: "mc", prompt: "Qué puede decirse del gráfico y qué no",
+              question: "La gráfica muestra un descenso del 12 % entre 2019 y 2024. ¿Qué frase es honesta?",
+              options: [
+                "Die Energiewende hat den Ausstoß um zwölf Prozent gesenkt.",
+                "Laut der Grafik liegt ein Rückgang von zwölf Prozent vor.",
+                "Alle Berliner sind auf den Nahverkehr umgestiegen.",
+              ],
+              answer: 1,
+              whyWrong: ["Eso afirma una causa que el gráfico no demuestra", null, "El gráfico no dice quién se ha pasado a qué"],
+              itemIds: ["b2m9lautgrafik", "b2m9rueckgang"],
+              tip: "En el Vortrag, la causa se marca como hipótesis (Ich gehe davon aus / Das könnte daran liegen), no como hecho, si el gráfico no la enseña.",
+            },
+            {
+              id: "b2m9l4e5", type: "gapbank", prompt: "Describe la gráfica",
+              text: "___ der Grafik ist der Rückgang ___ 2019 deutlich. Die Folgen ___ die Luftqualität sind messbar.",
+              answers: ["Laut", "im Vergleich zu", "für"],
+              bank: ["Laut", "im Vergleich zu", "für", "Wegen", "trotz", "ohne"],
+              translation: "Según el gráfico, el descenso respecto a 2019 es claro. Las consecuencias para la calidad del aire son medibles.",
+              itemIds: ["b2m9lautgrafik", "b2m9imvergleichzu", "b2m9folgenfuer", "b2m9rueckgang"],
+            },
+            {
+              id: "b2m9l4e6", type: "paraphrase", prompt: "Dilo con woran, sin «warum»",
+              source: "Warum sinkt der Energieverbrauch?",
+              forbid: ["Warum", "weshalb", "wieso"],
+              answers: [
+                "Woran liegt es, dass der Energieverbrauch sinkt?",
+                "Womit hängt der sinkende Energieverbrauch zusammen?",
+              ],
+              translation: "¿A qué se debe que baje el consumo de energía?",
+              itemIds: ["b2m9woranliegtes", "b2m9energieverbrauch"],
+            },
+            {
+              id: "b2m9l4e7", type: "speak", prompt: "Lee en voz alta la pregunta de examen",
+              text: "Worauf stützt sich diese Aussage?",
+              phonetic: "vo-RAUF shtütst zij DII-ze AUS-zaa-gue",
+              translation: "¿En qué se basa esa afirmación?",
+              itemIds: ["b2m7stuetzt"],
+            },
+            {
+              id: "b2m9l4e8", type: "type", prompt: "Cierre: causa + gráfico",
+              question: "Eso se debe a que el consumo de energía baja",
+              answers: [
+                "Das liegt daran, dass der Energieverbrauch sinkt",
+                "Das liegt daran, dass der Energieverbrauch sinkt.",
+              ],
+              hints: ["Das liegt daran, dass …", "Energieverbrauch"],
+              itemIds: ["b2m9natliegtdaran", "b2m9energieverbrauch"],
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m9-3",
+            book: "Der Grund dafür ist…",
+            real: "Das liegt daran, dass…",
+            meaning: "Eso se debe a que…",
+            when: "Para dar la causa cuando ya está sobre la mesa el «eso». En un gráfico, detrás de un dato. En el Schreiben, la fila de examen nombra el fenómeno: «Der Grund für diese Entwicklung liegt in…».",
+            register: "neutral",
+            exam: "Der Grund für diese Entwicklung liegt in…",
+            note: "daran = da + an, porque liegen rige an. El libro nombra el Grund; la calle señala con da-. El examen recupera el sustantivo y su rección (Grund für).",
+            sound: "das leekt da-RAN, das",
+            level: "b2",
+            produce: true,
+            itemId: "b2m9natliegtdaran",
+          },
+        },
+      ],
+    },
+
+    // ─────────────────────────── L5 ───────────────────────────
+    {
+      id: "b2m9l5",
+      phaseId: "b2m9",
+      title: "Clínica: Ich gehe davon aus",
+      subtitle: "El da-Komposita anticipador — lo que el español no tiene y por eso se omite",
+      minutes: 14,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Cuatro anticipadores que sostienen la frase larga",
+          itemIds: ["b2m9natdavonaus", "b2m9darauf", "b2m9daran", "b2m9esgehtdarum", "b2m9sichfreuenaufdass"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "Sin el da-, la frase larga se cae",
+            body: "El español dice «parto de que», «estoy orgulloso de que», «me interesa que», «se trata de que» — y el «de» se come la preposición. El alemán no puede: la preposición del verbo o del adjetivo <b>tiene que aparecer</b>, y si lo que viene es una frase, se convierte en da-Komposita y se adelanta.<br/><br/>El error de este nivel, en pares mínimos:<br/>· *Ich gehe aus, dass… → Ich gehe <b>davon</b> aus, dass…<br/>· *Ich bin stolz, dass… → Ich bin stolz <b>darauf</b>, dass…<br/>· *Ich bin interessiert, dass… → Ich bin interessiert <b>daran</b>, dass…<br/>· *Es geht um, dass… → Es geht <b>darum</b>, dass…<br/>· *Ich freue mich, auf dass… → Ich freue mich <b>darauf</b>, dass…<br/><br/>La clínica se ataca con <b>errorfix</b> y con <b>paraphrase</b>: primero restaurar el da-, luego decir lo mismo con el sustantivo (<i>der Grund für, die Voraussetzung für</i>). Las dos filas valen en el examen; la que falta es la que no tiene da- ni sustantivo.",
+            table: [
+              ["verbo / adjetivo", "sin frase", "con frase (anticipador)"],
+              ["ausgehen von", "von der Zahl", "davon ausgehen, dass"],
+              ["stolz auf", "auf das Ergebnis", "stolz darauf, dass"],
+              ["interessiert an", "an dem Thema", "interessiert daran, dass"],
+              ["es geht um", "um den Nahverkehr", "es geht darum, dass"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l5e1", type: "bucket", prompt: "¿Le falta el anticipador o está bien?",
+              categories: ["falta el da-Komposita", "correcta"],
+              items: [
+                { text: "Ich gehe aus, dass der Ausstoß sinkt.", bucket: 0 },
+                { text: "Ich gehe davon aus, dass der Ausstoß sinkt.", bucket: 1 },
+                { text: "Ich bin stolz, dass wir umgestiegen sind.", bucket: 0 },
+                { text: "Ich bin stolz darauf, dass wir umgestiegen sind.", bucket: 1 },
+                { text: "Es geht um, dass der Takt stimmt.", bucket: 0 },
+                { text: "Es geht darum, dass der Takt stimmt.", bucket: 1 },
+                { text: "Ich freue mich darauf, dass der Radweg fertig ist.", bucket: 1 },
+              ],
+              itemIds: ["b2m9davonausgehen", "b2m9darauf", "b2m9esgehtdarum"],
+              tip: "Si detrás hay dass/ob y delante un verbo o adjetivo con preposición, el da- es obligatorio. No es estilo: es gramática.",
+            },
+            {
+              id: "b2m9l5e2", type: "errorfix", prompt: "El calco más caro del módulo",
+              wrong: "Es geht um, dass wir Energie einsparen.",
+              answers: ["Es geht darum, dass wir Energie einsparen.", "Es geht darum, dass wir Energie einsparen"],
+              why: "um no puede quedar suelto delante de dass. Se funde en darum y se adelanta: Es geht DARUM, dass… *Es geht um, dass… es la firma del hispanohablante en un texto de B2.",
+              translation: "Se trata de que ahorremos energía.",
+              itemIds: ["b2m9esgehtdarum", "b2m9einsparen"],
+            },
+            {
+              id: "b2m9l5e3", type: "errorfix", prompt: "Orgulloso de que: falta darauf",
+              wrong: "Sofía ist stolz, dass das Team das Jobticket bekommt.",
+              answers: ["Sofía ist stolz darauf, dass das Team das Jobticket bekommt.", "Sofía ist stolz darauf, dass das Team das Jobticket bekommt"],
+              why: "stolz auf necesita su auf. Con una frase, auf se convierte en darauf: stolz DARAUF, dass… Sin él, la frase parece de A2.",
+              translation: "Sofía está orgullosa de que el equipo reciba el abono de empresa.",
+              itemIds: ["b2m9darauf", "b2m9stolzauf"],
+            },
+            {
+              id: "b2m9l5e4", type: "transform", prompt: "Del nombre a la frase anticipada",
+              source: "Ich bin interessiert an einem Jobticket.",
+              instruction: "Anticipa con daran, dass",
+              answers: [
+                "Ich bin interessiert daran, dass es ein Jobticket gibt.",
+                "Ich bin interessiert daran, dass wir ein Jobticket bekommen.",
+              ],
+              translation: "Me interesa que haya un abono de empresa.",
+              hints: ["interessiert daran, dass …", "verbo al final de la subordinada"],
+              itemIds: ["b2m9daran", "b2m9interessean"],
+            },
+            {
+              id: "b2m9l5e5", type: "paraphrase", prompt: "Dilo con el sustantivo, sin da-Komposita",
+              source: "Das liegt daran, dass der Nahverkehr fehlt.",
+              forbid: ["daran", "liegt"],
+              answers: [
+                "Der Grund für das Problem ist der fehlende Nahverkehr.",
+                "Der Grund für diese Entwicklung ist der fehlende Nahverkehr.",
+              ],
+              translation: "El motivo del problema es que falta el transporte urbano.",
+              itemIds: ["b2m9grundfuer", "b2m9natliegtdaran", "b2m9nahverkehr"],
+              tip: "Las dos filas son correctas. El examen premia que sepas las dos: da-Komposita en el oral, sustantivo + rección en el escrito.",
+            },
+            {
+              id: "b2m9l5e6", type: "gapbank", prompt: "Restaura los tres anticipadores",
+              text: "Ich gehe ___ aus, dass die Wärmepumpe sich lohnt. Ich bin stolz ___, dass wir umgestiegen sind. Es geht ___, dass der Takt nach Mitternacht stimmt.",
+              answers: ["davon", "darauf", "darum"],
+              bank: ["davon", "darauf", "darum", "darin", "damit", "dafür"],
+              translation: "Parto de que la bomba de calor merece la pena. Estoy orgulloso de que nos hayamos pasado. Se trata de que la frecuencia después de medianoche cuadre.",
+              itemIds: ["b2m9davonausgehen", "b2m9darauf", "b2m9esgehtdarum", "b2m9waermepumpe"],
+            },
+            {
+              id: "b2m9l5e7", type: "hearreal", prompt: "¿Libro o calle?",
+              book: "Das hängt von vielen Dingen ab.",
+              real: "Kommt drauf an.",
+              translation: "Depende.",
+              ask: "which",
+              itemIds: ["b1m2natkommtdraufan", "b2m9haengtdavonab"],
+            },
+            {
+              id: "b2m9l5e8", type: "type", prompt: "Cierre de la clínica",
+              question: "Me alegro de que el carril bici esté listo",
+              answers: [
+                "Ich freue mich darauf, dass der Radweg fertig ist",
+                "Ich freue mich darauf, dass der Radweg fertig ist.",
+              ],
+              hints: ["freuen auf → darauf, dass", "Ich freue mich darauf, dass der Radweg …"],
+              itemIds: ["b2m9sichfreuenaufdass", "b1m5radweg"],
+              tip: "freuen auf (futuro) lleva darauf cuando anticipa. freuen über (ya pasó) llevaría darüber. El da- sigue a la preposición que rige el verbo.",
+            },
+
+            {
+              id: "b2m9l5ex81", type: "write", prompt: "Aufgabe 2 · Nachricht Sie. Off-topic = 0.",
+              scenario: "Eres Nico. Escribes a Kai Bergmann (Betriebsrat), Sie: pide que se estudie la Abhängigkeit vom Auto y un Zuschuss. Rección: Interesse an, Verantwortung für.",
+              genre: "mail-formal",
+              register: "Sie",
+              bullets: [
+                "Nombra el motivo en la primera frase, con Sie.",
+                "Pide una acción concreta y un plazo.",
+                "Cierra con Grußformel.",
+              ],
+              checks: [
+                { re: "(Sehr geehrte|Guten Tag)", label: "hay Anrede" },
+                { re: "(bitte|könnten|würde ich)", label: "hay una petición" },
+                { re: "(Mit freundlichen Grüßen|Freundliche Grüße)", label: "hay Gruß" },
+              ],
+              frame: ["Anrede Sie", "motivo", "petición + plazo", "Gruß + nombre"],
+              requireConnectors: { min: 2, bank: ["deshalb", "außerdem", "weil", "allerdings"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              minWords: 90,
+              maxWords: 120,
+              model: "Sehr geehrter Herr Bergmann,\nmein Interesse an einem Zuschuss für das Jobticket ist nicht neu, aber die Abhängigkeit vom Auto in der Spätschicht schon. Die Verantwortung für den Takt liegt nicht bei uns in der Küche. Deshalb bitte ich Sie, bis Ende des Monats zu prüfen, ob die Firma einen Anteil übernimmt. Außerdem bräuchte die Nachtbuslinie eine klare Auskunft, weil sonst niemand weiß, woran die Verspätung liegt. Allerdings ändert eine mündliche Zusage nichts an der nächsten Rechnung. Ich stehe für Rückfragen gern zur Verfügung. Eine kurze schriftliche Bestätigung reicht.\nMit freundlichen Grüßen\nNico",
+              itemIds: [],
+              tip: "Menos de 50 palabras o tema equivocado: 0. Ni un du.",
+            },
+            {
+              id: "b2m9l5ex82", type: "write", prompt: "Aufgabe 1 · Forumsbeitrag. Off-topic = 0.",
+              scenario: "Foro Stadttakt: un oyente dice que la Verkehrswende es capricho de quien vive en el centro. Reacciona con Woran es liegt, no con culpa. Off-topic = 0.",
+              genre: "forum",
+              stimulus: { author: "Uwe L.", text: "Die Verspätung liegt am Personal, das nicht will. Wer im Zentrum wohnt, redet von Wende. Wir am Rand warten." },
+              bullets: [
+                "Concede un punto a Uwe L. y marca el desacuerdo.",
+                "Una ventaja y un inconveniente, con ejemplo.",
+                "Una propuesta concreta y un cierre.",
+              ],
+              checks: [
+                { re: "(zwar|allerdings|jedoch)", label: "concedes antes de rebatir" },
+                { re: "(Vorteil|Nachteil|einerseits|andererseits)", label: "ventaja e inconveniente" },
+                { re: "(sollte|müsste|schlage vor|Vorschlag)", label: "hay propuesta" },
+              ],
+              frame: ["Apertura", "concesión", "pro/contra", "propuesta", "cierre"],
+              requireConnectors: { min: 3, bank: ["zwar", "allerdings", "deshalb", "weil", "außerdem", "dennoch"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              minWords: 140,
+              maxWords: 180,
+              model: "Zu dem Beitrag von Uwe L. möchte ich Folgendes sagen: Zwar stimmt, dass am Rand der letzte Bus früher geht. Allerdings liegt die Verspätung oft an der fehlenden Wendezeit, nicht am Willen der Fahrerin. Ein Vorteil klarer Ursachen ist, dass man die Stelle benennen kann: Verantwortung für den Takt, nicht Schuld der Schicht. Ein Nachteil der Schuldzuweisung ist, dass niemand das Interesse an einem Zuschuss ernst nimmt. Deshalb sollte der Senat sagen, woran der Takt hängt, in einem Satz. Außerdem müsste das Jobticket die Spätschicht einschließen. Ich plädiere dafür, weniger über Charaktere zu reden und mehr über Abhängigkeit vom Auto, weil nur so die Debatte einen Namen hat, den man prüfen kann. Nur so bleibt die Sache nachvollziehbar. Das ist die Mindestanforderung an ein Protokoll, das jemand in drei Monaten noch verstehen soll. Das ist die Mindestanforderung an ein Protokoll, das jemand in drei Monaten noch verstehen soll.",
+              itemIds: [],
+              tip: "150 palabras: intro, concesión, dos argumentos, propuesta, cierre. Off-topic = 0.",
+            },
+          ],
+        },
+        {
+          kind: "nativo",
+          nativo: {
+            id: "nat-b2m9-4",
+            book: "Ich bin stolz darauf.",
+            real: "Da bin ich schon stolz drauf.",
+            meaning: "De eso sí que estoy orgulloso.",
+            when: "Para marcar que el orgullo no es general: es de ESA cosa. El «da» inicial y el «schon» ponen el foco. En el Vortrag se recupera el darauf delante: «Darauf bin ich durchaus stolz».",
+            register: "amigos",
+            exam: "Darauf bin ich durchaus stolz.",
+            note: "drauf = darauf fundido, igual que drauf an. El examen no funde: pone darauf en el Vorfeld y suena a frase hecha de oral culto.",
+            sound: "da bin ij shoon shtolts DRAUF",
+            level: "b2",
+            produce: true,
+            itemId: "b2m9natstolzdrauf",
+          },
+        },
+      ],
+    },
+
+    // ─────────────────────────── L6 ───────────────────────────
+    {
+      id: "b2m9l6",
+      phaseId: "b2m9",
+      title: "Zwei Texte, zwei Ursachen",
+      subtitle: "Dos artículos que se contradicen — contrastar, no solo comprender",
+      minutes: 18,
+      sections: [
+        {
+          kind: "phrases",
+          title: "El léxico con el que se discute la Wende",
+          itemIds: ["b2m9energiewende", "b2m9nachhaltig", "b2m9umweltbelastung", "b1m2pendeln", "b2m9recycling", "b2m9fernverkehr"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "El examen no pregunta «qué dice el texto»: pregunta quién tiene razón en qué",
+            body: "En el Goethe B2, Lesen Teil 1 y Teil 4 premian <b>reconocer posturas</b>, no localizar un dato. Por eso esta lección trae <b>dos textos que no se ponen de acuerdo</b>. Lee primero el de Clara Hofmann (redacción local) y luego el de un lector que trabaja de noche. Las preguntas de inferencia piden lo que ninguno dice con esas palabras.<br/><br/>Estrategia: subraya en cada texto <b>la causa que nombra</b> (Woran liegt es?) y <b>de quién es responsable</b> (wer ist zuständig / verantwortlich?). Donde los dos nombran el mismo hecho y le ponen causas distintas, está la pregunta que puntúa.",
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l6e1", type: "read", prompt: "Texto 1. Lee entero y luego las preguntas. No busques la palabra de la pregunta: busca la causa.",
+              title: "Die Wende scheitert nicht am Willen",
+              source: "Clara Hofmann, Lokalredaktion Berlin (Kommentar)",
+              text: "Seit drei Jahren redet Berlin von der [[Energiewende|giro energético]], und seit drei Jahren steht der gleiche Stau vor meiner Redaktion in Prenzlauer Berg. Die Frage nach den Ursachen wird jedes Mal gleich beantwortet: Die Leute wollten nicht. Ich halte das für bequem und für falsch.\n\nLaut der Grafik, die die Senatsverwaltung im März vorgelegt hat, sinkt der CO2-Ausstoß im Innenstadtring im Vergleich zu 2019 um zwölf Prozent. Der Rückgang ist real. Worauf stützt sich dann die Behauptung, die Wende sei gescheitert? Auf eine andere Zahl, die seltener zitiert wird: Der Fernverkehr aus Brandenburg und dem Umland ist im selben Zeitraum gestiegen. Die Umweltbelastung hat sich verschoben, sie ist nicht verschwunden.\n\nDie Voraussetzung für einen echten Umstieg ist nicht das schlechte Gewissen. Es ist ein Nahverkehr, der nach Mitternacht noch taktet. Wer um vier zur Schicht muss — in der Pflege, in der Küche, am Flughafen — hat kein Argument, sondern einen Arbeitsvertrag. Die Auswirkung auf diese Gruppe kommt in keiner Kampagne vor. Man zeigt Fahrräder im Sommerlicht und verschweigt die Taktlücke.\n\nIch bin durchaus überzeugt von der Richtung. Reich an guten Absichten ist diese Stadt seit Jahrzehnten. Arm ist sie an Zuständigkeit, die sich messen lässt. Zuständig für den Nahverkehr nach Bernau ist nicht der Nachbar, der das Auto abschafft. Zuständig ist die Behörde, die den Takt bestellt. Solange das unklar bleibt, bleibt auch der Einfluss auf den CO2-Ausstoß kosmetisch: man spart dort, wo es schon leicht war.\n\nEin nachhaltiger Umbau hieße, die Grafik nach Berufen zu lesen, nicht nach Quartieren. Die Emissionen der Kurzstrecke im Kiez sinken, weil Carsharing und Radwege greifen. Die Emissionen des Pendelns sinken nicht, weil niemand die Voraussetzung geschaffen hat. Wer das durcheinanderwirft, macht Politik mit dem falschen Nenner.\n\nIch gehe davon aus, dass die Zahlen der nächsten zwei Jahre ehrlich sein werden — wenn man sie so aufbereitet, dass die Schichtarbeiter darin vorkommen. Solange sie fehlen, ist der Rückgang kein Erfolg der Wende. Er ist der Erfolg derer, die sowieso schon umsteigen konnten. Das ist etwas anderes, und es sollte so gesagt werden.\n\nRecycling, Wärmepumpe, der Verzicht auf Plastik im Hof: all das zählt. Es zählt nur nicht als Antwort auf denselben Satz. Wer das Recycling der Wohnung mit dem Fernverkehr der Pendler verrechnet, rechnet falsch. Die Stadt kann beides tun. Sie muss nur aufhören, das eine als Beweis für das andere zu verkaufen. Ein nachhaltiger Satz wäre: Der Kiez hat geliefert. Der Fahrplan nach Bernau nicht. Erst wenn beide Zahlen in derselben Grafik stehen, ohne geschönten Nenner, kann man von einer Wende sprechen, die diesen Namen verdient. Bis dahin bleibt die Frage nach dem Grund dieselbe, und sie ist nicht moralisch. Sie ist betrieblich. Das sollte die nächste Grafik endlich ausweisen.",
+              questions: [
+                {
+                  id: "b2m9l6e1q1",
+                  q: "Worin sieht Hofmann die zentrale Voraussetzung für den Umstieg?",
+                  options: ["Im schlechten Gewissen der Autofahrer.", "In einem Nahverkehr, der auch nachts taktet.", "In mehr Carsharing im Kiez."],
+                  answer: 1,
+                  why: "«Die Voraussetzung für einen echten Umstieg ist nicht das schlechte Gewissen. Es ist ein Nahverkehr, der nach Mitternacht noch taktet.»",
+                },
+                {
+                  id: "b2m9l6e1q2",
+                  q: "Was sagt die Grafik der Senatsverwaltung laut Hofmann wirklich?",
+                  options: ["Die Wende ist gescheitert.", "Der CO2-Ausstoß im Innenstadtring ist um zwölf Prozent gesunken.", "Der Fernverkehr aus Brandenburg ist um zwölf Prozent gesunken."],
+                  answer: 1,
+                  why: "El doce por ciento es el Innenstadtring respecto a 2019. El Fernverkehr, dice, ha subido.",
+                },
+                {
+                  id: "b2m9l6e1q3",
+                  q: "Warum hält Hofmann den Rückgang für «kosmetisch»?",
+                  options: ["Weil die Zahlen gefälscht sind.", "Weil man dort spart, wo der Umstieg schon leicht war, und die Pendler fehlen.", "Weil Carsharing die Luft verschlechtert."],
+                  answer: 1,
+                  inference: true,
+                  why: "No usa la palabra «trampa»: dice que se ahorra donde ya era fácil y que la carga se ha desplazado, no desaparecido. Hay que unir el párrafo 2 con el 4.",
+                },
+                {
+                  id: "b2m9l6e1q4",
+                  q: "Wer ist laut Hofmann zuständig für den Nahverkehr nach Bernau?",
+                  options: ["Der Nachbar, der das Auto abschafft.", "Die Behörde, die den Takt bestellt.", "Die Redaktion in Prenzlauer Berg."],
+                  answer: 1,
+                  why: "«Zuständig für den Nahverkehr nach Bernau ist nicht der Nachbar […] Zuständig ist die Behörde, die den Takt bestellt.»",
+                },
+                {
+                  id: "b2m9l6e1q5",
+                  q: "Welche Haltung nimmt der Text zur Energiewende ein?",
+                  options: ["Er lehnt die Richtung ab.", "Er unterstützt die Richtung, aber bestreitet, dass der gemessene Rückgang schon ein Erfolg der Wende ist.", "Er fordert, den Fernverkehr aus Brandenburg zu verbieten."],
+                  answer: 1,
+                  inference: true,
+                  why: "«Ich bin durchaus überzeugt von der Richtung» + el cierre: el descenso no es el éxito de la Wende, sino de quienes ya podían cambiarse. Postura a favor del rumbo, en contra del relato.",
+                },
+              ],
+              itemIds: ["b2m9energiewende", "b2m9voraussetzungfuer", "b2m9zustaendigfuer", "b2m9lautgrafik"],
+              tip: "Hofmann no está contra la Wende: está contra el narrador que toma el dato fácil por la causa. Esa distinción es exactamente Lesen Teil 4.",
+            },
+            {
+              id: "b2m9l6e2", type: "read", prompt: "Texto 2. Mismo tema, otra causa. Contrasta con Hofmann antes de responder.",
+              title: "Ohne Auto keine Schicht",
+              source: "Leserbrief von Torben Kranz, Koch in einer Großküche, Bernau bei Berlin",
+              text: "Clara Hofmann schreibt, die Wende scheitere nicht am Willen. An meinem Willen scheitert sie schon gar nicht. Ich bin überzeugt von erneuerbaren Energien, ich trenne den Müll, und ich würde morgen auf den Nahverkehr umsteigen. Der Grund für mein Auto ist ein anderer, und er kommt in ihrem Kommentar nicht vor.\n\nIch pendle seit sechs Jahren von Bernau in eine Küche in Mitte. Die erste Bahn, mit der ich pünktlich zur Schicht um fünf wäre, fährt nicht. Die zweite kommt, wenn die Soße schon steht. Das wirkt sich auf den ganzen Betrieb aus: Wenn ich ausfalle, kocht Kai Bergmann mit zwei Leuten weniger. Der Betriebsrat redet seit einem Jahr über ein Jobticket. Das Ticket löst den Takt nicht.\n\nHofmann hat recht in einem Punkt: Zuständig für den Takt ist die Behörde. Sie hat unrecht in einem anderen: Die Auswirkung auf Leute wie mich ist nicht «verschwiegen». Sie wird regelmäßig in Betriebsversammlungen genannt und regelmäßig auf die nächste Grafik verschoben. Im Vergleich zu einem Radweg in Prenzlauer Berg bin ich teurer. Das ist die ganze Politik.\n\nCarsharing hilft mir nicht. Um vier Uhr morgens steht an unserem Bahnhof keines. Die Wärmepumpe in unserer Siedlung ist eingebaut worden, und ich bin stolz darauf, dass wir fossile Brennstoffe im Haus gesenkt haben. Das eine hat mit dem anderen nichts zu tun. Wer beides in denselben Topf wirft, macht aus meinem Arbeitsweg ein Moralstück.\n\nDie Folgen für die Luftqualität in Mitte nehme ich ernst. Ich atme sie nicht: ich koche dort und fahre danach zurück. Ein nachhaltiger Vorschlag wäre ein Nachtnetz, das Schichtarbeit als Voraussetzung behandelt, nicht als Ausnahme. Solange das fehlt, ist der Verzicht auf das Auto für uns kein Beitrag zur Wende. Er ist die Kündigung.\n\nIch gehe davon aus, dass Hofmann das weiß. Umso unverständlicher ist, dass ihr Text die Schicht unsichtbar lässt und dann schreibt, wir kämen in keiner Kampagne vor. Wir kommen vor. Nur nicht in der, die sich gut fotografieren lässt. Woran es liegt, dass die Wende stockt, ist für mich nicht das Gewissen der Autofahrer im Kiez. Es ist ein Fahrplan, in dem meine Schicht nicht vorkommt.\n\nNoch ein Satz zum Recycling, weil es in diesen Debatten immer als Gegenbeweis auftaucht: Natürlich trenne ich. Natürlich bin ich für erneuerbare Energien. Das entlastet die Umweltbelastung im Haus und ändert meinen Dienstag um vier Uhr morgens nicht um eine Minute. Wer mir das Auto nehmen will, ohne den Takt zu liefern, nimmt mir nicht ein Hobby. Er nimmt mir die Schicht. Darauf lasse ich mich nicht ein, so sehr ich von der Richtung überzeugt bin. Die Voraussetzung für meinen Verzicht ist ein Zug, der existiert. Alles andere ist Moral für Leute, die um neun im Büro sitzen. Ich bleibe beteiligt an der Wende. Nur nicht an einer, die meine Schicht streicht.",
+              questions: [
+                {
+                  id: "b2m9l6e2q1",
+                  q: "Was ist für Kranz der Grund für das Auto?",
+                  options: ["Er lehnt erneuerbare Energien ab.", "Die Bahn erreicht seine Schicht um fünf nicht.", "Er will kein Jobticket."],
+                  answer: 1,
+                  why: "La primera línea que llega a tiempo no circula; la segunda llega cuando la salsa ya está. El Jobticket, dice, no resuelve el Takt.",
+                },
+                {
+                  id: "b2m9l6e2q2",
+                  q: "In welchem Punkt gibt Kranz Hofmann recht?",
+                  options: ["Dass die Schichtarbeiter in keiner Kampagne vorkommen.", "Dass die Behörde für den Takt zuständig ist.", "Dass Carsharing die Lösung ist."],
+                  answer: 1,
+                  why: "«Hofmann hat recht in einem Punkt: Zuständig für den Takt ist die Behörde.»",
+                },
+                {
+                  id: "b2m9l6e2q3",
+                  q: "Warum hält Kranz das Jobticket allein für unzureichend?",
+                  options: ["Weil es zu teuer ist.", "Weil ein Ticket den fehlenden Takt nicht ersetzt.", "Weil der Betriebsrat dagegen ist."],
+                  answer: 1,
+                  inference: true,
+                  why: "«Das Ticket löst den Takt nicht.» Hay que inferir: el abono paga el viaje, no crea la línea que no existe a esa hora.",
+                },
+                {
+                  id: "b2m9l6e2q4",
+                  q: "Wie steht Kranz zur Wärmepumpe in seiner Siedlung?",
+                  options: ["Er lehnt sie als Teil der Wende ab.", "Er ist stolz darauf und trennt sie vom Problem des Arbeitswegs.", "Er hat keine."],
+                  answer: 1,
+                  why: "«Die Wärmepumpe […] ist eingebaut worden, und ich bin stolz darauf […] Das eine hat mit dem anderen nichts zu tun.»",
+                },
+                {
+                  id: "b2m9l6e2q5",
+                  q: "Worin widersprechen sich Hofmann und Kranz am schärfsten?",
+                  options: [
+                    "In der Frage, ob die Behörde zuständig ist.",
+                    "In der Frage, ob die Schichtarbeiter in der öffentlichen Debatte unsichtbar sind.",
+                    "In der Frage, ob der CO2-Ausstoß im Innenstadtring gesunken ist.",
+                  ],
+                  answer: 1,
+                  inference: true,
+                  why: "Los dos aceptan la competencia de la Behörde y el dato del Innenstadtring. El choque es: Hofmann dice que la Schicht no sale en las campañas; Kranz dice que sí sale, pero no en la que queda bien en la foto.",
+                },
+              ],
+              itemIds: ["b1m2pendeln", "b2m9verzichtauf", "b2m9waermepumpe", "b2m9folgenfuer"],
+              tip: "Los dos tienen razón en un dato y se pelean por la causa. El examen B2 premia que sepas decir ESO, no que elijas bando.",
+            },
+            {
+              id: "b2m9l6e3", type: "mc", prompt: "Contraste: la causa que nombra cada uno",
+              question: "Hofmann y Kranz coinciden en el dato del Takt nocturno. ¿En qué se separan?",
+              options: [
+                "Hofmann pide más Carsharing; Kranz pide prohibir el coche.",
+                "Hofmann carga el relato político; Kranz carga el Fahrplan concreto de su turno.",
+                "Hofmann niega el Rückgang; Kranz lo celebra.",
+              ],
+              answer: 1,
+              whyWrong: ["Ninguno pide eso como solución única", null, "Hofmann no niega el descenso: lo llama cosmética"],
+              itemIds: ["b2m9energiewende", "b2m9nahverkehr", "b2m9recycling"],
+            },
+            {
+              id: "b2m9l6e4", type: "gapbank", prompt: "Resume el desacuerdo con rección",
+              text: "Der Grund ___ Kranz’ Auto ist der fehlende Takt. Die Auswirkung ___ die Luft ist messbar. Beide sind überzeugt ___ der Richtung.",
+              answers: ["für", "auf", "von"],
+              bank: ["für", "auf", "von", "nach", "an", "über"],
+              translation: "El motivo del coche de Kranz es la frecuencia que falta. El efecto sobre el aire es medible. Ambos están convencidos del rumbo.",
+              itemIds: ["b2m9grundfuer", "b2m9auswirkungauf", "b2m9ueberzeugtvon"],
+            },
+            {
+              id: "b2m9l6e5", type: "paraphrase", prompt: "Dilo sin las palabras de Hofmann",
+              source: "Die Umweltbelastung hat sich verschoben, sie ist nicht verschwunden.",
+              forbid: ["verschoben", "verschwunden", "Umweltbelastung"],
+              answers: [
+                "Die Emissionen sind woanders, sie sind nicht weg.",
+                "Der Ausstoß wurde verlagert, er wurde nicht beseitigt.",
+              ],
+              translation: "La carga ambiental se ha desplazado, no ha desaparecido.",
+              itemIds: ["b2m9umweltbelastung", "b2m9emissionen"],
+            },
+            {
+              id: "b2m9l6e6", type: "order", prompt: "El esqueleto de un contraste de dos fuentes",
+              sentences: [
+                "Beide Texte gehen davon aus, dass der CO2-Ausstoß im Innenstadtring gesunken ist.",
+                "Hofmann führt den kosmetischen Charakter auf fehlende Zuständigkeit zurück.",
+                "Kranz führt denselben Befund auf einen Fahrplan zurück, in dem seine Schicht fehlt.",
+                "Im Gegensatz dazu bestreitet keiner von beiden die Richtung der Energiewende.",
+              ],
+              translation: "Dato compartido → causa de A → causa de B → lo que nadie niega.",
+              itemIds: ["b2m9davonausgehen", "b2m9energiewende"],
+            },
+            {
+              id: "b2m9l6e7", type: "type", prompt: "Cierre: una frase que los une sin mezclarlos",
+              question: "Ambos están convencidos del rumbo, pero el requisito para el giro es la red nocturna",
+              answers: [
+                "Beide sind überzeugt von der Richtung, aber die Voraussetzung für die Wende ist das Nachtnetz",
+                "Beide sind überzeugt von der Richtung, aber die Voraussetzung für die Wende ist das Nachtnetz.",
+              ],
+              hints: ["überzeugt von · Voraussetzung für", "Beide sind überzeugt von der Richtung, aber …"],
+              itemIds: ["b2m9ueberzeugtvon", "b2m9voraussetzungfuer"],
+            },
+          ],
+        },
+      ],
+    },
+
+    // ─────────────────────────── L7 ───────────────────────────
+    {
+      id: "b2m9l7",
+      phaseId: "b2m9",
+      title: "Hören: woran es liegt, mit Notizblock",
+      subtitle: "Audio largo de tertulia — el cuaderno no es opcional",
+      minutes: 16,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Lo que vas a oír, no a leer",
+          itemIds: ["b2m9co2ausstoss", "b2m9nahverkehr", "b2m9einsparen", "b2m9carsharing", "b1m2natkommtdraufan"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "En B2, más de la mitad de los ítems de Hören suenan UNA vez",
+            body: "El Goethe B2 da la vuelta al patrón del B1: <b>Teil 1 y Teil 3 se oyen una sola vez</b>. Un audio de varios minutos con varias voces no mide si recuerdas: mide si <b>apuntas</b>. El cuaderno de esta lección no se corrige ni se guarda — es papel de borrador, como en el examen.<br/><br/>Anota, mientras suena, <b>quién dice la causa</b> (Woran liegt es?) y <b>de qué depende</b> (Es hängt davon ab, ob…). Los nombres van DENTRO del audio porque esta app no puede garantizar tres voces distintas; en el examen real esa muleta no estará. Acostúmbrate a ligar la postura a un nombre desde el primer segundo.",
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l7e1", type: "audiomc", prompt: "Tertulia «Stadttakt». Pregunta ANTES. Cuaderno abierto. Dos escuchas.",
+              audio: DEBATTE_WENDE,
+              question: "Woran liegt es laut Clara Hofmann, dass viele im Kiez das Auto nicht aufgeben?",
+              options: [
+                "Am fehlenden Willen der Autofahrer.",
+                "Daran, dass der Nahverkehr erst funktionieren muss, bevor man Verzicht verlangt.",
+                "Daran, dass Carsharing zu teuer ist.",
+              ],
+              answer: 1,
+              plays: 2,
+              notepad: true,
+              whyWrong: ["Eso es justo lo que ella rechaza", null, "Carsharing lo menciona Kai, y como límite, no como causa"],
+              itemIds: ["b2m9woranliegtes", "b2m9nahverkehr", "b2m9verzichtauf"],
+              tip: "La causa de Hofmann llega en la primera intervención. Si esperas al final, ya la has pisado con la de Kai.",
+            },
+            {
+              id: "b2m9l7e2", type: "audiomc", prompt: "Misma tertulia, segunda pregunta. Cuaderno.",
+              audio: DEBATTE_WENDE,
+              question: "Was sagt Kai Bergmann über die Grafik der Stadt?",
+              options: [
+                "Sie sei gefälscht.",
+                "Der Rückgang komme von weniger Kurzstrecken, nicht vom Umstieg der Pendler.",
+                "Der CO2-Ausstoß sei gestiegen.",
+              ],
+              answer: 1,
+              plays: 2,
+              notepad: true,
+              whyWrong: ["No habla de fraude", null, "Acepta el descenso y discute la causa"],
+              itemIds: ["b2m9lautgrafik", "b2m9rueckgang", "b2m9co2ausstoss"],
+            },
+            {
+              id: "b2m9l7e3", type: "audiomc", prompt: "Misma tertulia. ¿De qué depende, según ambos?",
+              audio: DEBATTE_WENDE,
+              question: "„Es hängt davon ab, über wen man spricht.“ ¿A qué se refiere?",
+              options: [
+                "A si el interlocutor es periodista o sindicalista.",
+                "A si se habla de quien vive en el Kiez o de quien viene de Bernau.",
+                "A si el debate es por la mañana o por la noche.",
+              ],
+              answer: 1,
+              plays: 2,
+              notepad: true,
+              whyWrong: ["El oficio no es el criterio que nombran", null, "La hora importa para la Schicht, no para esa frase"],
+              itemIds: ["b2m9haengtdavonab", "b1m2pendeln"],
+            },
+            {
+              id: "b2m9l7e4", type: "audiomc", prompt: "Cierre de la tertulia. ¿Quién dice qué?",
+              audio: DEBATTE_WENDE,
+              question: "Wer sagt, die Wende gelinge nur, wenn der Nahverkehr die Voraussetzung erfülle, nicht das schlechte Gewissen?",
+              options: ["Kai Bergmann", "Clara Hofmann", "Der Moderator"],
+              answer: 1,
+              plays: 2,
+              notepad: true,
+              whyWrong: ["Kai cierra con que los que trabajan de noche tienen que salir en la gráfica", null, "El moderador solo da paso"],
+              itemIds: ["b2m9voraussetzungfuer", "b2m9energiewende"],
+              tip: "En el Teil 3 del examen esta pregunta es la tarea entera: atribuir. Aquí aún oyes los nombres; allí tendrás que haberlos apuntado.",
+            },
+            {
+              id: "b2m9l7e5", type: "audiomc", prompt: "Detalle de Carsharing. Cuaderno.",
+              audio: DEBATTE_WENDE,
+              question: "Was sagt Kai Bergmann zum Carsharing für die Schicht um vier?",
+              options: ["Es sei die Lösung.", "Kommt drauf an: für Einkäufe ja, für die Schicht um vier fahre keins.", "Es sei verboten."],
+              answer: 1,
+              plays: 2,
+              notepad: true,
+              whyWrong: ["Lo acepta solo para la compra", null, "Nadie habla de prohibición"],
+              itemIds: ["b2m9carsharing", "b1m2natkommtdraufan"],
+            },
+            {
+              id: "b2m9l7e6", type: "shadow", prompt: "Sombrea la frase de Hofmann (corta, a tempo)",
+              text: "Die Wende gelingt nur, wenn der Nahverkehr die Voraussetzung erfüllt.",
+              phonetic: "di VEN-de gue-LINGT nur, ven dea NAA-fea-keea di FOA-aus-se-tsung ea-FÜLT",
+              translation: "El giro solo sale si el transporte urbano cumple el requisito.",
+              reps: 2,
+              itemIds: ["b2m9voraussetzungfuer", "b2m9nahverkehr"],
+            },
+            {
+              id: "b2m9l7e7", type: "cloze", prompt: "Lo que Kai pide al final",
+              text: "Kai fordert ein Jobticket. Er geht ___, dass sich das nach einem Jahr rechnet.",
+              answers: ["davon aus"],
+              translation: "Kai pide un abono de empresa. Parte de que en un año sale a cuenta.",
+              itemIds: ["b2m9davonausgehen"],
+            },
+            {
+              id: "b2m9l7e8", type: "type", prompt: "Cierre de oído",
+              question: "Según el gráfico baja el CO₂; eso se debe a que hay menos trayectos cortos",
+              answers: [
+                "Laut der Grafik sinkt der CO2-Ausstoß; das liegt daran, dass weniger Kurzstrecken gefahren werden",
+                "Laut der Grafik sinkt der CO2-Ausstoß, das liegt daran, dass weniger Kurzstrecken gefahren werden",
+                "Laut der Grafik sinkt der CO2-Ausstoß; das liegt daran, dass weniger Kurzstrecken gefahren werden.",
+              ],
+              hints: ["Laut der Grafik …; das liegt daran, dass …", "CO2-Ausstoß"],
+              itemIds: ["b2m9lautgrafik", "b2m9natliegtdaran", "b2m9co2ausstoss"],
+            },
+          ],
+        },
+      ],
+    },
+
+    // ─────────────────────────── L8 ───────────────────────────
+    {
+      id: "b2m9l8",
+      phaseId: "b2m9",
+      title: "Schreiben: 100 formal, 150 de argumento",
+      subtitle: "Dos tareas, dos relojes, un solo error que vale cero",
+      minutes: 22,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Las recciones que tienen que verse en el texto",
+          itemIds: ["b2m9grundfuer", "b2m9voraussetzungfuer", "b2m9fuehrenzu", "b2m9einsparen", "b2m9energieverbrauch"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "En B2 el Schreiben son DOS tareas, no tres",
+            body: "El Goethe B2 te da <b>75 minutos</b> y te pide <b>dos textos</b>: un <b>Forumsbeitrag de unas 150 palabras</b> (50 min, 60 puntos) y una <b>Nachricht al superior de unas 100</b> (25 min, 40 puntos). Si <b>Erfüllung cae a E</b> —tema fallado o menos del 50 % de las palabras— <b>la tarea vale 0</b>, por muy bien escrita que esté.<br/><br/>Hoy entrenas las dos, con la rección del módulo a la vista. La formal va de <b>Sie</b> y no se le puede colar un <i>du</i>. La de foro va de <b>du</b> y tiene que reaccionar al texto publicado, no narrar el martes.",
+            table: [
+              ["Aufgabe 1", "Forumsbeitrag · ~150 palabras · 60 pts · 50 min"],
+              ["Aufgabe 2", "Nachricht an den Vorgesetzten · ~100 · 40 pts · 25 min"],
+              ["Erfüllung = E", "0 puntos en toda la tarea"],
+            ],
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l8e1", type: "mc", prompt: "La regla que hunde a quien sabe alemán",
+              question: "Te piden 150 palabras, escribes 70 impecables. ¿Qué pasa con esa tarea?",
+              options: ["Unos 30 de 60, por la calidad", "0: por debajo del 50 %, Erfüllung cae a E", "Se prorratea al 47 %"],
+              answer: 1,
+              whyWrong: ["La calidad no rescata la Erfüllung", null, "No se prorratea: es todo o nada"],
+              itemIds: ["b2m9energiewende"],
+              tip: "Cuenta las palabras. En B2 la tarea larga es el 60 % del módulo: quedarte corto es tirar el Schreiben entero.",
+            },
+            {
+              id: "b2m9l8e2", type: "errorfix", prompt: "Fuga de registro en la Nachricht",
+              wrong: "Sehr geehrter Herr Bergmann, kannst du das Jobticket prüfen?",
+              answers: ["Sehr geehrter Herr Bergmann, können Sie das Jobticket prüfen?", "Sehr geehrter Herr Bergmann, können Sie das Jobticket prüfen"],
+              why: "Si abres con Sehr geehrter, el texto entero va de Sie. Un du en la primera petición tumba el registro y la banda de Erfüllung.",
+              translation: "Estimado señor Bergmann, ¿podría revisar el abono de empresa?",
+              itemIds: ["b2m9zustaendigfuer"],
+            },
+            {
+              id: "b2m9l8e3", type: "write", prompt: "Aufgabe 2 — Nachricht al Betriebsrat. Unas 100 palabras, registro Sie, 25 minutos.",
+              scenario: "Trabajas en la cocina con Nico. Escribe a Kai Bergmann, miembro del Betriebsrat: pide que se estudie un Jobticket para el equipo, explica el motivo con una rección de sustantivo, nombra una consecuencia para el turno y cierra con una petición cortés.",
+              genre: "mail-formal",
+              register: "Sie",
+              frame: [
+                "Anrede: Sehr geehrter Herr Bergmann,",
+                "Motivo: Der Grund für … / Die Voraussetzung für …",
+                "Consecuencia: Das wirkt sich auf … aus / Das führt zu …",
+                "Petición en Konjunktiv II: Wäre es möglich …?",
+                "Grußformel: Mit freundlichen Grüßen + nombre",
+              ],
+              bullets: [
+                "Abre con Anrede formal y cierra con Grußformel",
+                "Nombra el Jobticket y el motivo con Grund für o Voraussetzung für",
+                "Señala una consecuencia (auswirken auf / führen zu)",
+                "Pide algo con Konjunktiv II (Wäre es möglich / Könnten Sie)",
+              ],
+              checks: [
+                { re: "Sehr geehrte[sr].*Mit freundlichen Grüßen", label: "Anrede y Grußformel" },
+                { re: "(Grund für|Voraussetzung für|Jobticket)", label: "motivo con rección o Jobticket" },
+                { re: "(wirkt sich|führen zu|führt zu|auswirken)", label: "consecuencia" },
+                { re: "(Wäre es möglich|Könnten Sie|Ich würde Sie bitten)", label: "petición cortés" },
+              ],
+              minWords: 90,
+              maxWords: 120,
+              requireConnectors: { min: 2, bank: ["weil", "deshalb", "außerdem", "damit"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              model: "Sehr geehrter Herr Bergmann, hiermit bitte ich Sie um die Prüfung eines Jobtickets für die Küche. Der Grund für diese Bitte liegt in den langen Arbeitswegen: mehrere Kolleginnen pendeln täglich mehr als vierzig Minuten mit dem Auto nach Mitte. Das wirkt sich auf die Pünktlichkeit der Frühschicht aus, weil die erste Bahn oft ausfällt. Außerdem wäre ein Ticket die Voraussetzung für den Umstieg auf den Nahverkehr, und wir könnten Energie einsparen. Wäre es möglich, das Thema in der nächsten Runde am kommenden Donnerstag zu behandeln? Mit freundlichen Grüßen\nSofía Marín",
+              itemIds: ["b2m9grundfuer", "b2m9voraussetzungfuer", "b2m9sichauswirkenauf", "b2m9einsparen"],
+              tip: "Cien palabras dan para cuatro movimientos, no para diez. Anrede, motivo con rección, consecuencia, petición, Gruß. Sin un du.",
+            },
+            {
+              id: "b2m9l8e4", type: "write", prompt: "Aufgabe 1 — Forumsbeitrag. Unas 150 palabras. Reacciona, argumenta, no narres.",
+              scenario: "En el foro de «Stadttakt» un oyente ha escrito que la Verkehrswende es un capricho de quien vive en el centro. Escribe tu comentario: reacciona, da tu postura, nombra una ventaja y una pega, y cierra con una propuesta.",
+              genre: "forum",
+              register: "du",
+              stimulus: {
+                author: "Markus B., Hörer",
+                text: "Die Verkehrswende ist ein Hobby der Leute in Prenzlauer Berg. Wer pendelt, braucht das Auto. Grafiken ändern daran nichts.",
+              },
+              frame: [
+                "Reacción al texto (den Beitrag gelesen)",
+                "Tesis: Meiner Meinung nach / Ich bin überzeugt von …",
+                "Causa con rección: Der Grund für … / Das liegt daran, dass …",
+                "Concesión: Allerdings / Das mag zutreffen, aber …",
+                "Propuesta: Voraussetzung für … wäre …",
+              ],
+              bullets: [
+                "Reacciona al comentario publicado",
+                "Da tu postura (überzeugt von / meiner Meinung nach / dafür/dagegen)",
+                "Nombra una causa con rección (Grund für / liegt daran / Auswirkung auf)",
+                "Concede algo y cierra con una propuesta (Voraussetzung für)",
+              ],
+              checks: [
+                { re: "(Beitrag|gelesen|Kommentar|Markus)", label: "reacción al texto" },
+                { re: "(überzeugt von|Meiner Meinung nach|Ich bin der Meinung|dafür|dagegen)", label: "postura" },
+                { re: "(Grund für|liegt daran|Auswirkung auf|Voraussetzung für)", label: "rección de causa" },
+                { re: "(Allerdings|trotzdem|zwar|aber)", label: "concesión" },
+              ],
+              minWords: 135,
+              maxWords: 170,
+              requireConnectors: { min: 3, bank: ["weil", "allerdings", "trotzdem", "außerdem", "deshalb", "aber"] },
+              rubric: ["erfuellung", "kohaerenz", "wortschatz", "strukturen"],
+              model: "Ich habe den Beitrag von Markus gelesen und sehe das nur zum Teil so. Meiner Meinung nach braucht, wer nachts pendelt, tatsächlich eine Lösung, die kein Radweg ist. Allerdings ist der Grund für den Stau im Kiez nicht die Wende, sondern ein Nahverkehr, der nach Mitternacht kaum taktet. Das liegt daran, dass zwei Gruppen in einen Topf geworfen werden. Außerdem sinkt laut der Grafik der CO2-Ausstoß dort, wo Kurzstrecken wegfallen — das ist messbar und kein Hobby der Innenstadt. Trotzdem bleibt die Voraussetzung für einen echten Umstieg ein Nachtnetz, nicht das schlechte Gewissen der Leute im Prenzlauer Berg. Deshalb wünsche ich mir Jobtickets und verlässliche Taktzeiten, nicht Moral. Wer pendelt, ist nicht gegen die Wende; er wartet auf die Voraussetzung, und die Stadt ist dafür zuständig. Ohne diesen Takt bleibt der Verzicht auf das Auto für die Schicht ein leeres Wort.",
+              itemIds: ["b2m9grundfuer", "b2m9natliegtdaran", "b2m9voraussetzungfuer", "b2m9lautgrafik"],
+              tip: "Ciento cincuenta palabras son un argumento, no una anécdota. Si cuentas lo que te pasó el martes, estás escribiendo el B1 en el sitio del B2.",
+            },
+            {
+              id: "b2m9l8e5", type: "gapbank", prompt: "El esqueleto de la Nachricht",
+              text: "Der Grund ___ das Jobticket ist der Arbeitsweg. Das wirkt sich ___ die Pünktlichkeit aus. Das führt ___ einem Umstieg.",
+              answers: ["für", "auf", "zu"],
+              bank: ["für", "auf", "zu", "an", "von", "über"],
+              translation: "El motivo del abono es el trayecto al trabajo. Eso repercute en la puntualidad. Eso conduce a un cambio de medio.",
+              itemIds: ["b2m9grundfuer", "b2m9sichauswirkenauf", "b2m9fuehrenzu"],
+            },
+            {
+              id: "b2m9l8e6", type: "translate", prompt: "Al alemán, registro de foro",
+              direction: "toTarget",
+              source: "El descenso se debe a que hay menos trayectos cortos.",
+              answers: [
+                "Der Rückgang liegt daran, dass weniger Kurzstrecken gefahren werden.",
+                "Der Rückgang liegt daran, dass es weniger Kurzstrecken gibt.",
+              ],
+              hint: "da-Komposita de «liegen an»",
+              itemIds: ["b2m9natliegtdaran", "b2m9rueckgang"],
+            },
+            {
+              id: "b2m9l8e7", type: "type", prompt: "Cierre: una frase que vale en las dos tareas",
+              question: "Eso conduce a un menor consumo de energía",
+              answers: [
+                "Das führt zu einem geringeren Energieverbrauch",
+                "Das führt zu einem geringeren Energieverbrauch.",
+              ],
+              hints: ["führen zu + Dativ", "Das führt zu einem geringeren …"],
+              itemIds: ["b2m9fuehrenzu", "b2m9energieverbrauch"],
+            },
+          ],
+        },
+      ],
+    },
+
+    // ─────────────────────────── L9 ───────────────────────────
+    {
+      id: "b2m9l9",
+      phaseId: "b2m9",
+      title: "Vortrag: die Grafik erklären",
+      subtitle: "Un relato del Kiez y cuatro minutos de datos, sin diapositivas fijas",
+      minutes: 18,
+      sections: [
+        {
+          kind: "phrases",
+          title: "Abrir, señalar el gráfico, cerrar",
+          itemIds: ["b2m9grafik", "b2m9lautgrafik", "b2m9imvergleichzu", "b2m9nachhaltig", "b2m9natstolzdrauf"],
+        },
+        {
+          kind: "note",
+          note: {
+            title: "Sofía, Nico, Anna und der Lieferwagen",
+            body: "<i>Lee en voz alta. El esqueleto del Vortrag (problema → dato → causa → propuesta) está dentro del relato, no en cinco diapositivas.</i><br/><br/>Nico wollte den [[Lieferwagen|furgoneta de reparto]] abschaffen. Der [[Energieverbrauch|consumo de energía]] sei unverhältnismäßig, sagte er, und die Grafik der Stadt gebe ihm recht: im Kiez sinke der [[CO2-Ausstoß|emisiones]] dort, wo weniger Kurzstrecken gefahren werden. Anna widersprach, ohne die Richtung anzugreifen. Wer um fünf in der [[Pflege|cuidados]] anfängt, kann nicht auf den [[Nahverkehr|cercanías]] umsteigen. Die erste Bahn, mit der sie pünktlich wäre, fährt nicht. Das Auto ist dann kein Hobby. Es ist der Dienstplan.<br/><br/>Sofía teilte das Problem, statt eine Seite zu wählen. [[Carsharing|coche compartido]] für die Einkäufe, ein Jobticket für die Schicht. Zwei Ursachen, zwei Werkzeuge. Kai Bergmann nahm den Vorschlag mit in die nächste [[Betriebsratssitzung|reunión del comité de empresa]]. Ohne den Rat bleibt die Idee eine Meinung im Kiez. Mit ihm wird sie ein Punkt auf der Tagesordnung.<br/><br/>Ob der Wagen bleibt, steht nicht in diesem Abend. Steht nur, woran es liegt, dass niemand ihn einfach streichen kann — und dass die Grafik die Schicht nicht zeigt, wenn niemand sie hineinschreibt.",
+          },
+        },
+        {
+          kind: "exercises",
+          exercises: [
+            {
+              id: "b2m9l9e1", type: "order", prompt: "Ordena el relato: Sofía, Nico, Anna y el auto de la cocina",
+              sentences: [
+                "Nico wollte den Lieferwagen abschaffen, weil der Energieverbrauch unverhältnismäßig war.",
+                "Anna widersprach: Wer um fünf in der Pflege anfängt, kann nicht auf den Nahverkehr umsteigen.",
+                "Sofía schlug Carsharing für die Einkäufe vor und ein Jobticket für die Schicht.",
+                "Kai Bergmann nahm den Vorschlag mit in die nächste Betriebsratssitzung.",
+              ],
+              translation: "Nico quiere quitar la furgoneta; Anna pone el turno de las cinco; Sofía parte el problema en dos; Kai se lleva la propuesta.",
+              itemIds: ["b2m9energieverbrauch", "b2m9carsharing", "b2m9umsteigenauf"],
+            },
+            {
+              id: "b2m9l9exi1", type: "mc", prompt: "Inferencia: por qué Sofía parte el problema",
+              question: "Nico quiere quitar la furgoneta. Sofía no le sigue del todo. ¿Por qué propone dos herramientas en vez de una abolición?",
+              options: [
+                "Porque le gustan los coches y no quiere enemistarse con Kai",
+                "Porque el turno de las cinco de Anna no se resuelve matando el furgón: dos causas, dos instrumentos",
+                "Porque el Betriebsrat le ha encargado un compromiso por escrito",
+              ],
+              answer: 1,
+              whyWrong: [
+                "Sofía no defiende el coche; parte el problema",
+                null,
+                "Kai se lleva la propuesta después; no la ha encargado antes",
+              ],
+              itemIds: ["b2m9carsharing", "b2m9umsteigenauf", "b2m9voraussetzungfuer"],
+            },
+            {
+              id: "b2m9l9exi2", type: "mc", prompt: "Inferencia: lo que Kai no dice al llevárselo",
+              question: "Kai se lleva la propuesta al Betriebsrat. ¿Qué implica eso que nadie formula?",
+              options: [
+                "Que la cocina no cambia por un recado de rellano: sin el comité, la idea muere como opinión de barrio",
+                "Que Kai está en contra y quiere enterrarla en una acta",
+                "Que la furgoneta ya no está: el trámite es solo formal",
+              ],
+              answer: 0,
+              whyWrong: [
+                null,
+                "El relato no le pone bando: le pone un cauce",
+                "El cierre dice expresamente que si el furgón se queda, aún no se sabe",
+              ],
+              itemIds: ["b2m2betriebsrat", "b2m9zustaendigfuer"],
+            },
+            {
+              id: "b2m9l9e2", type: "mc", prompt: "Qué esqueleto NO es el del B1",
+              question: "En el Vortrag B2, ¿qué ha desaparecido?",
+              options: [
+                "La obligación de argumentar",
+                "Las cinco diapositivas fijas de siempre",
+                "El tiempo de preparación de 15 minutos",
+              ],
+              answer: 1,
+              whyWrong: ["Argumentar sigue siendo el núcleo", null, "Los 15 minutos de preparación se mantienen"],
+              itemIds: ["b2m9grafik"],
+              tip: "Lo que se pierde es la plantilla. Lo que se gana es tener que inventar el esqueleto — y por eso hay que llevar tres de cabeza.",
+            },
+            {
+              id: "b2m9l9e3", type: "match", prompt: "Empareja cada tramo del Vortrag con su fórmula",
+              pairs: [
+                { target: "Ich möchte Ihnen heute die Grafik zum CO2-Ausstoß näherbringen.", source: "entrada" },
+                { target: "Laut der Grafik sinkt der Ausstoß im Vergleich zu 2019.", source: "dato" },
+                { target: "Das liegt daran, dass weniger Kurzstrecken gefahren werden.", source: "causa" },
+                { target: "Die Voraussetzung für einen weiteren Rückgang wäre ein Nachtnetz.", source: "propuesta" },
+              ],
+              itemIds: ["b2m9lautgrafik", "b2m9natliegtdaran", "b2m9voraussetzungfuer"],
+            },
+            {
+              id: "b2m9l9e4", type: "gapbank", prompt: "El hilo del Vortrag",
+              text: "___ der Grafik sinkt der Ausstoß ___ 2019. Das führt ___ einer besseren Luftqualität, wenn der Takt stimmt.",
+              answers: ["Laut", "im Vergleich zu", "zu"],
+              bank: ["Laut", "im Vergleich zu", "zu", "nach", "von", "wegen"],
+              translation: "Según el gráfico, las emisiones bajan respecto a 2019. Eso conduce a un aire mejor si la frecuencia cuadrara.",
+              itemIds: ["b2m9lautgrafik", "b2m9imvergleichzu", "b2m9fuehrenzu"],
+            },
+            {
+              id: "b2m9l9e5", type: "monologue", prompt: "Vortrag de 4 minutos. Planifica, habla, y repite la tarea.",
+              topic: "Die Grafik zur Verkehrswende: Was sie zeigt — und was sie nicht zeigt",
+              slides: [
+                { title: "Einstieg", hint: "Ich möchte Ihnen heute … näherbringen. Die Grafik zeigt den CO2-Ausstoß 2019–2024." },
+                { title: "Daten", hint: "Laut der Grafik … Im Vergleich zu 2019 … Der Rückgang beträgt …" },
+                { title: "Ursache und Grenze", hint: "Das liegt daran, dass … / Ich gehe davon aus, dass … Worauf stützt sich das nicht?" },
+                { title: "Folgen und Vorschlag", hint: "Die Auswirkung auf … / Die Voraussetzung für … wäre …" },
+                { title: "Schluss und Fragen", hint: "Zusammenfassend … Ich stehe für Fragen zur Verfügung." },
+              ],
+              planSeconds: 180,
+              speakSeconds: 240,
+              reps: 2,
+              checklist: [
+                "Abrí con el tema y mencioné la gráfica",
+                "Di al menos un dato con laut / im Vergleich zu",
+                "Marqué una causa con liegt daran / Grund für / davon ausgehen — y dije qué NO muestra el gráfico",
+                "Cerré con una propuesta (Voraussetzung für) y ofrecí preguntas",
+                "Hablé cerca de 4 minutos en las dos pasadas",
+              ],
+              model: "Einstieg (modelo): „Ich möchte Ihnen heute die Grafik zum CO2-Ausstoß in Berlin näherbringen. Laut der Grafik sinkt der Ausstoß im Innenstadtring im Vergleich zu 2019 um zwölf Prozent. Das liegt daran, dass weniger Kurzstrecken mit dem Auto gefahren werden. Worauf stützt sich das nicht? Auf den Fernverkehr der Pendler. Die Voraussetzung für einen weiteren Rückgang wäre ein Nachtnetz, nicht das schlechte Gewissen. Darauf bin ich durchaus stolz, wenn die Stadt es angeht. Ich stehe Ihnen nun für Fragen zur Verfügung.“",
+              itemIds: ["b2m9grafik", "b2m9lautgrafik", "b2m9natliegtdaran", "b2m9voraussetzungfuer", "b2m9natstolzdrauf"],
+              tip: "La segunda pasada, sin leer el modelo, es el ejercicio de verdad. La primera es el ensayo.",
+            },
+            {
+              id: "b2m9l9e6", type: "paraphrase", prompt: "Cierra el módulo: dilo sin «stolz»",
+              source: "Da bin ich schon stolz drauf.",
+              forbid: ["stolz", "drauf"],
+              answers: [
+                "Darauf lege ich großen Wert.",
+                "Das betrachte ich als einen echten Erfolg.",
+              ],
+              translation: "Eso sí que lo valoro.",
+              itemIds: ["b2m9natstolzdrauf"],
+            },
+            {
+              id: "b2m9l9e7", type: "type", prompt: "Última frase del módulo",
+              question: "Según el gráfico el descenso es claro; se debe a que ahorramos energía",
+              answers: [
+                "Laut der Grafik ist der Rückgang deutlich; das liegt daran, dass wir Energie einsparen",
+                "Laut der Grafik ist der Rückgang deutlich, das liegt daran, dass wir Energie einsparen",
+                "Laut der Grafik ist der Rückgang deutlich; das liegt daran, dass wir Energie einsparen.",
+              ],
+              hints: ["Laut der Grafik …; das liegt daran, dass …", "Energie einsparen"],
+              itemIds: ["b2m9lautgrafik", "b2m9rueckgang", "b2m9natliegtdaran", "b2m9einsparen"],
+              tip: "Rección de sustantivo, da-Komposita y dato de gráfico en una sola frase. El módulo está cerrado cuando eso sale sin contar con los dedos.",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};

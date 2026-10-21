@@ -1,0 +1,62 @@
+/* Solo clasificar. shakeX y feedbackIn se copian: el @keyframes de un módulo no se ve desde otro. */
+
+@keyframes feedbackIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@media (max-width: 640px) {
+  /* una palabra larga en la ficha o en el hueco no puede sacar la línea
+     fuera de la tarjeta: se parte antes de desbordar */
+  .bucketItem { max-width: 100%; text-align: center; overflow-wrap: anywhere; }
+}
+
+.bucketStage { display: flex; justify-content: center; margin: 18px 0 6px; min-height: 74px; }
+
+.bucketItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 26px;
+  border: 2px solid var(--border-strong);
+  border-radius: 16px 13px 17px 14px;
+  background: var(--surface);
+  font-size: 1.25rem;
+  font-weight: 800;
+  box-shadow: 3px 4px 0 var(--paper-edge);
+  animation: feedbackIn 0.22s var(--ease);
+}
+
+.bucketOk { border-color: var(--ok); background: var(--ok-soft); }
+
+.bucketBad { border-color: var(--err); background: var(--err-soft); animation: shakeX 0.32s var(--ease); }
+
+.bucketFix { font-size: 0.9375rem; font-weight: 700; color: var(--err); }
+
+.bucketCount { text-align: center; color: var(--text-3); font-size: 0.8125rem; margin: 0 0 10px; }
+
+.bucketRow { display: flex; gap: 12px; justify-content: center; }
+
+.bucketBtn {
+  flex: 1;
+  max-width: 220px;
+  padding: 16px 12px;
+  min-height: 58px;
+  border: 2px solid var(--border-strong);
+  border-radius: 14px 12px 15px 13px;
+  background: var(--surface);
+  font-size: 1.125rem;
+  font-weight: 800;
+  box-shadow: 0 4px 0 var(--border-strong);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), border-color 0.15s var(--ease);
+}
+
+.bucketBtn:hover:not(:disabled) { transform: translateY(-1px); border-color: var(--accent); }
+
+.bucketBtn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--border-strong); }

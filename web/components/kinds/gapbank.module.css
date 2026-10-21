@@ -1,0 +1,52 @@
+/* Solo huecos y banco. Traducción, pie y botones siguen en ex.module.css. */
+
+@media (max-width: 640px) {
+  /* una palabra larga en el hueco no puede sacar la línea fuera de la tarjeta */
+  .gapSlot { max-width: 100%; overflow-wrap: anywhere; }
+}
+
+/* ══ B1: gapbank ══ */
+.gapText { line-height: 2.4; font-size: 1.05rem; }
+
+.gapSlot {
+  display: inline-block;
+  min-width: 5.5em;
+  padding: 3px 10px;
+  margin: 0 3px;
+  border: 2px dashed var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gapSlotActive { border-color: var(--accent); border-style: solid; background: var(--accent-soft); }
+
+.gapOk { border-color: var(--ok); border-style: solid; color: var(--ok); }
+
+.gapBad { border-color: var(--err); border-style: solid; color: var(--err); }
+
+.bankRow { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+
+.bankWord {
+  padding: 7px 13px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--panel);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bankWord:hover:not(:disabled) { border-color: var(--accent); }
+
+.bankUsed { opacity: 0.7; color: var(--locked); text-decoration: line-through; cursor: default; }
+
+.bankTimes {
+  margin-left: 5px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent-text);
+  font-variant-numeric: tabular-nums;
+}

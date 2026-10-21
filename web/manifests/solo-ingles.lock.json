@@ -1,0 +1,91 @@
+{
+  "manifest": "solo-ingles",
+  "resolvedAt": "2026-09-03",
+  "modules": [
+    "ena1m1",
+    "ena1m10",
+    "ena1m11",
+    "ena1m12",
+    "ena1m2",
+    "ena1m3",
+    "ena1m4",
+    "ena1m5",
+    "ena1m6",
+    "ena1m7",
+    "ena1m8",
+    "ena1m9",
+    "ena2m1",
+    "ena2m10",
+    "ena2m11",
+    "ena2m12",
+    "ena2m2",
+    "ena2m3",
+    "ena2m4",
+    "ena2m5",
+    "ena2m6",
+    "ena2m7",
+    "ena2m8",
+    "ena2m9",
+    "enb1m1",
+    "enb1m10",
+    "enb1m11",
+    "enb1m12",
+    "enb1m2",
+    "enb1m3",
+    "enb1m4",
+    "enb1m5",
+    "enb1m6",
+    "enb1m7",
+    "enb1m8",
+    "enb1m9"
+  ],
+  "exams": [
+    "en-a2-sim-a",
+    "en-a2-sim-b",
+    "en-a2-sim-c",
+    "en-b1-sim-a",
+    "en-b1-sim-b",
+    "en-b1-sim-c",
+    "en-sim-a",
+    "en-sim-b"
+  ],
+  "missions": [
+    "missionsEn",
+    "missionsEnA2",
+    "missionsEnB1"
+  ],
+  "references": [
+    "en",
+    "ena2",
+    "enb1"
+  ],
+  "features": {
+    "ai": true,
+    "exams": true,
+    "missions": true,
+    "interview": true,
+    "review": true,
+    "challenges": true,
+    "placement": true,
+    "badges": true,
+    "reference": true,
+    "certificates": true,
+    "moduleTest": true,
+    "tts": true
+  },
+  "importedCards": {},
+  "counts": {
+    "modules": 36,
+    "exams": 8,
+    "missions": 3,
+    "references": 3
+  },
+  "langs": [
+    "en"
+  ],
+  "levels": [
+    "en-a1",
+    "en-a2",
+    "en-b1"
+  ]
+}

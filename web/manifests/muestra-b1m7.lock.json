@@ -1,0 +1,44 @@
+{
+  "manifest": "muestra-b1m7",
+  "resolvedAt": "2026-10-20",
+  "modules": [
+    "b1m7"
+  ],
+  "exams": [],
+  "missions": [],
+  "references": [],
+  "features": {
+    "ai": false,
+    "exams": false,
+    "missions": true,
+    "interview": false,
+    "review": true,
+    "challenges": true,
+    "placement": false,
+    "badges": false,
+    "reference": true,
+    "certificates": false,
+    "moduleTest": true,
+    "tts": true
+  },
+  "importedCards": {
+    "a2m4geschenk": "a2m4",
+    "a2m9einladung": "a2m9",
+    "a2m9feiern": "a2m9",
+    "a2m9gast": "a2m9",
+    "a2m9ueberraschung": "a2m9",
+    "b1m6obwohl": "b1m6"
+  },
+  "counts": {
+    "modules": 1,
+    "exams": 0,
+    "missions": 0,
+    "references": 0
+  },
+  "langs": [
+    "de"
+  ],
+  "levels": [
+    "de-b1"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "drop-1",
+  "name": "Seshat — Alemán A1",
+  "dropNumber": 1,
+  "content": {
+    "include": [{ "lang": "de", "level": "a1" }]
+  },
+  "features": {
+    "ai": true, "exams": true, "missions": true, "interview": true, "review": true,
+    "challenges": true, "placement": true, "badges": true, "reference": true,
+    "certificates": true, "moduleTest": true, "tts": true
+  },
+  "policy": { "vocabularyClosure": "cards", "onMissingCard": "fail" }
+}

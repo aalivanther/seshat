@@ -1,0 +1,412 @@
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0 20px;
+}
+
+.closeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  transition: background 0.15s var(--ease);
+}
+
+.closeBtn:hover { background: var(--panel); }
+
+.progressTrack {
+  flex: 1;
+  height: 8px;
+  background: var(--panel);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.55s var(--ease-spring);
+}
+
+.stepCount {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  min-width: 48px;
+  text-align: right;
+}
+
+.lessonHead { margin-bottom: 20px; }
+
+.lessonTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.lessonSub { color: var(--text-2); margin-top: 2px; }
+
+/* Presentación de frases */
+.phraseIntro {
+  font-size: 0.875rem;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+.phraseList { display: grid; gap: 10px; }
+
+.phraseCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.phraseCard:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+.phraseDe {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.phraseEs { color: var(--text-2); font-size: 0.9375rem; }
+
+.phraseSound {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+
+.phraseHint {
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  margin-top: 12px;
+}
+
+/* Nota gramatical */
+.note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 24px 24px 58px; /* deja aire tras la línea de margen del papel */
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 640px) {
+  .note { padding-left: 24px; }
+}
+
+.noteKicker {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  margin-bottom: 8px;
+}
+
+.noteTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+.noteBody {
+  color: var(--text-2);
+  /* Los compuestos alemanes son largos de verdad (Vorstellungsgespräch,
+     Krankenversicherung): sin esto, en una ventana estrecha o con la fuente de
+     Windows —que mide distinto— una sola palabra empujaba el bloque entero y
+     descuadraba la explicación. */
+  overflow-wrap: anywhere;
+}
+.noteBody b { color: var(--text); }
+
+/* La tabla de la nota necesita poder desplazarse SOLA. Iba al 100% sin
+   contenedor: en cuanto una fila no cabía (declinaciones, tres columnas de
+   ejemplos), estiraba la tarjeta y con ella la lección entera. */
+.noteTableWrap {
+  position: relative;
+  margin-top: 16px;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  /* Que la tabla se desplace ya estaba resuelto; que se NOTARA, no. En un móvil
+     la declinación de cinco columnas se cortaba en seco contra el borde de la
+     nota y parecía que ahí se acababa el cuadro: nadie arrastra lo que no sabe
+     que hay. Este degradado de la derecha dice «sigue». Es una máscara sobre el
+     propio carril, sin nodo extra y sin tapar ninguna letra del todo. */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 22px), rgba(0, 0, 0, 0.18));
+  mask-image: linear-gradient(to right, #000 calc(100% - 22px), rgba(0, 0, 0, 0.18));
+}
+
+.noteTable {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 22rem; /* por debajo de esto se lee peor apretada que desplazándola */
+  font-size: 0.9375rem;
+}
+
+.noteTable td, .noteTable th {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.noteTable tr:first-child td {
+  font-weight: 600;
+  color: var(--text-3);
+  font-size: 0.8125rem;
+}
+
+.continueRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Pantalla final */
+.doneWrap { text-align: center; padding: 40px 0 24px; }
+
+.scoreRing {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+}
+
+.doneTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.doneSub { color: var(--text-2); margin-top: 6px; }
+
+.statRow {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 22px;
+  min-width: 110px;
+}
+
+.statVal {
+  font-size: 1.375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel { font-size: 0.8125rem; color: var(--text-3); }
+
+.resources {
+  text-align: left;
+  margin-top: 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.resourcesTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.resourceCard {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  background: var(--surface);
+  transition: border-color 0.15s var(--ease);
+}
+
+.resourceCard:hover { border-color: var(--accent); }
+
+.resourceLabel { font-weight: 600; font-size: 0.9375rem; }
+.resourceNote { color: var(--text-2); font-size: 0.875rem; margin-top: 2px; }
+.resourceUrl { color: var(--text-3); font-size: 0.8125rem; font-family: var(--font-mono); margin-top: 4px; word-break: break-all; }
+
+.offline {
+  margin-top: 16px;
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+
+@media (max-width: 640px) {
+  .continueRow { flex-wrap: wrap; }
+  .continueRow > * { flex: 1; text-align: center; justify-content: center; }
+}
+
+/* ══ Renglones sincronizados: el texto de la nota VIVE sobre las líneas ══
+   La rejilla del papel es de 32px (línea al pie de cada banda). Padding-top
+   múltiplo de 32 + line-height 32 = cada línea de texto se apoya en su renglón. */
+
+.note {
+  padding-top: 32px;
+  line-height: 32px;
+  border-width: 2px;
+  border-radius: 19px 15px 20px 16px;
+  box-shadow: 5px 6px 0 var(--paper-edge), 0 14px 30px var(--shadow-ambient);
+}
+
+.noteKicker { line-height: 32px; margin-bottom: 0; }
+.noteTitle { line-height: 32px; margin-bottom: 0; }
+.noteBody { line-height: 32px; }
+
+.noteTable { margin-top: 32px; }
+.noteTable td,
+.noteTable th { height: 32px; padding-top: 0; padding-bottom: 0; line-height: 32px; border-bottom: none; }
+
+/* ══ Relieve en tarjetas de frase (son botones: se tocan para escuchar) ══ */
+.phraseCard {
+  border-width: 2px;
+  border-radius: 15px 12px 16px 13px;
+  box-shadow: 3px 4px 0 var(--paper-edge);
+  transition: transform 0.1s var(--ease), box-shadow 0.1s var(--ease),
+    border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.phraseCard:hover { transform: translate(-1px, -1px); box-shadow: 4px 6px 0 var(--paper-edge-strong); }
+.phraseCard:active { transform: translate(1px, 2px); box-shadow: 1px 1px 0 var(--paper-edge); }
+
+/* ══ A2: glosas, audio por línea, timeline ══ */
+
+.lineSpeak {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--accent-text);
+  vertical-align: -6px;
+  box-shadow: 0 1.5px 0 var(--border);
+}
+
+.lineSpeak:active { transform: translateY(1px); box-shadow: none; }
+
+.glossChip {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 8px 14px;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-hand);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-weight: 600;
+  animation: none;
+  line-height: 32px;
+}
+
+.timeline {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 8px 0 24px;
+  padding: 18px 14px 10px;
+  border: 2px solid var(--border);
+  border-radius: 15px 12px 16px 13px;
+  background: var(--panel);
+  line-height: 1.4;
+}
+
+.timelinePoint { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+
+.timelineLabel { font-weight: 700; color: var(--accent-text); }
+
+.timelineDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.timelineDotNow { background: var(--ok); box-shadow: 0 0 0 4px var(--ok-soft); }
+
+.timelineArrow {
+  flex: 1.2;
+  height: 3px;
+  margin-top: 40px;
+  background: var(--border-strong);
+  border-radius: 2px;
+  position: relative;
+}
+
+.timelineArrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -5px;
+  border: 7px solid transparent;
+  border-left: 10px solid var(--border-strong);
+}
+
+.timelineExample { font-size: 0.875rem; color: var(--text-2); max-width: 22ch; }
+
+/* salida discreta al terminar: en las pantallas inmersivas no hay barra
+   superior, y sin esto la única forma de cerrar la app sería el administrador
+   de tareas */
+.quitRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+  opacity: 0.75;
+}
+
+
+/* ══ Vida ══
+   Las frases de la presentación caen una detrás de otra: la lista se lee sola
+   en el orden en que hay que leerla. */
+.phraseCard { animation: seshatRise 0.3s var(--ease) backwards; }
+.phraseCard:nth-child(2) { animation-delay: 0.05s; }
+.phraseCard:nth-child(3) { animation-delay: 0.1s; }
+.phraseCard:nth-child(4) { animation-delay: 0.15s; }
+.phraseCard:nth-child(n + 5) { animation-delay: 0.2s; }
+
+/* La nota de gramática es la página que se pasa */
+.note { animation: seshatPage 0.32s var(--ease) backwards; }
+
+/* La pantalla final llega entera, con el aro de nota de protagonista */
+.doneWrap { animation: seshatRise 0.34s var(--ease) backwards; }
+.scoreRing { animation: seshatPop 0.5s var(--ease) 0.08s backwards; }
+.stat { animation: seshatRise 0.3s var(--ease) 0.18s backwards; }
+
+.glossChip { animation: seshatPop 0.26s var(--ease) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .phraseCard, .scoreRing, .stat { animation-delay: 0s; }
+}

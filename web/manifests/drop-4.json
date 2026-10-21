@@ -1,0 +1,9 @@
+{
+  "id": "drop-4",
+  "dropNumber": 4,
+  "name": "Seshat — Alemán A1+A2 · Inglés A1 (drop 4: sin contenido nuevo)",
+  "extends": "drop-3",
+  "content": {
+    "include": []
+  }
+}

@@ -1,0 +1,121 @@
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  /* fondo sólido a propósito: backdrop-filter crearía un containing block y el
+     panel/scrim fijos del perfil quedarían anclados a la barra, no al viewport */
+  background: var(--canvas);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-hand);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--text);
+  white-space: nowrap;
+  /* la marca no se encoge: con `flex: 0 1 auto` el logotipo (un SVG de ancho
+     fijo) se salía de su caja y la bandera del idioma se pintaba ENCIMA de la
+     palabra «Seshat» en cuanto la pantalla bajaba de 420 px */
+  flex: 0 0 auto;
+  min-height: 44px;
+}
+
+/* y si aun así no cupiera (pantallas de 320 px), que se reduzca en vez de
+   desbordar: el logotipo escala, no se recorta */
+.brand > svg { max-width: 100%; height: auto; }
+
+.brand:hover { color: var(--accent-text); }
+
+.spacer { flex: 1; }
+
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  /* En un móvil de 390 px la fila se salía del viewport y el chip de perfil
+     —justo el control al que la app te manda desde el QR— quedaba cortado en
+     «Eleg…», sin scroll con el que alcanzarlo. Ahora la fila se desplaza sola
+     y el último chip nunca queda a medias. */
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-right: 2px;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chips > * { flex: 0 0 auto; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.chip:hover { border-color: var(--accent); }
+
+.chipVal { color: var(--accent-text); }
+
+@media (max-width: 640px) {
+  .bar { padding: 8px 10px; gap: 6px; }
+  /* en móvil las etiquetas ceden el sitio a los números y al perfil */
+  .brandLabel, .chipLabel { display: none; }
+  .chip { padding: 6px 9px; gap: 4px; }
+
+  /* al llegar al tope del carril el gesto se queda aquí y no arrastra la
+     página entera de lado */
+  .chips { overscroll-behavior-x: contain; }
+
+  /* La fila se desplaza (arriba está el porqué), pero nada lo decía: el borde
+     derecho cortaba en seco y parecía el final. Este velo degradado dice «sigue
+     habiendo cosas hacia allá». Va sobre la BARRA y no sobre .chips a
+     propósito: una máscara en .chips crearía bloque contenedor y volvería a
+     dejar el panel de perfiles anclado a la fila en vez de al viewport, que es
+     el fallo que este archivo ya arregló una vez. Solo en móvil, que es donde
+     la fila siempre sobra. */
+  .bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 1px;
+    right: 0;
+    width: 30px;
+    pointer-events: none;
+    background: linear-gradient(to left, var(--canvas), transparent);
+  }
+}
+
+/* ══ Relieve táctil ══ */
+.chip {
+  box-shadow: 0 2px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), border-color 0.15s var(--ease);
+}
+
+a.chip:hover { transform: translateY(-1px); box-shadow: 0 3px 0 var(--border-strong); }
+a.chip:active { transform: translateY(1.5px); box-shadow: 0 0.5px 0 var(--border); }
+
+/* targets táctiles: 44px mínimos también en la top bar */
+.chip { min-height: 44px; }
+
+/* XP y racha son dato de consulta, no de acción: a 390 px la fila necesitaba
+   446 px y escondía 193 sin avisar. En el móvil se van —siguen completos en
+   /perfil— y lo que queda son los controles, que sí se pulsan. */
+@media (max-width: 640px) {
+  .chipInfo { display: none; }
+}

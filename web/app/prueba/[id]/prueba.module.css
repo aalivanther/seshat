@@ -1,0 +1,50 @@
+/* Layout de la prueba que estaba en style={{}}. El ancho de la barra y el
+   color de la fase no viven aquí: cambian con el intento y con el módulo.
+   La fila de salida no reutiliza .continueRow: esa clase empuja a la
+   derecha (es el «seguir» de la lección) y otra hoja no puede ganarle el
+   justify con un orden de cascada estable. En móvil el reparto es el
+   mismo que el de esa fila. */
+
+.continueCenter {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.continueSplit { gap: 12px; }
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doneIcon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.saveAlert {
+  text-align: center;
+  color: var(--warn);
+  font-weight: 600;
+  margin-top: 14px;
+}
+
+/* El fantasma de «volver» es un enlace. Sin flex, al repartir la fila en
+   móvil el texto no se centra como el botón de al lado. */
+.ghostLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .continueCenter { flex-wrap: wrap; }
+  .continueCenter > * {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+  }
+}

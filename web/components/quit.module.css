@@ -1,0 +1,154 @@
+/* Salir de Seshat — discreto en la barra, rotundo al confirmar */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-3);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn:hover:not(:disabled) {
+  border-color: var(--err);
+  color: var(--err);
+  background: var(--surface);
+}
+/* 30 px de alto no son un target: la barra ya mide 44 por los chips, así que
+   subirlo no la engorda ni un píxel */
+.btn { min-height: 44px; }
+.compact { padding: 6px 8px; min-width: 44px; justify-content: center; }
+
+/* ── La pregunta de cerrar ──
+   Vivía en línea, dentro de la fila de chips de la barra superior, que se
+   desplaza en horizontal: en un móvil de 390 px aparecía a casi 200 px FUERA
+   de la pantalla, así que se pedía cerrar la aplicación y no había forma de
+   contestar ni de deshacerlo. Ahora se despega de la fila y se planta en el
+   centro, con su propio velo: es una decisión de las que paran todo, y se mira
+   donde se mira todo lo que para. Vale igual para la barra y para el «Salir»
+   discreto del pie de las pantallas inmersivas. */
+.ask {
+  position: fixed;
+  z-index: 300;
+  /* centrado con `inset: 0` + `margin: auto`, NO con transform: un transform
+     aquí convertiría a este cuadro en el marco de referencia de su propio velo
+     (que es `position: fixed`) y el telón, en vez de cubrir la pantalla, se
+     quedaba pintado como un rectángulo gris detrás de la tarjeta. */
+  inset: 0;
+  margin: auto;
+  width: max-content;
+  height: max-content;
+  max-width: min(24rem, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* El marcado pone «Sí, salir» antes que «Seguir»; invirtiendo la fila queda
+     como en el diálogo propio de la casa: primero el botón que no rompe nada y
+     el que cierra la aplicación a la derecha, nunca el primero de la fila. */
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px 22px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 2px solid var(--border-strong);
+  border-radius: 19px 15px 20px 16px;
+  background: var(--surface);
+  box-shadow: 5px 6px 0 var(--paper-edge), 0 20px 44px var(--shadow-ambient);
+  /* entra con opacidad y no con escala: cualquier transform volvería a romper
+     el anclaje del velo mientras dura la animación */
+  animation: seshatFade 0.2s var(--ease) backwards;
+}
+
+/* el velo va como pseudo del propio cuadro: no hay ningún nodo más que pintar
+   y así lo de detrás se apaga igual que con el diálogo de la casa */
+.ask::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--veil);
+  animation: seshatFade 0.18s var(--ease) backwards;
+}
+
+.askText {
+  flex-basis: 100%;
+  order: -1;
+  text-align: center;
+  color: var(--text);
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.confirm,
+.cancel {
+  flex: 1 1 8rem;
+  padding: 11px 16px;
+  min-height: 44px;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid var(--border-strong);
+  background: var(--panel);
+  box-shadow: 0 3px 0 var(--border);
+}
+.confirm:active,
+.cancel:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--border); }
+
+.confirm {
+  border-color: var(--err);
+  color: var(--err);
+  background: var(--err-soft);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--err) 35%, var(--tint-base));
+}
+
+@media (max-width: 640px) {
+  /* En móvil, botones a ancho completo y el que cierra la app abajo del todo,
+     igual que en el diálogo propio de globals.css. El orden del marcado es
+     [pregunta, «Sí, salir», «Seguir»]; con `column-reverse` los botones salen
+     en el orden correcto y la pregunta necesita `order: 1` para volver arriba
+     (en un contenedor invertido, el orden más alto se pinta primero). */
+  .ask { flex-direction: column-reverse; width: min(24rem, calc(100vw - 32px)); }
+  .confirm, .cancel { flex: 0 0 auto; width: 100%; }
+  .askText { order: 1; }
+}
+
+.closedOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  background: var(--canvas);
+  padding: 24px;
+}
+.closedCard {
+  max-width: 30rem;
+  text-align: center;
+  display: grid;
+  gap: 10px;
+}
+.closedTitle {
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+.closedText {
+  color: var(--text-2);
+  margin: 0;
+  font-size: 1.05rem;
+}
+.closedHint {
+  color: var(--text-3);
+  margin: 0;
+  font-size: 0.9rem;
+}

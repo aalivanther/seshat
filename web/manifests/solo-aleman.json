@@ -1,0 +1,13 @@
+{
+  "id": "solo-aleman",
+  "name": "Seshat Deutsch",
+  "content": {
+    "include": [{ "lang": "de" }]
+  },
+  "features": {
+    "ai": true, "exams": true, "missions": true, "interview": true, "review": true,
+    "challenges": true, "placement": true, "badges": true, "reference": true,
+    "certificates": true, "moduleTest": true, "tts": true
+  },
+  "policy": { "vocabularyClosure": "strict", "onMissingCard": "fail" }
+}

@@ -1,0 +1,477 @@
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+
+.avatarBig {
+  width: 84px;
+  height: 84px;
+  border-radius: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* el fondo lo pone el color elegido del perfil: siempre saturado y oscuro,
+     así que la tinta blanca vale igual de día que de noche */
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.heroInfo { flex: 1; min-width: 200px; }
+
+.profileName {
+  font-family: var(--font-hand);
+  font-size: 1.625rem;
+  font-weight: 800;
+}
+
+.rankRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-2);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.rankBar {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 32px 0 6px;
+}
+
+.sectionSub { color: var(--text-2); font-size: 0.9375rem; margin-bottom: 14px; }
+
+/* Personalización */
+.pickerRow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+.avatarOpt {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  transition: all 0.15s var(--ease);
+}
+
+.avatarOpt:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.avatarOptActive { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-text); }
+
+.colorOpt {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  transition: transform 0.15s var(--ease);
+}
+
+.colorOpt:hover { transform: scale(1.1); }
+.colorOptActive { border-color: var(--text); }
+
+/* Medallas */
+.medalGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.medal {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 16px 14px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.medalEarned {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+/* La medalla que falta no está «apagada»: está en gris de lápiz, que es
+   distinto de estar rota. Y sin opacidad: bajar la opacidad de un bloque de
+   texto se lo lleva por debajo del AA (4.86:1 se quedaba en 3.3:1), y aquí hay
+   que poder LEER qué falta por hacer. */
+.medalLocked { color: var(--locked); background: var(--locked-soft); }
+.medalLocked .medalIcon { color: var(--locked); }
+
+.medalIcon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 8px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  color: var(--text-3);
+}
+
+.medalEarned .medalIcon { background: var(--accent-soft); color: var(--accent-text); }
+
+.medalTitle { font-family: var(--font-hand); font-weight: 800; font-size: 0.9375rem; }
+.medalDesc { color: var(--text-3); font-size: 0.75rem; margin-top: 2px; line-height: 1.4; }
+
+.medalBar {
+  margin-top: 8px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.medalFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.7s var(--ease-spring);
+}
+
+/* Certificados */
+.certGrid { display: grid; gap: 10px; }
+
+.certRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+
+.certValid { border-color: var(--ok); }
+.certExpired { border-color: var(--warn); }
+
+.certInfo { flex: 1; min-width: 180px; }
+.certName { font-weight: 700; }
+.certMeta { font-size: 0.8125rem; color: var(--text-3); }
+
+.certBtn {
+  padding: 9px 16px;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.certBtn:hover { background: var(--accent-strong); }
+
+.certGhost {
+  padding: 9px 16px;
+  min-height: 44px;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.grand {
+  margin-top: 14px;
+  padding: 20px 24px;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+}
+
+.grandTitle {
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent-text);
+}
+
+/* ══ Relieve táctil ══ */
+.hero {
+  border-width: 2px;
+  border-radius: 21px 17px 22px 18px;
+  box-shadow: 5px 6px 0 var(--paper-edge);
+}
+
+.avatarOpt,
+.colorOpt {
+  box-shadow: 0 2.5px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease),
+    border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.avatarOpt:active, .colorOpt:active { transform: translateY(2px); box-shadow: 0 0.5px 0 var(--border); }
+
+.medal {
+  border-width: 2px;
+  border-radius: 15px 12px 16px 13px;
+  box-shadow: 3px 4px 0 var(--paper-edge);
+}
+
+.medalEarned { box-shadow: 3px 4px 0 color-mix(in srgb, var(--accent) 22%, var(--tint-base)); }
+
+.certRow { border-width: 2px; border-radius: 15px 12px 16px 13px; }
+
+.certBtn {
+  box-shadow: 0 3px 0 var(--accent-strong);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), background 0.15s var(--ease);
+}
+
+.certBtn:hover { transform: translateY(-1px); }
+.certBtn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent-strong); }
+
+.certGhost {
+  box-shadow: 0 2.5px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), border-color 0.15s var(--ease);
+}
+
+.certGhost:active { transform: translateY(2px); box-shadow: 0 0.5px 0 var(--border); }
+
+.grand {
+  border-width: 2px;
+  border-radius: 19px 15px 20px 16px;
+  box-shadow: 4px 5px 0 var(--paper-edge);
+}
+
+.colorOpt { width: 44px; height: 44px; }
+
+/* ── Pestañas de la carpeta ────────────────────────────────────────────────
+   La pantalla tenía siete secciones seguidas y había que bajar media hoja para
+   llegar al respaldo. Con pestañas, cada asunto cabe de una vez. Se desplazan
+   en horizontal para que en un móvil no se corte ninguna. */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs { overscroll-behavior-x: contain; }
+
+@media (max-width: 640px) {
+  /* seis pestañas no caben en un móvil: la fila se desplaza, y para que se NOTE
+     el borde derecho se difumina en vez de cortar en seco. Solo aquí abajo,
+     que de 641 px en adelante caben todas y un degradado sobraría. */
+  .tabs {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  }
+}
+
+.tab {
+  flex: 0 0 auto;
+  padding: 9px 16px;
+  min-height: 44px;
+  border: 2px solid var(--border);
+  border-bottom-color: transparent;
+  border-radius: 12px 10px 0 0;
+  background: var(--panel);
+  color: var(--text-2);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); }
+
+/* la activa es la carpeta abierta: se funde con el contenido de abajo */
+.tabActive {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-strong);
+  border-bottom-color: var(--surface);
+  box-shadow: 0 -2px 0 var(--accent) inset;
+}
+
+@media (max-width: 640px) {
+  .tab { padding: 8px 12px; font-size: 0.875rem; }
+}
+
+.pageTitle {
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 6px 0 2px;
+}
+.pageTitle b { color: var(--accent-text); }
+
+
+/* ══ Vida ══
+   Las medallas entran como pegatinas que caen en su hueco; la ganada además
+   pega un latido corto al aparecer. */
+.medal { animation: seshatRise 0.3s var(--ease) backwards; }
+.medal:nth-child(2) { animation-delay: 0.04s; }
+.medal:nth-child(3) { animation-delay: 0.08s; }
+.medal:nth-child(4) { animation-delay: 0.12s; }
+.medal:nth-child(n + 5) { animation-delay: 0.16s; }
+.medalEarned .medalIcon { animation: seshatPop 0.45s var(--ease) 0.12s backwards; }
+
+.hero { animation: seshatRise 0.32s var(--ease) backwards; }
+.certRow { animation: seshatRise 0.28s var(--ease) backwards; }
+
+.tab { transition: transform 0.08s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease); }
+.tab:active { transform: translateY(1.5px); }
+.tabActive { transform: translateY(-1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .medal, .medalEarned .medalIcon { animation-delay: 0s; }
+}
+
+/* ── Diagnóstico: cómo va cada módulo ─────────────────────────────────────
+   Una fila por módulo, con su barra y su estado en palabras. Se lee de un
+   vistazo y, sobre todo, cambia solo: es lo que convierte el informe de la
+   prueba de nivel en una película en vez de una foto. */
+.diagBox {
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-hand);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: var(--panel);
+}
+
+.masteryList { display: grid; gap: 10px; }
+
+.masteryRow {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1.4fr) 2fr auto auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.masteryName {
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.masteryName:hover { color: var(--accent-text); text-decoration: underline; }
+
+.masteryBarTrack {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.masteryBarFill { height: 100%; border-radius: 999px; transition: width .5s ease; }
+
+.masteryState {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: .8125rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.st_sin-empezar { background: var(--panel); color: var(--text-3); }
+.st_en-marcha { background: var(--accent-soft); color: var(--accent-text); }
+.st_asentado { background: color-mix(in srgb, var(--ok, #16a34a) 16%, transparent); color: var(--ok, #16a34a); }
+.st_dominado { background: color-mix(in srgb, var(--ok, #16a34a) 26%, transparent); color: var(--ok, #16a34a); }
+
+@media (max-width: 640px) {
+  .masteryRow { grid-template-columns: 1fr auto; grid-template-areas: "name state" "bar bar"; row-gap: 6px; }
+  .masteryName { grid-area: name; }
+  .masteryState { grid-area: state; }
+  .masteryBarTrack { grid-area: bar; }
+  .masteryRow > .num { display: none; }
+}
+
+/* Layout que estaba suelto en la página. El color del avatar, el del reto,
+   el de la paleta y el ancho de la medalla no están aquí: son el dato de
+   cada perfil, no la ficha. */
+
+.rankXp {
+  font-weight: 400;
+  color: var(--text-3);
+}
+
+/* La barra crece; el «cuánto falta» se queda a su lado. */
+.rankGrow { flex: 1; }
+
+/* El título de nivel y la fila son ítems de la rejilla. Sin contents el
+   título no puede ocupar la fila entera. */
+.certGroup { display: contents; }
+
+.certLevel {
+  font-weight: 800;
+  font-family: var(--font-hand);
+  margin: 10px 0 2px;
+  grid-column: 1 / -1;
+}
+
+.grandBody {
+  color: var(--text-2);
+  margin-top: 6px;
+}
+
+.grandActions { margin-top: 12px; }
+
+.soundRow { margin-top: 14px; }
+
+/* En una ventana estrecha los dos botones bajan, no se salen. */
+.backupRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* La etiqueta es el botón de importar. El cursor de botón es global en
+   button, no en label, y el input no se pinta: si se viera, habría dos
+   controles para el mismo archivo. */
+.fileLabel { cursor: pointer; }
+
+.fileInput { display: none; }
+
+.backupStatus {
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.resetBlock { margin-top: 18px; }
+
+.resetNote { margin-top: 8px; }
+
+/* Cada dato de versión va en su renglón. El interlineado separa: no hay
+   una lista con viñetas. */
+.aboutBlock {
+  color: var(--text-2);
+  line-height: 2;
+}
+
+.copyGap { margin-top: 10px; }

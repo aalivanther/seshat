@@ -1,0 +1,30 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  font-weight: 800;
+  font-family: var(--font-hand);
+  font-size: 0.9375rem;
+  color: var(--text-2);
+  transition: border-color 0.15s var(--ease), transform 0.15s var(--ease);
+  flex-shrink: 0;
+}
+
+.badge:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+.flag { font-size: 1.125rem; line-height: 1; }
+
+.compact {
+  padding: 6px 9px;
+  /* 40 px se quedaba corto para el dedo y la insignia es el único camino de
+     vuelta al idioma desde media aplicación */
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+}
+
+.name { font-weight: 700; }

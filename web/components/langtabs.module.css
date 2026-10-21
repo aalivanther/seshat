@@ -1,0 +1,35 @@
+/* Las pestañas de idioma del perfil. Mandan sobre toda la carpeta: medallas,
+   certificados y diagnóstico enseñan el idioma elegido y nada más. */
+
+.langTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.langTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-hand, 12px);
+  background: var(--surface);
+  color: var(--text-2);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease), border-color 0.12s var(--ease);
+}
+.langTab:hover { transform: translateY(-1px); }
+.langTabOn { background: var(--panel); box-shadow: var(--shadow); }
+.nota {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}

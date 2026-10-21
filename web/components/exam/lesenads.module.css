@@ -1,0 +1,36 @@
+/* Solo los anuncios a/b. Pregunta, pie y botones siguen en exam.module.css:
+   los usan el resto de ítems y sacarlos de ahí les cambiaría la pinta.
+   En estrecho se apilan: en el escritorio van en dos columnas. */
+
+.adGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.adCard {
+  text-align: left;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  white-space: pre-line;
+  line-height: 1.6;
+  font-size: 0.9375rem;
+  transition: border-color 0.15s var(--ease);
+}
+
+.adCard:hover:not(:disabled) { border-color: var(--border-strong); }
+.adPicked { border-color: var(--accent); background: var(--accent-soft); }
+
+.adLetter {
+  display: inline-block;
+  font-weight: 800;
+  color: var(--accent-text);
+  margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  .adGrid { grid-template-columns: 1fr; }
+}

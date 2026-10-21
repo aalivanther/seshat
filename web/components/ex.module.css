@@ -1,0 +1,616 @@
+/* Estilos compartidos del motor de ejercicios */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.typeChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.prompt {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.howTo {
+  font-size: 0.9375rem;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+.question {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+
+.matchHowTo {
+  font-size: 0.9375rem;
+  color: var(--text-2);
+  margin-bottom: 4px;
+}
+
+/* --- Opción múltiple --- */
+.options {
+  display: grid;
+  gap: 8px;
+}
+
+.option {
+  text-align: left;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), transform 0.1s var(--ease);
+  min-height: 44px;
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  background: var(--panel);
+}
+
+.option:active:not(:disabled) { transform: scale(0.99); }
+
+.optionRight {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+
+.optionWrong {
+  border-color: var(--err);
+  background: var(--err-soft);
+}
+
+/* --- Entrada de texto --- */
+.inputRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  transition: border-color 0.15s var(--ease);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.inputOk { border-color: var(--ok); }
+.inputBad { border-color: var(--err); }
+
+/* Evaluación en vivo mientras se escribe */
+.liveHint {
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  transition: color 0.15s var(--ease);
+  min-height: 1.2em;
+}
+
+.liveNeutral { color: var(--text-3); }
+.liveOff { color: var(--warn); }
+
+.inputOff { border-color: var(--warn); }
+
+/* Diff carácter a carácter tras fallar */
+.diff {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+
+.diffLabel {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-3);
+  display: block;
+}
+
+.diffOk { color: var(--ok); }
+.diffBad { color: var(--err); background: var(--err-soft); border-radius: 3px; }
+.diffMiss {
+  color: var(--err);
+  background: var(--err-soft);
+  border-radius: 3px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Botonera de caracteres especiales */
+.charRow {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.charBtn {
+  padding: 6px 12px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  transition: background 0.15s var(--ease);
+}
+
+.charBtn:hover { background: var(--accent-soft); border-color: var(--accent); }
+
+/* --- Emparejar --- */
+.matchGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.matchCol { display: grid; gap: 8px; align-content: start; }
+
+.matchBtn {
+  padding: 12px 14px;
+  min-height: 48px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-align: left;
+  font-weight: 600;
+  transition: all 0.15s var(--ease);
+}
+
+.matchBtn:hover:not(:disabled) { border-color: var(--border-strong); background: var(--panel); }
+
+.matchSelected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.matchDone {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.matchShake {
+  border-color: var(--err);
+  background: var(--err-soft);
+  animation: shakeX 0.4s var(--ease);
+}
+
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* --- Audio --- */
+.speakerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  font-weight: 500;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+
+.speakerBtn:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+.audioRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* --- Feedback --- */
+.feedback {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  animation: rise 0.25s var(--ease);
+}
+
+.feedbackOk { background: var(--ok-soft); color: var(--ok); }
+.feedbackAlmost { background: var(--near-soft); color: var(--near); }
+.feedbackBad { background: var(--err-soft); color: var(--err); }
+
+.feedbackTitle { font-weight: 600; }
+.feedbackBody { color: var(--text-2); margin-top: 4px; }
+
+.tip {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  font-size: 0.9375rem;
+  color: var(--text-2);
+  animation: rise 0.25s var(--ease);
+}
+
+.tip b { color: var(--text); }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cada ejercicio entra como página que se pasa */
+.cardEnter { animation: cardIn 0.3s var(--ease); }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* El acierto celebra con un pulso corto, satisfactorio a la centésima vez */
+.feedbackOk { animation: okPulse 0.45s var(--ease); }
+
+@keyframes okPulse {
+  0% { transform: scale(0.97); }
+  55% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+
+/* --- Controles del player --- */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btnPrimary {
+  padding: 12px 24px;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 600;
+  transition: background 0.15s var(--ease), transform 0.1s var(--ease);
+}
+
+.btnPrimary:hover:not(:disabled) { background: var(--accent-strong); }
+.btnPrimary:active:not(:disabled) { transform: scale(0.98); }
+.btnPrimary:disabled { opacity: 0.5; }
+
+.btnGhost {
+  padding: 12px 20px;
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 500;
+  transition: background 0.15s var(--ease);
+}
+
+.btnGhost:hover:not(:disabled) { background: var(--panel); }
+.btnGhost:disabled { opacity: 0.5; }
+
+.hintBox {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-left: 2px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  color: var(--accent-text);
+  animation: rise 0.25s var(--ease);
+}
+
+/* --- Guía fonética --- */
+.phonetic {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-3);
+}
+
+.translation {
+  color: var(--text-3);
+  font-size: 0.9375rem;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .card { padding: 16px; }
+  .matchGrid { gap: 6px; }
+
+  /* pulgar: acciones principales a ancho completo */
+  .inputRow .btnPrimary { width: 100%; }
+  .footer { flex-wrap: wrap; }
+  .footer .btnPrimary { flex: 1; text-align: center; justify-content: center; }
+  .footer .btnGhost { flex: 1; text-align: center; }
+}
+
+/* ══ Relieve de papelería escolar ══════════════════════════════════════
+   Sombra dura desplazada = pegatina/cartulina sobre el papel; :active la
+   comprime (el botón se PULSA físicamente). Radios levemente irregulares
+   = corte a tijera, nada de rectángulos de laboratorio. */
+
+.card {
+  border: 1.5px solid var(--border-strong);
+  border-radius: 19px 16px 21px 17px;
+  box-shadow: 5px 6px 0 var(--paper-edge-strong), 0 14px 30px var(--shadow-ambient);
+}
+
+.typeChip {
+  transform: rotate(-1.5deg); /* etiqueta washi pegada a mano */
+  box-shadow: 1px 2px 0 var(--paper-edge-strong);
+}
+
+.option,
+.matchBtn {
+  border-width: 2px;
+  border-radius: var(--radius-hand);
+  box-shadow: 0 3px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease),
+    border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.option:hover:not(:disabled),
+.matchBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 var(--border-strong);
+}
+
+.option:active:not(:disabled),
+.matchBtn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+.optionRight { box-shadow: 0 3px 0 color-mix(in srgb, var(--ok) 40%, var(--tint-base)); }
+.optionWrong { box-shadow: 0 3px 0 color-mix(in srgb, var(--err) 35%, var(--tint-base)); }
+.matchSelected { box-shadow: 0 3px 0 color-mix(in srgb, var(--accent) 45%, var(--tint-base)); }
+.matchDone { box-shadow: none; animation: matchPop 0.35s var(--ease); }
+
+@keyframes matchPop {
+  40% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+.btnPrimary {
+  box-shadow: 0 4px 0 var(--accent-strong), 0 8px 18px var(--accent-glow);
+  border-radius: var(--radius-hand);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), background 0.15s var(--ease);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 var(--accent-strong), 0 10px 22px var(--accent-glow);
+}
+
+.btnPrimary:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--accent-strong), 0 3px 8px var(--accent-glow);
+}
+
+.btnGhost {
+  border-width: 2px;
+  border-radius: var(--radius-hand);
+  box-shadow: 0 3px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), background 0.15s var(--ease);
+}
+
+.btnGhost:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 0 var(--border-strong); }
+.btnGhost:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--border); }
+
+.speakerBtn,
+.charBtn {
+  box-shadow: 0 2px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease),
+    border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.speakerBtn:active,
+.charBtn:active { transform: translateY(1.5px); box-shadow: 0 0.5px 0 var(--border); }
+
+.feedback { animation: feedbackIn 0.28s var(--ease); }
+
+@keyframes feedbackIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.hintBox { animation: feedbackIn 0.28s var(--ease); }
+
+/* aviso de estreno de palabra: dashed = "apunte al margen", no error */
+.newWords {
+  display: inline-block;
+  margin: 2px 0 10px;
+  padding: 8px 14px;
+  border: 2px dashed color-mix(in srgb, var(--new) 45%, var(--tint-base));
+  border-radius: var(--radius-hand);
+  background: var(--new-soft);
+  color: var(--new);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.newWords b { color: var(--new); font-weight: 800; }
+
+/* ══ Reactividad de ejercicios ══ */
+
+/* fallo en el campo: sacudida corta — reutiliza el shakeX ya definido arriba */
+.inputBad { animation: shakeX 0.32s var(--ease); }
+
+/* CTA principal manuscrito con brillo interior de pegatina */
+.btnPrimary {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 4px 0 var(--accent-strong),
+    0 8px 18px var(--accent-glow);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 5px 0 var(--accent-strong),
+    0 10px 22px var(--accent-glow);
+}
+
+.btnPrimary:active:not(:disabled) {
+  box-shadow: inset 0 2px 0 var(--btn-sheen), 0 1px 0 var(--accent-strong);
+}
+
+/* el acierto entra con spring Y pulsa: ambas animaciones, no la última que se
+   declaró (feedbackIn a secas anulaba okPulse) */
+.feedbackOk { animation: feedbackIn 0.28s var(--ease), okPulse 0.45s var(--ease) 0.12s; }
+
+/* toggle de sonido en barras inmersivas */
+.sfxToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 40 px se quedaban cortos y comparte fila con el aspa de cerrar, que ya es
+     de 44: ahora los dos miden lo mismo y la barra queda a escuadra */
+  width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-2);
+  box-shadow: 0 2px 0 var(--border);
+  transition: transform 0.08s var(--ease), box-shadow 0.08s var(--ease), border-color 0.15s var(--ease);
+}
+
+.sfxToggle:hover { border-color: var(--accent); }
+.sfxToggle:active { transform: translateY(1.5px); box-shadow: 0 0.5px 0 var(--border); }
+
+/* ══ Transformar: la caja. La etiqueta está en kinds/transform.module.css;
+   clasificar, en kinds/bucket.module.css; ordenar, en kinds/order.module.css. ══ */
+
+.transformSource {
+  padding: 14px 18px;
+  border: 2px solid var(--border);
+  border-radius: 15px 12px 16px 13px;
+  background: var(--panel);
+  box-shadow: 2px 3px 0 var(--paper-edge);
+}
+
+/* ── hearreal: reveal libro↔calle tras responder ── */
+.hearrealReveal {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  background: var(--panel);
+}
+.hearrealRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+.hearrealTag {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+
+/* ══ Vida ══════════════════════════════════════════════════════════════════
+   El ejercicio ya entraba con .cardEnter; ahora entra COMO SE PASA UNA HOJA,
+   desde la derecha, que es hacia donde avanza la lección. */
+.cardEnter { animation: seshatPage 0.32s var(--ease) backwards; }
+
+/* Las opciones se posan una detrás de otra: media décima en total, lo justo
+   para que el ojo las recorra en orden sin esperar a nadie. */
+.option { animation: seshatRise 0.24s var(--ease) backwards; }
+.option:nth-child(2) { animation-delay: 0.04s; }
+.option:nth-child(3) { animation-delay: 0.08s; }
+.option:nth-child(n + 4) { animation-delay: 0.12s; }
+
+/* «Casi» no celebra ni regaña: se balancea un poco, como quien dice «uy». */
+.feedbackAlmost { animation: feedbackIn 0.28s var(--ease), nearTilt 0.5s var(--ease) 0.1s; }
+
+@keyframes nearTilt {
+  0%, 100% { transform: rotate(0); }
+  30% { transform: rotate(-0.7deg); }
+  65% { transform: rotate(0.5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option { animation-delay: 0s; }
+}
+
+/* ══ Honestidad del audio ═════════════════════════════════════════════════
+   Aviso de «no hay voz del idioma en este sistema». Va arriba de la tarjeta,
+   antes del botón de reproducir, y uno solo aunque la pantalla tenga ocho
+   bocinas. Ámbar y no rojo a propósito: no es un fallo del alumno ni un
+   ejercicio suspendido, es una pieza que le falta al sistema operativo. */
+.voiceGap {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--warn);
+  border-left-width: 5px;
+  border-radius: 13px 11px 14px 12px;
+  background: var(--warn-soft);
+  color: var(--warn);
+  animation: rise 0.25s var(--ease);
+}
+.voiceGapTitle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 800;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+.voiceGapTitle svg { flex-shrink: 0; }
+.voiceGapBody {
+  margin-top: 5px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  /* el cuerpo no grita: el color de aviso se queda en el título y el filo */
+  color: var(--text-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .voiceGap { animation: none; }
+}
