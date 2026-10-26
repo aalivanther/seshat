@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Phase, ServerState } from "./types";
+import type { PhaseIndexEntry, PhaseMeta, ServerState } from "./types";
 import { getDue, getState } from "./api";
 import { baselineBadges } from "./badgeTracker";
-import { course, courseOf } from "@/data/course";
+import { course, courseOf } from "@/data/courseIndex";
 import { resolveLevelId, phasesOf as levelPhases, highestAvailableUpTo } from "./levels";
 import { placedLevel } from "./placement";
 import { inferPlacedFromProgress, phaseHasProgress, phaseSkippedByPlacement } from "./unlock";
@@ -45,14 +45,14 @@ export function useProgress(opts?: { due?: boolean }): Progress {
   return { state, dueCount, recovered };
 }
 
-export function modulePct(phase: Phase, state: ServerState | null): number {
+export function modulePct(phase: PhaseMeta, state: ServerState | null): number {
   if (!state || phase.lessons.length === 0) return 0;
   if (phaseSkippedByPlacement(phase, state)) return 100;
   const done = phase.lessons.filter((l) => state.lessons[l.id]?.completed).length;
   return Math.round((done / phase.lessons.length) * 100);
 }
 
-export function moduleAvgScore(phase: Phase, state: ServerState | null): number | null {
+export function moduleAvgScore(phase: PhaseMeta, state: ServerState | null): number | null {
   if (!state) return null;
   const scores = phase.lessons
     .map((l) => state.lessons[l.id]?.bestScore)
@@ -62,7 +62,7 @@ export function moduleAvgScore(phase: Phase, state: ServerState | null): number 
 }
 
 /** fases de un nivel (id compuesto "de-a1"; acepta el legado "a1" = alemán) */
-export function phasesOf(level: string): Phase[] {
+export function phasesOf(level: string): PhaseIndexEntry[] {
   const lv = resolveLevelId(level);
   return lv ? levelPhases(lv) : [];
 }

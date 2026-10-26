@@ -4,7 +4,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, LazyMotion, domAnimation, m } from "motion/react";
 import { X } from "@phosphor-icons/react";
 import { animate } from "motion";
 import { celebrate, SPRING, sfxFanfare } from "@/lib/juice";
@@ -13,7 +13,7 @@ import { modeOfExercise } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useConfirm } from "@/lib/useConfirm";
 import { useLeaveGuard } from "@/lib/useLeaveGuard";
-import { courseOf, langOfPhase } from "@/data/course";
+import { courseOf, langOfPhase } from "@/data/courseIndex";
 import { PhaseIcon } from "@/lib/phaseMeta";
 import { postLessonResult } from "@/lib/api";
 import { foldLessonItems } from "@/lib/lessonFold";
@@ -26,7 +26,7 @@ import { checkNewBadges } from "@/lib/badgeTracker";
 import { useProgress } from "@/lib/useProgress";
 import { phaseUnlocked, prevPhaseOf } from "@/lib/unlock";
 import { getProfile } from "@/lib/api";
-import { seenItems, MIN_SEEN_FOR_REVIEW } from "@/lib/reviewSession";
+import { seenCount, MIN_SEEN_FOR_REVIEW } from "@/lib/reviewSession";
 import type { Badge } from "@/lib/achievements";
 import { BadgeUnlocks } from "./BadgeUnlocks";
 import { ExercisePlayer, type ExerciseOutcome } from "./ExercisePlayer";
@@ -46,10 +46,18 @@ import ex from "./ex.module.css";
 type Step =
   | { kind: "phrases"; title?: string; items: VocabItem[]; missing?: string[] }
   | { kind: "note"; note: GrammarNote }
-  | { kind: "exercise"; exercise: Exercise }
+  | { kind: "exercise"; exercise: Exercise; fresh?: string[] }
   | { kind: "nativo"; card: NativoCard };
 
-export function LessonPlayer({ lesson }: { lesson: Lesson }) {
+export function LessonPlayer({
+  lesson, vocab, freshWords,
+}: {
+  lesson: Lesson;
+  /** las tarjetas que presentan sus frases (las recorta la página) */
+  vocab: Record<string, VocabItem>;
+  /** palabras nuevas de cada ejercicio, en el orden de la lección */
+  freshWords: string[][];
+}) {
   // idioma DUEÑO de esta lección: su curso y su config lingüística (TTS,
   // corrección, artículos) — adoptado al montar, antes de tocar ejercicio
   const lang = langOfPhase(lesson.phaseId);
@@ -81,25 +89,26 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
     router.push(`/modulo/${lesson.phaseId}`);
   }
 
-  // el vocabulario sale de course (del idioma): pasarlo como prop serializaba
-  // los 860 ítems en el HTML/RSC de las 168 páginas de lección
+  // el vocabulario llega recortado a las frases de ESTA lección: el del
+  // idioma entero serializaba miles de tarjetas en cada página de lección
   const steps = useMemo<Step[]>(() => {
     const out: Step[] = [];
+    let nEx = 0;
     for (const sec of lesson.sections) {
       if (sec.kind === "phrases" && sec.itemIds) {
-        const resolved = resolveItems(sec.itemIds, course.vocab);
+        const resolved = resolveItems(sec.itemIds, vocab);
         out.push({ kind: "phrases", title: sec.title, items: resolved.items, missing: resolved.missing });
       } else if (sec.kind === "note" && sec.note) {
         out.push({ kind: "note", note: sec.note });
       } else if (sec.kind === "exercises" && sec.exercises) {
-        for (const e of sec.exercises) out.push({ kind: "exercise", exercise: e });
+        for (const e of sec.exercises) out.push({ kind: "exercise", exercise: e, fresh: freshWords[nEx++] });
       } else if (sec.kind === "nativo" && sec.nativo) {
         // el postre: SIEMPRE tras el cierre (validador lo garantiza)
         out.push({ kind: "nativo", card: sec.nativo });
       }
     }
     return out;
-  }, [lesson]);
+  }, [lesson, vocab, freshWords]);
 
   // gating: si el módulo de esta lección aún no toca, se explica y se redirige.
   // dueCount no se pinta: pedir /api/due aquí sería la deuda que el producto
@@ -119,7 +128,7 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
     const key = `review-offer-${getProfile() || "default"}`;
     const last = Number(window.localStorage.getItem(key) ?? 0);
     const hourAgo = Date.now() - 60 * 60 * 1000;
-    if (st && seenItems(st, lang).length >= MIN_SEEN_FOR_REVIEW && last < hourAgo) {
+    if (st && seenCount(st, lang) >= MIN_SEEN_FOR_REVIEW && last < hourAgo) {
       window.localStorage.setItem(key, String(Date.now()));
       setReviewOffer("show");
     } else {
@@ -343,48 +352,50 @@ export function LessonPlayer({ lesson }: { lesson: Lesson }) {
       )}
 
       {!finished && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={SPRING}
-          >
-            {steps[idx].kind === "phrases" && (
-              <PhrasesStep step={steps[idx] as Extract<Step, { kind: "phrases" }>} onNext={advance} />
-            )}
-            {steps[idx].kind === "note" && (
-              <NoteStep note={(steps[idx] as Extract<Step, { kind: "note" }>).note} onNext={advance} />
-            )}
-            {steps[idx].kind === "nativo" && (
-              <div className={`${ex.card} ${ex.cardEnter}`}>
-                <NativoCardView card={(steps[idx] as Extract<Step, { kind: "nativo" }>).card} />
-                <div className={ex.footer} style={{ marginTop: 16 }}>
-                  <span />
-                  <button className={ex.btnPrimary} onClick={advance} autoFocus>
-                    Continuar
-                  </button>
+        <LazyMotion features={domAnimation}>
+          <AnimatePresence mode="wait">
+            <m.div
+              key={idx}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={SPRING}
+            >
+              {steps[idx].kind === "phrases" && (
+                <PhrasesStep step={steps[idx] as Extract<Step, { kind: "phrases" }>} onNext={advance} />
+              )}
+              {steps[idx].kind === "note" && (
+                <NoteStep note={(steps[idx] as Extract<Step, { kind: "note" }>).note} onNext={advance} />
+              )}
+              {steps[idx].kind === "nativo" && (
+                <div className={`${ex.card} ${ex.cardEnter}`}>
+                  <NativoCardView card={(steps[idx] as Extract<Step, { kind: "nativo" }>).card} />
+                  <div className={ex.footer} style={{ marginTop: 16 }}>
+                    <span />
+                    <button className={ex.btnPrimary} onClick={advance} autoFocus>
+                      Continuar
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
-            {steps[idx].kind === "exercise" && (() => {
-              const exercise = (steps[idx] as Extract<Step, { kind: "exercise" }>).exercise;
-              return (
-                // un ejercicio roto no atasca la lección: el boundary ofrece
-                // saltarlo y lo reporta como fallo
-                <ExerciseBoundary
-                  key={exercise.id}
-                  onSkip={() =>
-                    onExerciseDone({ exerciseId: exercise.id, correct: false, score: 0, usedHints: 0, attempts: 1, itemIds: [], mode: modeOfExercise(exercise) })
-                  }
-                >
-                  <ExercisePlayer lessonId={lesson.id} ex={exercise} onDone={onExerciseDone} />
-                </ExerciseBoundary>
-              );
-            })()}
-          </motion.div>
-        </AnimatePresence>
+              )}
+              {steps[idx].kind === "exercise" && (() => {
+                const { exercise, fresh } = steps[idx] as Extract<Step, { kind: "exercise" }>;
+                return (
+                  // un ejercicio roto no atasca la lección: el boundary ofrece
+                  // saltarlo y lo reporta como fallo
+                  <ExerciseBoundary
+                    key={exercise.id}
+                    onSkip={() =>
+                      onExerciseDone({ exerciseId: exercise.id, correct: false, score: 0, usedHints: 0, attempts: 1, itemIds: [], mode: modeOfExercise(exercise) })
+                    }
+                  >
+                    <ExercisePlayer freshWords={fresh} ex={exercise} onDone={onExerciseDone} />
+                  </ExerciseBoundary>
+                );
+              })()}
+            </m.div>
+          </AnimatePresence>
+        </LazyMotion>
       )}
 
       {finished && (

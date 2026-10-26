@@ -7,7 +7,9 @@
 //
 // build-app.sh lo controla regenerando course.gen.ts: ./build-app.sh 1.0.0 1
 
-import { BUILT_DROP } from "@/data/course.gen";
+// drop.gen.ts lo deriva gen-derived.mjs de course.gen.ts, con el mismo
+// número: importar course.gen.ts aquí metía el curso entero en cada página.
+import { BUILT_DROP } from "@/data/drop.gen";
 
 /** el drop horneado en ESTE build — única fuente: course.gen.ts (U4) */
 export const DROP: number = BUILT_DROP;

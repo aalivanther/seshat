@@ -586,7 +586,8 @@ function rulesFor(lang) {
 
 // Archivos de data con pinta de fase (export con lessons) que course.gen.ts no
 // importa: contenido invisible para el alumno — casi siempre un drop a medias.
-const wired = new Set([...ORDER, "course", "course.gen", "exams"]);
+// courseIndex/examsIndex/vocab son las vistas ligeras del cliente: no traen contenido propio
+const wired = new Set([...ORDER, "course", "course.gen", "exams", "courseIndex", "examsIndex", "vocab", "vocabIdSet", "phases"]);
 // misiones, simulacros y libretas: cableados vía course.gen pero jamás fases.
 // La lista sale de las tablas de gen-course (nada de listas paralelas a mano).
 for (const [file] of dropLangOfAux) wired.add(file);
@@ -619,6 +620,9 @@ function looksLikeExam(mod) {
 for (const f of dataFiles) {
   const name = f.slice(0, -3);
   if (wired.has(name)) continue;
+  // lo generado (course.gen, el índice, el vocabulario troceado…) sale del
+  // contenido ya cableado: no es contenido suelto que se pueda olvidar
+  if (name.endsWith(".gen")) continue;
   const base = name.split("/").pop();
   let mod;
   try {

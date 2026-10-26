@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { articleContrastPair, buildReviewSession, seenItems, tPlural, tTranslate } from "@/lib/reviewSession";
+import { articleContrastPair, buildReviewSession, seenCount, seenItems, tPlural, tTranslate } from "@/lib/reviewSession";
 import { course } from "@/data/course";
 import { modeOfExercise } from "@/lib/types";
 import type { Exercise, ItemStat, ServerState, VocabItem } from "@/lib/types";
@@ -59,7 +59,7 @@ it("sanity: los ids del pool sintético existen en course.vocab", () => {
 
 describe("buildReviewSession — invariantes en 20 corridas", () => {
   const runs = Array.from({ length: 20 }, (_, i) =>
-    buildReviewSession(mkState(POOL, i % 2 === 0 ? -3_600_000 : 3_600_000), i % 2 === 0),
+    buildReviewSession(mkState(POOL, i % 2 === 0 ? -3_600_000 : 3_600_000), i % 2 === 0, "de", course.vocab),
   );
 
   it("devuelve entre 1 y 10 ejercicios (SESSION_SIZE, no +2)", () => {
@@ -115,26 +115,33 @@ describe("buildReviewSession — invariantes en 20 corridas", () => {
 
 describe("buildReviewSession — pools chicos y estado nulo", () => {
   it("con <4 ítems vistos devuelve sesión vacía", () => {
-    expect(buildReviewSession(mkState(POOL.slice(0, 3)), false).exercises).toEqual([]);
+    expect(buildReviewSession(mkState(POOL.slice(0, 3)), false, "de", course.vocab).exercises).toEqual([]);
   });
 
   it("con estado null devuelve sesión vacía", () => {
-    expect(buildReviewSession(null, false).exercises).toEqual([]);
+    expect(buildReviewSession(null, false, "de", course.vocab).exercises).toEqual([]);
   });
 
   it("ids que no existen en el curso se ignoran (3 reales + 2 fantasma = vacía)", () => {
     const st = mkState(["hallo", "danke", "hund", "zzz-fantasma-1", "zzz-fantasma-2"]);
-    expect(seenItems(st)).toHaveLength(3);
-    expect(buildReviewSession(st, false).exercises).toEqual([]);
+    expect(seenItems(st, course.vocab)).toHaveLength(3);
+    expect(buildReviewSession(st, false, "de", course.vocab).exercises).toEqual([]);
   });
 
   it("con exactamente 4 vistos ya construye sesión", () => {
-    const { exercises } = buildReviewSession(mkState(POOL.slice(0, 4)), false);
+    const { exercises } = buildReviewSession(mkState(POOL.slice(0, 4)), false, "de", course.vocab);
     expect(exercises.length).toBeGreaterThanOrEqual(1);
   });
 
   it("seenItems(null) → []", () => {
-    expect(seenItems(null)).toEqual([]);
+    expect(seenItems(null, course.vocab)).toEqual([]);
+  });
+
+  it("seenCount (solo ids) cuenta lo mismo que seenItems con las tarjetas", () => {
+    // ids del curso, uno inventado y uno inglés: la mochila alemana no los mezcla
+    const st = mkState([...POOL, "no-existe", "enhello"]);
+    expect(seenCount(st, "de")).toBe(seenItems(st, course.vocab).length);
+    expect(seenCount(null, "de")).toBe(0);
   });
 });
 
@@ -191,7 +198,7 @@ describe("buildReviewSession — la traducción hacia el idioma cuenta como prod
   const sessions = Array.from({ length: 60 }, (_, i) => {
     vi.spyOn(Math, "random").mockImplementation(lcg(i + 1));
     try {
-      return buildReviewSession(mkState(POOL), false).exercises;
+      return buildReviewSession(mkState(POOL), false, "de", course.vocab).exercises;
     } finally {
       vi.restoreAllMocks();
     }
@@ -271,7 +278,7 @@ describe("contraste de artículo — dos huecos seguidos, o ninguno", () => {
       vi.spyOn(Math, "random").mockImplementation(lcg(seed));
       let exercises: Exercise[] = [];
       try {
-        exercises = buildReviewSession(mkState(POOL), false).exercises;
+        exercises = buildReviewSession(mkState(POOL), false, "de", course.vocab).exercises;
       } finally {
         vi.restoreAllMocks();
       }

@@ -19,8 +19,7 @@
 import type { Exercise, Phase, ServerState, VocabItem } from "./types";
 import { EXERCISE_KINDS } from "./exerciseKinds";
 import { resolveItems } from "./resolveItems";
-import { courseOf, langOfPhase } from "@/data/course";
-import { resolveLevelId, phasesOf as levelPhases } from "./levels";
+import { levelPseudoPhase, retoLangOf } from "./retoLevel";
 import {
   tType, tListen, tMcMeaning, tMcForm, tArticle, tPlural, tCloze, tMatch, tGenderBucket, itemForms,
   tContractionEn, tDoDoesEn, tBeDoBucketEn, tTranslate, levelTemplatesFor, levelBucketsFor,
@@ -126,9 +125,17 @@ function strip(ex: Exercise): Exercise {
   return { ...ex, hints: [] };
 }
 
+/** Lo que el mazo necesita además del propio módulo: el vocabulario del
+ *  idioma (data/vocab.ts) y, en orden, los ids de frase de los módulos
+ *  ANTERIORES — de ahí salen las visitas del pasado. La página del reto los
+ *  calcula en el servidor (lib/contentSlices.ts → retoPastPhraseIds). */
+export interface RetoSource {
+  vocab: Record<string, VocabItem>;
+  pastPhraseIds: string[];
+}
+
 /** ítems (vocab) trabajados por el módulo */
-function moduleItems(phase: Phase, lang: string): VocabItem[] {
-  const vocab = courseOf(lang).vocab;
+function moduleItems(phase: Phase, vocab: Record<string, VocabItem>): VocabItem[] {
   const ids = new Set<string>();
   for (const l of phase.lessons) {
     for (const sec of l.sections) {
@@ -144,24 +151,15 @@ function moduleItems(phase: Phase, lang: string): VocabItem[] {
 }
 
 /** ítems vencidos de módulos ANTERIORES del mismo idioma (visitas del pasado) */
-function pastDueItems(phase: Phase, lang: string, st: ServerState | null): VocabItem[] {
+function pastDueItems(src: RetoSource, st: ServerState | null): VocabItem[] {
   if (!st) return [];
-  const course = courseOf(lang);
-  const idx = course.phases.findIndex((p) => p.id === phase.id);
-  if (idx <= 0) return [];
   const now = Date.now();
   const out: VocabItem[] = [];
-  for (const p of course.phases.slice(0, idx)) {
-    for (const l of p.lessons) {
-      for (const sec of l.sections) {
-        for (const id of sec.itemIds ?? []) {
-          const stat = st.items[id];
-          if (stat?.nextReview && new Date(stat.nextReview).getTime() <= now) {
-            const v = course.vocab[id];
-            if (v) out.push(v);
-          }
-        }
-      }
+  for (const id of src.pastPhraseIds) {
+    const stat = st.items[id];
+    if (stat?.nextReview && new Date(stat.nextReview).getTime() <= now) {
+      const v = src.vocab[id];
+      if (v) out.push(v);
     }
   }
   return out;
@@ -172,10 +170,16 @@ function pastDueItems(phase: Phase, lang: string, st: ServerState | null): Vocab
  * ejercicios reales del módulo + plantillas generativas restringidas a sus
  * ítems (+ hasta 2 visitas del pasado en el núcleo). Llamar en useEffect.
  */
-export function buildRetoDeck(phase: Phase, st: ServerState | null, hasVoice: boolean, seed: number): RetoDeck {
+export function buildRetoDeck(
+  phase: Phase,
+  st: ServerState | null,
+  hasVoice: boolean,
+  seed: number,
+  src: RetoSource,
+): RetoDeck {
   const lang = retoLangOf(phase.id);
   const rng = mulberry32(seed);
-  const items = seededShuffle(moduleItems(phase, lang), rng);
+  const items = seededShuffle(moduleItems(phase, src.vocab), rng);
   let n = 0;
   const nextId = () => `rg${seed % 100000}-${++n}`;
 
@@ -281,7 +285,7 @@ export function buildRetoDeck(phase: Phase, st: ServerState | null, hasVoice: bo
 
   // 3) visitas del pasado: hasta 2 ítems vencidos de módulos anteriores,
   //    en el núcleo (repaso espaciado camuflado)
-  const past = seededShuffle(pastDueItems(phase, lang, st), rng).slice(0, 2);
+  const past = seededShuffle(pastDueItems(src, st), rng).slice(0, 2);
   const pastCands: RetoCandidate[] = past
     .map((v) => tCloze(v, nextId()) ?? tType(v, nextId()))
     .filter((ex): ex is Exercise => ex !== null)
@@ -350,33 +354,9 @@ export function pickNext(
   return chosen.c.ex;
 }
 
-/** RETO DE NIVEL ("la vuelta al nivel"): fase sintética que agrupa TODOS los
-    módulos — misma run, pool gigante, la medalla gorda. Se abre al completar
-    el nivel entero. El id "nivel-<levelId>" vive como LessonStat normal. */
-export function levelPseudoPhase(levelId: string): Phase | null {
-  const lv = resolveLevelId(levelId);
-  if (!lv) return null;
-  const phases = levelPhases(lv);
-  if (!phases.length) return null;
-  return {
-    id: `nivel-${lv.id}`,
-    level: lv.cefr,
-    n: 0,
-    title: lv.lang === "en" ? "La vuelta a Londres" : `La vuelta al ${lv.name}`,
-    goal: `TODO el ${lv.name} en una run: 10 ejercicios de cualquier módulo.`,
-    color: "#7c3aed",
-    lessons: phases.flatMap((p) => p.lessons),
-  };
-}
-
-/** idioma de una fase, entendiendo también las sintéticas de nivel */
-export function retoLangOf(phaseId: string): string {
-  if (phaseId.startsWith("nivel-")) {
-    const lv = resolveLevelId(phaseId.slice("nivel-".length));
-    if (lv) return lv.lang;
-  }
-  return langOfPhase(phaseId);
-}
+// el reto de nivel y el idioma de un reto viven en retoLevel.ts (sin
+// "use client": la página del reto los usa en el servidor)
+export { levelPseudoPhase, retoLangOf };
 
 /* ── medallas (computadas del bestScore: infalseables) ── */
 

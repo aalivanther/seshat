@@ -16,7 +16,7 @@ import {
   Scales, Stack, CalendarCheck, HandPalm, UserFocus,
   Quotes, GitBranch, Anchor, Lightning,
 } from "@phosphor-icons/react";
-import { refModules } from "@/data/course.gen";
+import { refModules } from "@/data/refs.gen";
 import { levelsOf } from "@/lib/levels";
 import type { Cefr } from "@/lib/types";
 import { useVoiceMissing } from "@/components/ExerciseKinds";

@@ -5,7 +5,7 @@
 
 import { useMemo, useState } from "react";
 import type { ParticipleEntry } from "@/data/referenceA2";
-import { refModules } from "@/data/course.gen";
+import { refModules } from "@/data/refs.gen";
 import { SpeakerHigh } from "@phosphor-icons/react";
 import { speak } from "@/lib/tts";
 import s from "./referencia.module.css";

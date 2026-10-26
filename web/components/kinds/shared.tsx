@@ -13,7 +13,7 @@ import type { Exercise } from "@/lib/types";
 import { charDiff, gradeText, liveCheck, liveShown, type GradeOptions, type GradeResult } from "@/lib/grade";
 import { hasTargetVoice } from "@/lib/tts";
 import { langConfig } from "@/lib/language";
-import { courses } from "@/data/course";
+import { vocabTargets as allTargets } from "@/data/vocabTargets.gen";
 import { SpeakerSlash } from "@phosphor-icons/react";
 import s from "../ex.module.css";
 
@@ -143,13 +143,10 @@ export function fail(expected: string, feedback: string | null = null): GradeRes
 }
 
 // targets del vocab en minúsculas: para saber si lo citado en «» es audible
+// (la lista la saca gen-derived.mjs del curso; las tarjetas no hacen falta)
 let vocabTargets: Set<string> | null = null;
 export function isVocabTarget(text: string): boolean {
-  if (!vocabTargets) {
-    vocabTargets = new Set(
-      Object.values(courses).flatMap((c) => Object.values(c.vocab).map((v) => v.target.toLowerCase())),
-    );
-  }
+  if (!vocabTargets) vocabTargets = new Set(allTargets);
   return vocabTargets.has(text.toLowerCase());
 }
 

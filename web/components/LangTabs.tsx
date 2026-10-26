@@ -8,7 +8,7 @@
 // que no era de ninguno de los dos. Con esto, la carpeta entera —medallas,
 // retos, certificados y diagnóstico— habla de un idioma cada vez.
 
-import { courses } from "@/data/course";
+import { courses } from "@/data/courseIndex";
 import { LANGUAGES } from "@/lib/languages";
 import s from "./langtabs.module.css";
 

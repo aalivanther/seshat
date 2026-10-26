@@ -3,6 +3,7 @@ import { course } from "@/data/course";
 import {
   buildRetoDeck, pickNext, mulberry32, retoMedal, tramoOf, RETO_SIZE, RETO_LIVES,
 } from "@/lib/retoRun";
+import { retoSourceFor } from "@/lib/contentSlices";
 import type { LessonStat, ServerState } from "@/lib/types";
 
 // Contrato del motor de retos (PLAN.md § RETOS):
@@ -42,7 +43,7 @@ describe("tramoOf", () => {
 });
 
 describe("buildRetoDeck", () => {
-  const deck = buildRetoDeck(phase, null, true, 1234);
+  const deck = buildRetoDeck(phase, null, true, 1234, retoSourceFor(phase.id));
 
   it("ningún candidato es speak ni shadow, en ningún tramo", () => {
     for (const tramo of deck.tramos) {
@@ -72,7 +73,7 @@ describe("buildRetoDeck", () => {
   });
 
   it("misma semilla → mismo mazo (ids idénticos)", () => {
-    const deck2 = buildRetoDeck(phase, null, true, 1234);
+    const deck2 = buildRetoDeck(phase, null, true, 1234, retoSourceFor(phase.id));
     expect(deck2.tramos.map((t) => t.map((c) => c.ex.id))).toEqual(
       deck.tramos.map((t) => t.map((c) => c.ex.id)),
     );
@@ -90,7 +91,7 @@ describe("buildRetoDeck", () => {
 
 describe("pickNext", () => {
   it("una run entera: 10 ejercicios sin repetir y cierre en type/transform", () => {
-    const deck = buildRetoDeck(phase, null, true, 99);
+    const deck = buildRetoDeck(phase, null, true, 99, retoSourceFor(phase.id));
     const rng = mulberry32(99);
     const used = new Set<string>();
     const run: string[] = [];
@@ -111,7 +112,7 @@ describe("pickNext", () => {
 
   it("dos semillas → runs distintas (rejugabilidad)", () => {
     const runOf = (seed: number) => {
-      const deck = buildRetoDeck(phase, null, true, seed);
+      const deck = buildRetoDeck(phase, null, true, seed, retoSourceFor(phase.id));
       const rng = mulberry32(seed);
       const used = new Set<string>();
       const ids: string[] = [];

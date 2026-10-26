@@ -6,12 +6,12 @@
 // justo donde estudia el comprador que no crea perfil — sino un flag de dev:
 // localStorage.setItem("seshat-dev", "1") en la consola lo activa.
 
-import { courseOf, langOfPhase } from "@/data/course";
+import { courseOf, langOfPhase } from "@/data/courseIndex";
 import { levelOfPhase, highestAvailableUpTo } from "./levels";
 import { placedLevel } from "./placement";
 import { cefrAtOrBelow, cefrRank, isCefr, type Cefr } from "./cefr";
 import { testId } from "./ids";
-import type { Phase, ServerState } from "./types";
+import type { PhaseMeta, ServerState } from "./types";
 
 export function isSandboxProfile(): boolean {
   // En el servidor (export estático) NO hay taller: devolver true pintaba el
@@ -21,7 +21,7 @@ export function isSandboxProfile(): boolean {
   return window.localStorage.getItem("seshat-dev") === "1";
 }
 
-export function phaseCompleted(phase: Phase, st: ServerState | null): boolean {
+export function phaseCompleted(phase: PhaseMeta, st: ServerState | null): boolean {
   if (phaseSkippedByPlacement(phase, st)) return true;
   return phase.lessons.length > 0 && phase.lessons.every((l) => st?.lessons?.[l.id]?.completed);
 }
@@ -29,7 +29,7 @@ export function phaseCompleted(phase: Phase, st: ServerState | null): boolean {
 /** La prueba te colocó POR ENCIMA de este módulo: no hay que rehacerlo.
  *  Cuenta como hecho en el cuaderno (candado, barra, «siguiente lección»),
  *  no escribe lecciones ni tarjetas SRS — eso sí sería fingir el certificado. */
-export function phaseSkippedByPlacement(phase: Phase, st: ServerState | null): boolean {
+export function phaseSkippedByPlacement(phase: PhaseMeta, st: ServerState | null): boolean {
   if (!st) return false;
   const lang = langOfPhase(phase.id);
   const own = levelOfPhase(phase.id);
@@ -41,7 +41,7 @@ export function phaseSkippedByPlacement(phase: Phase, st: ServerState | null): b
 
 /** ¿Este módulo ya tiene trabajo guardado? Un perfil que hizo lecciones (o la
  *  prueba) no puede quedar candado solo porque la colocación no viajó. */
-export function phaseHasProgress(phase: Phase, st: ServerState | null): boolean {
+export function phaseHasProgress(phase: PhaseMeta, st: ServerState | null): boolean {
   if (!st) return false;
   if (st.lessons?.[testId(phase.id)]?.completed) return true;
   return phase.lessons.some((l) => st.lessons?.[l.id]?.completed);
@@ -62,7 +62,7 @@ export function inferPlacedFromProgress(st: ServerState | null, lang: string): C
 
 /** módulo anterior en la cadena de SU idioma (null si es el primero).
     Cada idioma tiene su propia cadena: empezar inglés no exige alemán. */
-export function prevPhaseOf(phase: Phase): Phase | null {
+export function prevPhaseOf(phase: PhaseMeta): PhaseMeta | null {
   const phases = courseOf(langOfPhase(phase.id)).phases;
   const idx = phases.findIndex((p) => p.id === phase.id);
   return idx > 0 ? phases[idx - 1] : null;
@@ -82,7 +82,7 @@ export function prevPhaseOf(phase: Phase): Phase | null {
  * `ServerState`, que viaja con el perfil, y solo si no hay dato ahí cae al
  * informe en `localStorage` del dispositivo donde se hizo la prueba.
  */
-function placementUnlocks(phase: Phase, st: ServerState | null): boolean {
+function placementUnlocks(phase: PhaseMeta, st: ServerState | null): boolean {
   const lang = langOfPhase(phase.id);
   const own = levelOfPhase(phase.id);
   if (!own) return false;
@@ -102,7 +102,7 @@ function placementUnlocks(phase: Phase, st: ServerState | null): boolean {
  * - si el módulo YA tiene lecciones o prueba hechas, se abre: un update no
  *   puede esconder el progreso de quien se colocó en un nivel y empezó.
  */
-export function phaseUnlocked(phase: Phase, st: ServerState | null): boolean {
+export function phaseUnlocked(phase: PhaseMeta, st: ServerState | null): boolean {
   if (isSandboxProfile()) return true;
   if (!st) return true;
   const prev = prevPhaseOf(phase);
@@ -114,7 +114,7 @@ export function phaseUnlocked(phase: Phase, st: ServerState | null): boolean {
 /** El progreso YA hecho en un nivel equivale a haberse colocado ahí: abre
  *  ese CEFR y los de debajo, para que un perfil viejo sin `placement` no
  *  esconda módulos que el alumno ya tocó. */
-function progressUnlocks(phase: Phase, st: ServerState | null): boolean {
+function progressUnlocks(phase: PhaseMeta, st: ServerState | null): boolean {
   if (phaseHasProgress(phase, st)) return true;
   const lang = langOfPhase(phase.id);
   const own = levelOfPhase(phase.id);

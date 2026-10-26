@@ -113,12 +113,35 @@ function loadSfx(): Promise<ZzfxApi | null> {
   return loadingSfx;
 }
 
-/** Precarga el módulo de audio y engancha la capa táctil global. */
+/** Engancha la capa táctil global y deja el audio para cuando haga falta.
+ *  Crear el AudioContext y sintetizar las ondas costaba ~100 ms en plena
+ *  carga en un móvil modesto, para un sonido que nadie ha pedido aún: ahora
+ *  el módulo se carga con el primer gesto o en el primer rato ocioso de
+ *  verdad (sin plazo que lo fuerce a meterse en la carga), lo que llegue
+ *  antes. El primer gesto sigue sonando: unlockAudio lo pide igual. */
 export function preloadSfx(): void {
   if (typeof window === "undefined") return;
-  void loadSfx();
   // import diferido a propósito: useTactile importa de aquí y no queremos ciclo
   void import("./useTactile").then((m) => m.installTactile());
+  let started = false;
+  const start = () => {
+    if (started) return;
+    started = true;
+    window.removeEventListener("pointerdown", start, true);
+    window.removeEventListener("keydown", start, true);
+    void loadSfx();
+  };
+  window.addEventListener("pointerdown", start, { capture: true, passive: true });
+  window.addEventListener("keydown", start, true);
+  whenIdle(start);
+}
+
+/** cuando el navegador esté ocioso de verdad: sin `timeout`, que lo forzaba
+ *  en plena carga si la página no paraba */
+function whenIdle(fn: (deadline?: IdleDeadline) => void): void {
+  const idle = window.requestIdleCallback;
+  if (typeof idle === "function") idle(fn);
+  else window.setTimeout(fn, 300);
 }
 
 /* ── Desbloqueo del audio ──────────────────────────────────────────────────
@@ -350,18 +373,20 @@ function play(voices: Voice[]): void {
 function warmUp(): void {
   const z = api;
   if (!z) return;
-  const cook = () => {
-    for (const v of [TICK, SELECT, NAV, POP, LIFT, ...SUBMIT]) {
+  const pending = [TICK, SELECT, NAV, POP, LIFT, ...SUBMIT];
+  // una onda por hueco ocioso mientras quede tiempo en él: cocinarlas todas
+  // de golpe era una tarea larga justo cuando la página aún arrancaba
+  const cook = (deadline?: IdleDeadline) => {
+    while (pending.length > 0 && (!deadline || deadline.timeRemaining() > 4)) {
       try {
-        bufferOf(z, v);
+        bufferOf(z, pending.shift()!);
       } catch {
         /* si falla, se sintetizará al vuelo */
       }
     }
+    if (pending.length > 0) whenIdle(cook);
   };
-  const idle = window.requestIdleCallback;
-  if (typeof idle === "function") idle(cook, { timeout: 1500 });
-  else window.setTimeout(cook, 300);
+  whenIdle(cook);
 }
 
 /* ── Gesto ya sonado ───────────────────────────────────────────────────────

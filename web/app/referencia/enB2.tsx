@@ -2,7 +2,7 @@
 
 // Inglés B2. Marcadores, pasiva impersonal, modalidad, no finitas, inversión y trampas.
 
-import { refModules } from "@/data/course.gen";
+import { refModules } from "@/data/refs.gen";
 import s from "./referencia.module.css";
 
 const enb2ref = refModules.enb2;

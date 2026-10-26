@@ -19,7 +19,7 @@ import { LangBadge } from "@/components/LangBadge";
 import { useProgress, modulePct, moduleAvgScore, levelPct, nextLessonId, phasesOf } from "@/lib/useProgress";
 import { phaseSkippedByPlacement, phaseUnlocked, prevPhaseOf } from "@/lib/unlock";
 import { useReviewBannerDue } from "@/lib/reviewSession";
-import { examsOf } from "@/data/exams";
+import { examsOf } from "@/data/examsIndex";
 import { officialExamName } from "@/lib/achievements";
 import { has } from "@/data/features";
 import { DuelSeal } from "@/components/Art";

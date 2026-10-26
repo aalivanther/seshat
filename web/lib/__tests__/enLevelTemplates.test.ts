@@ -5,6 +5,7 @@ import {
 } from "@/lib/reviewSession";
 import { course, courseOf } from "@/data/course";
 import { buildRetoDeck } from "@/lib/retoRun";
+import { retoSourceFor } from "@/lib/contentSlices";
 import type { RetoCandidate } from "@/lib/retoRun";
 import type { Exercise, ItemStat, ServerState, VocabItem } from "@/lib/types";
 
@@ -297,7 +298,7 @@ describe("regresión: el repaso alemán sale igual que antes del inglés", () =>
   it("mismo estado y mismo azar → misma sesión, ejercicio a ejercicio", () => {
     for (let seed = 1; seed <= ORO.length; seed++) {
       vi.spyOn(Math, "random").mockImplementation(lcg(seed));
-      const { exercises } = buildReviewSession(ST, true, "de");
+      const { exercises } = buildReviewSession(ST, true, "de", course.vocab);
       vi.restoreAllMocks();
       expect(exercises.map((e) => `${e.type}:${(e.itemIds ?? []).join("+")}`), `semilla ${seed}`)
         .toEqual(ORO[seed - 1]);
@@ -316,7 +317,7 @@ describe("regresión: el repaso alemán sale igual que antes del inglés", () =>
 
   it("un B1 alemán sigue recibiendo ejercicios de NIVEL (el cupo funciona)", () => {
     vi.spyOn(Math, "random").mockImplementation(lcg(1));
-    const { exercises } = buildReviewSession(ST, true, "de");
+    const { exercises } = buildReviewSession(ST, true, "de", course.vocab);
     vi.restoreAllMocks();
     // con ≥3 fichas con `gram` el cupo reserva dos huecos de nivel; aquí se ven
     // como errorfix (tErrorFix sobre gram.trap con racha ≥2)
@@ -349,7 +350,7 @@ describe("retos: lo que faltaba del P5", () => {
   const deckOf = (phaseId: string) => {
     const phase = [...course.phases, ...courseOf("en").phases].find((p) => p.id === phaseId)!;
     expect(phase, phaseId).toBeDefined();
-    const deck = buildRetoDeck(phase, null, true, 7);
+    const deck = buildRetoDeck(phase, null, true, 7, retoSourceFor(phase.id));
     const all = [...deck.tramos[0], ...deck.tramos[1], ...deck.tramos[2]];
     return { deck, generados: all.filter((c) => c.ex.id.startsWith("rg")) };
   };

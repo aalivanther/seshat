@@ -4,7 +4,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { LazyMotion, domAnimation, m } from "motion/react";
 import type { Badge } from "@/lib/achievements";
 import { buzz, celebrate, reducedMotion, SPRING, sfxFanfare } from "@/lib/juice";
 import s from "./badge.module.css";
@@ -32,34 +32,37 @@ export function BadgeUnlocks({ badges }: { badges: Badge[] }) {
         {badges.length === 1 ? "¡Medalla nueva en tu expedición!" : "¡Medallas nuevas en tu expedición!"}
       </p>
       <div className={s.row}>
-        {badges.map((b, i) => {
-          const Icon = b.icon;
-          const cuerpo = (
-            <>
-              <span className={s.icon}><Icon size={30} weight="fill" /></span>
-              <span className={s.title} lang={b.lang}>{b.title}</span>
-              <span className={s.desc}>{b.desc}</span>
-            </>
-          );
-          if (quieto) {
-            return (
-              <div key={b.id} className={s.medal}>
-                {cuerpo}
-              </div>
+        {/* LazyMotion + m: solo el motor de animación que se usa aquí, no el paquete entero */}
+        <LazyMotion features={domAnimation}>
+          {badges.map((b, i) => {
+            const Icon = b.icon;
+            const cuerpo = (
+              <>
+                <span className={s.icon}><Icon size={30} weight="fill" /></span>
+                <span className={s.title} lang={b.lang}>{b.title}</span>
+                <span className={s.desc}>{b.desc}</span>
+              </>
             );
-          }
-          return (
-            <motion.div
-              key={b.id}
-              className={s.medal}
-              initial={{ scale: 0, rotate: -12 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ ...SPRING, delay: 0.25 + i * 0.18 }}
-            >
-              {cuerpo}
-            </motion.div>
-          );
-        })}
+            if (quieto) {
+              return (
+                <div key={b.id} className={s.medal}>
+                  {cuerpo}
+                </div>
+              );
+            }
+            return (
+              <m.div
+                key={b.id}
+                className={s.medal}
+                initial={{ scale: 0, rotate: -12 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ ...SPRING, delay: 0.25 + i * 0.18 }}
+              >
+                {cuerpo}
+              </m.div>
+            );
+          })}
+        </LazyMotion>
       </div>
       <Link href="/perfil" className={s.link}>Ver mi expedición →</Link>
     </div>

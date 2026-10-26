@@ -28,7 +28,7 @@ import { adoptLang } from "@/lib/languages";
 import { SummitSeal, NotebookSeal } from "./Art";
 import { useConfirm } from "@/lib/useConfirm";
 import { useLeaveGuard } from "@/lib/useLeaveGuard";
-import { examLangOf } from "@/data/exams";
+import { examLangOf } from "@/data/examsIndex";
 import { langConfig } from "@/lib/language";
 import { examResultId } from "@/lib/ids";
 import { clearExamDraft, getState, postExamDraft, postLessonResult } from "@/lib/api";

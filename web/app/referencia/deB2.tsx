@@ -2,7 +2,7 @@
 
 // Alemán B2. Konjunktiv I, nominalización, Passiversatz, dos piezas, rección y trampas.
 
-import { refModules } from "@/data/course.gen";
+import { refModules } from "@/data/refs.gen";
 import { SpeakerHigh } from "@phosphor-icons/react";
 import { speak } from "@/lib/tts";
 import s from "./referencia.module.css";

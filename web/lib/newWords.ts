@@ -1,4 +1,3 @@
-"use client";
 
 // Detección de "palabra nueva": si un ejercicio usa una palabra alemana que el
 // curso aún no ha presentado en ninguna sección de frases hasta esa lección,
@@ -19,55 +18,66 @@ function tokenize(text: string): string[] {
 }
 
 
-/** tokens conocidos hasta (incluida) cada lección, en orden del curso — POR idioma */
-const knownByLang = new Map<string, Map<string, { known: Set<string>; stems: Set<string> }>>();
+/** Lo que el curso ha presentado hasta cada lección, POR idioma. En vez de una
+ *  copia de lo conocido por lección (crecía con el curso: cientos de lecciones
+ *  × miles de tokens, decenas de MB), cada token y cada raíz guardan el
+ *  ordinal de la PRIMERA lección que los presenta, y una lección los conoce si
+ *  ese ordinal no es posterior al suyo. Mismas respuestas, memoria lineal. */
+interface KnownIndex {
+  /** ordinal de cada lección en el orden del curso */
+  lessonOrd: Map<string, number>;
+  /** token → ordinal de la primera lección que lo presenta */
+  tokenOrd: Map<string, number>;
+  /** raíz → ordinal de la primera lección que la aporta */
+  stemOrd: Map<string, number>;
+}
 
-function addStemsOf(t: string, stems: Set<string>): void {
-  stems.add(stemOf(t));
+const knownByLang = new Map<string, KnownIndex>();
+
+function addStemsOf(t: string, ord: number, stems: Map<string, number>): void {
+  const add = (stem: string) => {
+    if (!stems.has(stem)) stems.set(stem, ord);
+  };
+  add(stemOf(t));
   // separables: aufstehen también aporta la raíz "steh" — así "stehe"
   // cuenta como conocida sin heurísticas laxas de substring
   const m = /^(auf|aus|an|ab|ein|mit|nach|vor|zu|um|weg|zurück|fern)(.{4,})$/.exec(t);
-  if (m) stems.add(stemOf(m[2]));
+  if (m) add(stemOf(m[2]));
 }
 
-function build(lang: string): Map<string, { known: Set<string>; stems: Set<string> }> {
+function build(lang: string): KnownIndex {
   const cached = knownByLang.get(lang);
   if (cached) return cached;
   const course = courseOf(lang);
-  const known = new Set<string>();
-  const stems = new Set<string>();
-  const knownByLesson = new Map<string, { known: Set<string>; stems: Set<string> }>();
-  knownByLang.set(lang, knownByLesson);
-  // PLAN 1.9.9 FASE 5: antes, cada lección recalculaba `stems` recorriendo y
-  // re-derivando TODO `known` desde cero (O(lecciones × vocabulario
-  // acumulado), efectivamente O(lecciones²) porque el vocabulario crece con
-  // las lecciones — AUDITORIA-ACOPLAMIENTO.md §G.3). `stemOf` es puro y
-  // determinista: una vez calculada la raíz de un token, no cambia. Basta con
-  // calcularla la primera vez que el token se ve — el resto es incremental.
+  const index: KnownIndex = { lessonOrd: new Map(), tokenOrd: new Map(), stemOrd: new Map() };
+  knownByLang.set(lang, index);
+  const { lessonOrd, tokenOrd, stemOrd } = index;
+  // `stemOf` es puro y determinista: la raíz de un token se calcula la
+  // primera vez que el token aparece y ya no cambia (PLAN 1.9.9 FASE 5).
+  const learn = (text: string, ord: number) => {
+    for (const t of tokenize(text)) {
+      if (tokenOrd.has(t)) continue;
+      tokenOrd.set(t, ord);
+      addStemsOf(t, ord, stemOrd);
+    }
+  };
+  let ord = 0;
   for (const p of course.phases) {
     for (const l of p.lessons) {
       for (const sec of l.sections) {
         for (const id of sec.itemIds ?? []) {
           const v = course.vocab[id];
           if (!v) continue;
-          for (const t of tokenize(v.target)) {
-            if (known.has(t)) continue;
-            known.add(t);
-            addStemsOf(t, stems);
-          }
-          if (v.plural) {
-            for (const t of tokenize(v.plural)) {
-              if (known.has(t)) continue;
-              known.add(t);
-              addStemsOf(t, stems);
-            }
-          }
+          learn(v.target, ord);
+          if (v.plural) learn(v.plural, ord);
         }
       }
-      knownByLesson.set(l.id, { known: new Set(known), stems: new Set(stems) });
+      // un id repetido se queda con su ÚLTIMA aparición, como el mapa de antes
+      lessonOrd.set(l.id, ord);
+      ord++;
     }
   }
-  return knownByLesson;
+  return index;
 }
 
 /** ¿el token se conoce, contando flexiones? (wohnst ~ wohnen: prefijo común ≥4;
@@ -79,8 +89,12 @@ function stemOf(t: string): string {
   return s.length >= 3 ? s : noUmlaut;
 }
 
-function isKnown(token: string, known: Set<string>, stems: Set<string>, glue: Set<string>): boolean {
-  return known.has(token) || glue.has(token) || stems.has(stemOf(token));
+function isKnown(token: string, index: KnownIndex, ord: number, glue: Set<string>): boolean {
+  const seenAt = index.tokenOrd.get(token);
+  if (seenAt !== undefined && seenAt <= ord) return true;
+  if (glue.has(token)) return true;
+  const stemAt = index.stemOrd.get(stemOf(token));
+  return stemAt !== undefined && stemAt <= ord;
 }
 
 /** textos en ESPAÑOL del ejercicio: si una palabra "alemana" también vive ahí
@@ -145,11 +159,10 @@ export function newWordsIn(ex: Exercise, lessonId: string): string[] {
   // sentido y su sitio lo ocupan las glosas tocables (PLAN.md §2.2)
   if (ex.type === "read") return [];
   const lang = findLesson(lessonId)?.lang ?? "de";
-  const map = build(lang);
-  const entry = map.get(lessonId);
-  if (!entry) return [];
+  const index = build(lang);
+  const ord = index.lessonOrd.get(lessonId);
+  if (ord === undefined) return [];
   const glue = glueOf(lang);
-  const { known, stems } = entry;
   const seen = new Set<string>();
   const fresh: string[] = [];
   const spanish = spanishTexts(ex);
@@ -157,7 +170,7 @@ export function newWordsIn(ex: Exercise, lessonId: string): string[] {
     for (const raw of text.split(/[^A-Za-zÄÖÜäöüß]+/)) {
       if (raw.length < MIN_LEN) continue;
       const token = raw.toLowerCase();
-      if (seen.has(token) || isKnown(token, known, stems, glue)) continue;
+      if (seen.has(token) || isKnown(token, index, ord, glue)) continue;
       if (looksLikeProperNoun(raw, spanish)) continue;
       seen.add(token);
       fresh.push(raw);

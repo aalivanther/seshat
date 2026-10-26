@@ -5,7 +5,7 @@
 // enseña su card — la liberación escalonada también aplica a idiomas).
 
 import Link from "next/link";
-import { courses } from "@/data/course";
+import { courses } from "@/data/courseIndex";
 import { LANGUAGES } from "@/lib/languages";
 import { useProgress, langPct } from "@/lib/useProgress";
 import { levelsOf, ready } from "@/lib/levels";
@@ -57,7 +57,7 @@ export default function LanguagesLanding() {
                     <span className={s.levelName} style={{ fontSize: "1.35rem", display: "inline-flex", alignItems: "center", gap: 8 }}><LangFlag lang={def.id} size={24} /> {def.name}</span>
                     <span className={s.levelTag}>
                       {lvlLabel} · {c.phases.length} módulos · {totalLessons} lecciones ·{" "}
-                      {Object.keys(c.vocab).length} palabras
+                      {c.vocabCount} palabras
                     </span>
                   </div>
                   <p className={s.levelDesc}>{def.desc}</p>

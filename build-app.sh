@@ -42,6 +42,9 @@ abort() {
 # real del artefacto que se estaba construyendo.
 echo "→ Generando el curso de \"$DROP_ARG\" (antes de los tests: son sobre ESTE contenido)..."
 (cd web && node scripts/gen-course.mjs "$DROP_ARG") || abort "no se pudo generar el curso de \"$DROP_ARG\"."
+# El índice ligero y el vocabulario troceado que lee el cliente salen de ESE
+# curso: se derivan antes de los tests, que también los leen.
+(cd web && node scripts/gen-derived.mjs) || abort "no se pudieron derivar los módulos ligeros del curso de \"$DROP_ARG\"."
 
 # El DROP numérico que ve el alumno sale de `BUILT_DROP` en el generado —
 # válido tanto si el argumento fue un número como un id de manifiesto.

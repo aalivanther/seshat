@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 import { GraduationCap, ExamIcon } from "@phosphor-icons/react";
-import { examsOf } from "@/data/exams";
-import type { ExamSet } from "@/lib/examTypes";
+import { examsOf } from "@/data/examsIndex";
+import type { ExamMeta } from "@/lib/examTypes";
 import { examClockPaper, examPaperDurationSeconds } from "@/lib/examClock";
 import { has } from "@/data/features";
 import { cefrRank, isCefr, type Cefr } from "@/lib/cefr";
@@ -45,7 +45,7 @@ function fmtMin(total: number): string {
 
 /** Duración por PAPEL (el mismo recorte que el cronómetro), no la suma cruda
  *  de secciones: en LanguageCert B1/B2, 80+50 son UN papel de 130′, no dos. */
-function minutesOfExam(ex: ExamSet): string {
+function minutesOfExam(ex: ExamMeta): string {
   const papers = new Set(
     ex.sections.map((s) => examClockPaper(ex, s.skill)).filter((p) => p !== "sprechen"),
   );

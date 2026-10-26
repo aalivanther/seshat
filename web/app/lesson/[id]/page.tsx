@@ -1,14 +1,22 @@
 import { notFound } from "next/navigation";
 import { findLesson, courses } from "@/data/course";
+import { lessonFreshWords, lessonVocab } from "@/lib/contentSlices";
 import { LessonPlayer } from "@/components/LessonPlayer";
 
 export default async function LessonPage(props: PageProps<"/lesson/[id]">) {
   const { id } = await props.params;
   const hit = findLesson(id);
   if (!hit) notFound();
-  // sin prop vocab: LessonPlayer ya importa course — pasarlo aquí serializaba
-  // los 860 ítems en el HTML+RSC de cada una de las 168 lecciones
-  return <LessonPlayer lesson={hit.lesson} />;
+  // La lección viaja sola, con las tarjetas de SUS frases y sus palabras
+  // nuevas ya calculadas: el cliente no carga el curso para buscarlas, y el
+  // vocabulario entero del idioma serializaba miles de tarjetas en cada página.
+  return (
+    <LessonPlayer
+      lesson={hit.lesson}
+      vocab={lessonVocab(hit.lesson, courses[hit.lang].vocab)}
+      freshWords={lessonFreshWords(hit.lesson)}
+    />
+  );
 }
 
 export function generateStaticParams() {

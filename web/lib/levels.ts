@@ -23,9 +23,9 @@ import { levelInDrop } from "./drop";
 import { placedLevel } from "./placement";
 import { cefrAtOrBelow, cefrRank, type Cefr } from "./cefr";
 import { examResultId, testId } from "./ids";
-import { courseOf } from "@/data/course";
-import { examsOf } from "@/data/exams";
-import type { Phase, ServerState } from "./types";
+import { courseOf } from "@/data/courseIndex";
+import { examsOf } from "@/data/examsIndex";
+import type { PhaseIndexEntry, PhaseMeta, ServerState } from "./types";
 
 /** PLAN 1.9.9.5 §B.4: una sola lección del nivel siguiente no cuenta como
  *  haber empezado ese nivel — decisión del dueño, 2026-09-02.
@@ -46,7 +46,7 @@ export const LEVEL_STARTED_THRESHOLD = 0.2;
  *    del dueño) — por eso ni se miran aquí.
  *  El examen del nivel se trata aparte (`levelExamPassed`): aprobarlo basta
  *  por sí solo, sin pasar por este cociente. */
-function levelCredit(lv: Level, phases: Phase[], st: ServerState | null): number {
+function levelCredit(lv: Level, phases: PhaseMeta[], st: ServerState | null): number {
   const myPhases = phases.filter((p) => (p.level ?? "a1") === lv.cefr);
   const total = myPhases.reduce((n, p) => n + p.lessons.length, 0);
   if (total === 0) return 0;
@@ -214,7 +214,7 @@ export function courseCeiling(lang: string): Cefr {
 }
 
 /** fases (módulos) de un nivel: las de SU idioma con SU cefr */
-export function phasesOf(level: Level): Phase[] {
+export function phasesOf(level: Level): PhaseIndexEntry[] {
   return courseOf(level.lang).phases.filter((p) => (p.level ?? "a1") === level.cefr);
 }
 
