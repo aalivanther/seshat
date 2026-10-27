@@ -338,5 +338,9 @@ export interface ExamSet {
   };
 }
 
+/** Un simulacro sin sus Teile: lo que listan los hubs y cuentan las medallas.
+ *  El set completo solo viaja a la página del propio simulacro. */
+export type ExamMeta = Omit<ExamSet, "sections"> & { sections: Omit<ExamSection, "teile">[] };
+
 /** Bandas de la rúbrica productiva del Goethe B1 (A mejor → E peor) */
 export const RUBRIC_BANDS = ["A", "B", "C", "D", "E"] as const;

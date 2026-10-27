@@ -263,7 +263,7 @@ describe("cupo de nivel: se reparte por PLANTILLA", () => {
       const st: ServerState = { lessons: {}, items, xp: 0, streakDays: 0, lastActive: "2026-08-20" };
       let condicionales = 0;
       for (let i = 0; i < 40; i++) {
-        for (const e of buildReviewSession(st, true, "en").exercises) {
+        for (const e of buildReviewSession(st, true, "en", courseOf("en").vocab).exercises) {
           if (String((e as unknown as { prompt?: string }).prompt ?? "").includes("condicional")) condicionales++;
         }
       }
@@ -312,7 +312,7 @@ describe("ninguna sesión del curso REAL trae un ejercicio incontestable", () =>
       try {
         const st = estado(lang);
         for (let i = 0; i < 60; i++) {
-          for (const e of buildReviewSession(st, true, lang).exercises) {
+          for (const e of buildReviewSession(st, true, lang, courseOf(lang).vocab).exercises) {
             const x = e as unknown as Record<string, unknown>;
             for (const a of (x.answers as string[] | undefined) ?? []) {
               expect(LISTA.test(a), `${e.type}: «${a}»`).toBe(false);

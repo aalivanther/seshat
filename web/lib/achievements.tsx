@@ -10,11 +10,12 @@ import {
   Footprints, PersonSimpleHike, Compass, MapTrifold, Mountains, Fire,
   Backpack, Medal, Trophy, Microphone, GraduationCap, Binoculars,
 } from "@phosphor-icons/react";
-import type { Phase, ServerState } from "./types";
+import type { PhaseMeta, ServerState } from "./types";
 import { CEFR_SCALE, type Cefr } from "./cefr";
 import { testId, isExamSimResult, examResultId, INTERVIEW_ID, INTERVIEW_EN_ID } from "./ids";
-import { course, courseOf } from "@/data/course";
-import { examsOf } from "@/data/exams";
+import { course, courseOf } from "@/data/courseIndex";
+import { examsOf } from "@/data/examsIndex";
+import { vocabIdSet } from "@/data/vocabIdSet";
 
 /* ---------- Rangos de explorador (por XP) ---------- */
 
@@ -60,8 +61,8 @@ export interface Badge {
 /** ítems del SRS que pertenecen al curso de UN idioma (la "mochila" de ese
     idioma): st.items es una bolsa común, y contarla entera mezclaba expediciones */
 function srsItemsOf(st: ServerState | null, lang: string): number {
-  const vocab = courseOf(lang).vocab;
-  return Object.keys(st?.items ?? {}).filter((id) => vocab[id]).length;
+  const ids = vocabIdSet(lang);
+  return Object.keys(st?.items ?? {}).filter((id) => ids.has(id)).length;
 }
 
 /** fábrica de medallas de UNA expedición: fija el idioma del título */
@@ -266,7 +267,7 @@ function englishBadges(st: ServerState | null): Badge[] {
 export const CERT_DAYS = 30;
 
 export interface ModuleCert {
-  phase: Phase;
+  phase: PhaseMeta;
   earned: boolean; // alguna vez logrado (prueba ≥80% con lecciones completas)
   valid: boolean; // vigente (renovado hace <30 días)
   since: Date | null;
@@ -277,7 +278,7 @@ export interface ModuleCert {
   lastScore: number | null;
 }
 
-export function moduleCert(phase: Phase, st: ServerState | null): ModuleCert {
+export function moduleCert(phase: PhaseMeta, st: ServerState | null): ModuleCert {
   const test = st?.lessons?.[testId(phase.id)];
   const allLessons = phase.lessons.every((l) => st?.lessons?.[l.id]?.completed);
   const earned = !!test && test.bestScore >= 0.8 && allLessons;

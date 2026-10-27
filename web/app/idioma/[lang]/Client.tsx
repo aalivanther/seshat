@@ -13,8 +13,8 @@ import { ArrowsClockwise } from "@phosphor-icons/react";
 // pantalla del idioma y la que más se mira — un set de catálogo aquí es lo que
 // hace que una app parezca montada con piezas de nadie.
 import { MarkCap, ToolNotebook, ToolTalk, ToolPen, ToolMic, ToolExam, ToolMedal, ToolPhone } from "@/components/Art";
-import { courseOf } from "@/data/course";
-import { examsOf } from "@/data/exams";
+import { courseOf } from "@/data/courseIndex";
+import { examsOf } from "@/data/examsIndex";
 import { has, type Capability } from "@/data/features";
 import { getLanguage, adoptLang } from "@/lib/languages";
 import { levelsOf, ready } from "@/lib/levels";

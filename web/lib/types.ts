@@ -529,6 +529,30 @@ export interface Course {
   vocab: Record<string, VocabItem>;
 }
 
+// ---- Índice ligero (lo que viaja a TODAS las páginas) ----
+// El curso entero pesa ~9 MB de JavaScript. Las pantallas de navegación solo
+// necesitan saber qué módulos y lecciones hay, no su contenido: el índice es
+// eso mismo sin secciones ni recursos (data/courseIndex.gen.ts, derivado del
+// curso por scripts/gen-derived.mjs). El contenido de una lección viaja solo
+// a SU página, que lo recibe del servidor ya recortado.
+
+/** una lección sin su contenido */
+export type LessonMeta = Omit<Lesson, "sections" | "resources">;
+/** un módulo cuyas lecciones son solo cabecera; un `Phase` completo también vale */
+export type PhaseMeta = Omit<Phase, "lessons"> & { lessons: LessonMeta[] };
+/** entrada del índice: la cabecera más lo que el hub cuenta de cada lección */
+export type LessonIndexEntry = LessonMeta & { nEx: number };
+export type PhaseIndexEntry = Omit<Phase, "lessons"> & { lessons: LessonIndexEntry[] };
+
+export interface CourseIndex {
+  phases: PhaseIndexEntry[];
+  /** cuántas tarjetas trae el idioma (la portada lo enseña) */
+  vocabCount: number;
+}
+
+/** lo que la página del módulo enseña de su misión */
+export type MissionMeta = Pick<Mission, "phaseId" | "title" | "outcome">;
+
 // ---- Estado del backend ----
 
 export interface ItemStat {

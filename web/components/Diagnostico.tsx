@@ -15,7 +15,7 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { MarkStrength, RadarChart, type RadarEje } from "@/components/Art";
-import { courseOf } from "@/data/course";
+import { courseOf } from "@/data/courseIndex";
 import { MASTERY_LABEL, moduleMastery, type ModuleMastery } from "@/lib/mastery";
 import { colorDe, idiomasConCurso } from "@/components/LangTabs";
 import { usePlacementReports } from "@/lib/usePlacement";

@@ -5,7 +5,7 @@
 // módulos ya hechos. Al cargar el perfil se reconcilia: si el servidor ya
 // tiene colocación, no se toca; si no, se recupera y se escribe en el perfil.
 
-import { courses } from "@/data/course";
+import { courses } from "@/data/courseIndex";
 import { isCefr, type Cefr } from "./cefr";
 import { getProfile, postPlacement } from "./api";
 import { placementResultId } from "./ids";

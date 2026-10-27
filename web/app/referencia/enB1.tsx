@@ -2,7 +2,7 @@
 
 // Inglés B1. Diez pestañas que no repiten el A1 ni el A2.
 
-import { refModules } from "@/data/course.gen";
+import { refModules } from "@/data/refs.gen";
 import { SpeakerHigh } from "@phosphor-icons/react";
 import { speak } from "@/lib/tts";
 import s from "./referencia.module.css";

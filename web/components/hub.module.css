@@ -129,7 +129,9 @@
   height: 100%;
   border-radius: 999px;
   background: var(--accent);
-  transition: width 0.7s var(--ease-spring);
+  /* JuicyBar llena la barra moviendo el relleno (transform), no su ancho: la
+     misma transición que tenía `width`, ahora sin layout en cada fotograma */
+  transition: transform 0.7s var(--ease-spring);
 }
 
 .barPct {

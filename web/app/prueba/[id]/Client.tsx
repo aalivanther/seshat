@@ -8,7 +8,8 @@ import Link from "next/link";
 import { useConfirm } from "@/lib/useConfirm";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { Exam, X } from "@phosphor-icons/react";
-import { courses, langOfPhase } from "@/data/course";
+import { courses, langOfPhase } from "@/data/courseIndex";
+import { loadFullPhase } from "@/data/phases";
 import { has } from "@/data/features";
 import { adoptLang } from "@/lib/languages";
 import { buildModuleTest } from "@/lib/moduleTest";
@@ -54,10 +55,21 @@ export default function ModuleTestPage() {
   const phase = found;
 
   // la prueba se baraja SOLO en cliente: barajar en render rompía la
-  // hidratación (el HTML del servidor traía otra mezcla que el cliente)
+  // hidratación (el HTML del servidor traía otra mezcla que el cliente).
+  // Los ejercicios del módulo llegan en su propio trozo (data/phases.ts):
+  // mientras, «Barajando la prueba…», como siempre.
   const [queue, setQueue] = useState<Exercise[] | null>(null);
   useEffect(() => {
-    setQueue(buildModuleTest(phase));
+    let vivo = true;
+    void loadFullPhase(phase).then(
+      (full) => {
+        if (vivo) setQueue(buildModuleTest(full));
+      },
+      () => undefined,
+    );
+    return () => {
+      vivo = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase.id]);
   const { state: progState } = useProgress({ due: false }); // dueCount no se muestra aquí

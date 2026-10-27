@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { courses, langOfPhase, missionOf } from "@/data/course";
+import { courses, langOfPhase, missionOf } from "@/data/courseIndex";
 import { adoptLang } from "@/lib/languages";
 import { PhaseIcon } from "@/lib/phaseMeta";
 import { PencilSimple, Timer } from "@phosphor-icons/react";
@@ -146,7 +146,7 @@ export default function ModulePage() {
           {phase.lessons.map((l, i) => {
             const stat = st?.lessons?.[l.id];
             const isNext = l.id === next;
-            const nEx = l.sections.reduce((n, sec) => n + (sec.exercises?.length ?? 0), 0);
+            const nEx = l.nEx; // contados en el build: el índice no trae las secciones
             return (
               <Reveal key={l.id} i={i + 1}>
                 <Link href={`/lesson/${l.id}`} className={`${s.lessonRow} ${isNext ? s.lessonNext : ""}`}>

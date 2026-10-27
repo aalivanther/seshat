@@ -2,7 +2,7 @@
 
 // Inglés A2. Ocho pestañas que el A1 no tenía.
 
-import { refModules } from "@/data/course.gen";
+import { refModules } from "@/data/refs.gen";
 import { SpeakerHigh } from "@phosphor-icons/react";
 import { speak } from "@/lib/tts";
 import s from "./referencia.module.css";

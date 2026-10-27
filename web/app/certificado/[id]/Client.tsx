@@ -10,7 +10,7 @@ import { has } from "@/data/features";
 import { Printer, ArrowLeft, Compass } from "@phosphor-icons/react";
 import { getProfile, getState } from "@/lib/api";
 import type { ServerState } from "@/lib/types";
-import { courses, langOfPhase } from "@/data/course";
+import { courses, langOfPhase } from "@/data/courseIndex";
 import {
   examReadiness,
   examReadinessTitle,

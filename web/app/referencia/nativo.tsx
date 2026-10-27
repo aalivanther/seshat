@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { NativoCardView } from "@/components/NativoCard";
-import { courseOf } from "@/data/course";
+import { nativoByLang } from "@/data/nativo.gen";
 import type { Cefr, NativoCard } from "@/lib/types";
 import { useProgress } from "@/lib/useProgress";
 import s from "./referencia.module.css";
@@ -14,15 +14,12 @@ export function NativoTab({ level, lang }: { level: Cefr; lang: string }) {
   const { state } = useProgress({ due: false });
   const st = state === "loading" || state === null ? null : state;
 
+  // la colección la junta gen-derived.mjs en el orden del curso: recorrer
+  // aquí las lecciones obligaba a traer el contenido de todas
   const all = useMemo(() => {
     const out: { card: NativoCard; lessonId: string }[] = [];
-    for (const p of courseOf(lang).phases) {
-      if ((p.level ?? "a1") !== level) continue;
-      for (const l of p.lessons) {
-        for (const sec of l.sections) {
-          if (sec.kind === "nativo" && sec.nativo) out.push({ card: sec.nativo, lessonId: l.id });
-        }
-      }
+    for (const n of nativoByLang[lang] ?? []) {
+      if (n.level === level) out.push({ card: n.card, lessonId: n.lessonId });
     }
     return out;
   }, [lang, level]);

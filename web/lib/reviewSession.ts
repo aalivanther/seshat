@@ -39,7 +39,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { courseOf } from "@/data/course";
+import { vocabIdSet } from "@/data/vocabIdSet";
 import { retoMissSet, consumeRetoMisses } from "./retoMiss";
 import { glueOf, stripArticle } from "./langUtils";
 import { langConfig } from "./language";
@@ -155,13 +155,21 @@ function weightedSample<T>(pool: { item: T; w: number }[], n: number): T[] {
   return out;
 }
 
-/** ítems VISTOS por el alumno (están en su SRS y existen en el curso) */
-export function seenItems(st: ServerState | null, lang = "de"): VocabItem[] {
-  const course = courseOf(lang);
+/** ítems VISTOS por el alumno (están en su SRS y existen en el curso).
+ *  `vocab` es el del idioma (data/vocab.ts): el repaso lo pide al entrar. */
+export function seenItems(st: ServerState | null, vocab: Record<string, VocabItem>): VocabItem[] {
   if (!st) return [];
   return Object.keys(st.items)
-    .map((id) => course.vocab[id])
+    .map((id) => vocab[id])
     .filter((v): v is VocabItem => Boolean(v));
+}
+
+/** cuántos de esos hay: para decidir si se invita al repaso basta con los ids,
+ *  sin traer las tarjetas a la lección ni a los hubs */
+export function seenCount(st: ServerState | null, lang = "de"): number {
+  if (!st) return 0;
+  const ids = vocabIdSet(lang);
+  return Object.keys(st.items).filter((id) => ids.has(id)).length;
 }
 
 /** cooldown real del aviso «¿Repasamos?»: una vez mostrado, no vuelve a
@@ -174,7 +182,7 @@ const REVIEW_OFFER_COOLDOWN_MS = 60 * 60 * 1000;
 export function useReviewBannerDue(st: ServerState | null, lang: string): boolean {
   const [due, setDue] = useState(false);
   useEffect(() => {
-    if (!st || seenItems(st, lang).length < MIN_SEEN_FOR_REVIEW) {
+    if (!st || seenCount(st, lang) < MIN_SEEN_FOR_REVIEW) {
       setDue(false);
       return;
     }
@@ -1547,9 +1555,13 @@ export interface ReviewSession {
  *   seguidos lo preguntan. El resto de la tanda sigue sorteado.
  * Llamar SOLO en cliente (usa Math.random — jamás en render de servidor).
  */
-export function buildReviewSession(st: ServerState | null, hasVoice: boolean, lang = "de"): ReviewSession {
-  const course = courseOf(lang);
-  const seen = seenItems(st, lang);
+export function buildReviewSession(
+  st: ServerState | null,
+  hasVoice: boolean,
+  lang: string,
+  vocab: Record<string, VocabItem>,
+): ReviewSession {
+  const seen = seenItems(st, vocab);
   if (seen.length < 4) return { exercises: [] };
 
   const now = Date.now();
@@ -1706,7 +1718,7 @@ export function buildReviewSession(st: ServerState | null, hasVoice: boolean, la
   let prod = exercises.filter(isProd).length;
   const quota = Math.ceil(exercises.length * 0.4);
   const toType = (id: string): Exercise | null => {
-    const v = course.vocab[id];
+    const v = vocab[id];
     if (!v) return null;
     const t = tType(v, nextId());
     if (!t || vistas.has(sigOf(t))) return null;

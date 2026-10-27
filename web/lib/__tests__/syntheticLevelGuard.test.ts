@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { courses } from "@/data/course";
+// el desbloqueo lee el índice ligero: es ahí donde hay que colar las fases
+import { courses } from "@/data/courseIndex";
 import { levels, highestAvailableUpTo } from "@/lib/levels";
 import type { Level } from "@/lib/levels";
 import { cefrRank } from "@/lib/cefr";
 import { phaseUnlocked } from "@/lib/unlock";
-import type { Phase, ServerState } from "@/lib/types";
+import type { PhaseIndexEntry, ServerState } from "@/lib/types";
 import { LEVEL_MIN_DROP } from "@/lib/drop";
 import { holdMutateCatalogLock, releaseMutateCatalogLock } from "./mutateCatalogLock";
 
@@ -27,7 +28,7 @@ import { holdMutateCatalogLock, releaseMutateCatalogLock } from "./mutateCatalog
 const SYN_LEVEL_ID = "de-zzsynthetic";
 const SYN_PHASE_ID = "zzsyntheticphase1";
 
-function installSynthetic(): { level: Level; phase: Phase } {
+function installSynthetic(): { level: Level; phase: PhaseIndexEntry } {
   const level: Level = {
     id: SYN_LEVEL_ID,
     lang: "de",
@@ -39,7 +40,7 @@ function installSynthetic(): { level: Level; phase: Phase } {
     goal: "",
     available: true,
   };
-  const phase: Phase = {
+  const phase: PhaseIndexEntry = {
     id: SYN_PHASE_ID,
     level: "c1",
     n: 999,
@@ -90,7 +91,7 @@ describe("T4 — placement A1 no abre un B2 registered available", () => {
     LEVEL_MIN_DROP[B2_ID] = 7;
     courses["de"].phases.push({
       id: B2_PHASE, level: "b2", n: 1, title: "B2m1", goal: "", color: "#000", lessons: [
-        { id: "b2m1l1", phaseId: B2_PHASE, title: "x", subtitle: "", minutes: 1, sections: [] },
+        { id: "b2m1l1", phaseId: B2_PHASE, title: "x", subtitle: "", minutes: 1, nEx: 0 },
       ],
     });
   });
@@ -127,7 +128,7 @@ describe("T4 — placement A1 no abre un B2 registered available", () => {
 });
 
 describe("PLAN 1.9.9 F0.2/F0.4 — un nivel por encima del máximo real", () => {
-  let synthetic: { level: Level; phase: Phase };
+  let synthetic: { level: Level; phase: PhaseIndexEntry };
 
   beforeEach(() => {
     holdMutateCatalogLock();

@@ -18,6 +18,7 @@ import { REVIEW_ID } from "@/lib/ids";
 import type { Exercise, ServerState } from "@/lib/types";
 import { hasTargetVoice } from "@/lib/tts";
 import { buildReviewSession } from "@/lib/reviewSession";
+import { loadVocab, type Vocab } from "@/data/vocab";
 import { hayQuePreguntarAlSalir, useLeaveGuard } from "@/lib/useLeaveGuard";
 import { getActiveLang, adoptLang } from "@/lib/languages";
 import { checkNewBadges } from "@/lib/badgeTracker";
@@ -51,6 +52,8 @@ export default function ReviewPage() {
     // Chrome carga las voces async: si armamos la cola antes de voiceschanged,
     // hasTargetVoice()=false y los dictados desaparecen de la sesión. Esperamos
     // la señal (o 800 ms de cortesía) antes de construirla.
+    // El vocabulario del idioma viaja aparte: se pide ya, mientras tanto.
+    const vocab = loadVocab(getActiveLang()).catch((): Vocab => ({}));
     let started = false;
     const start = () => {
       if (started) return;
@@ -70,13 +73,13 @@ export default function ReviewPage() {
       synth?.removeEventListener("voiceschanged", start);
     };
     function build() {
-      getState().then((st) => {
+      Promise.all([getState(), vocab]).then(([st, v]) => {
         if (st === null) {
           setBackendDown(true);
           setQueue([]);
           return;
         }
-        const session = buildReviewSession(st, hasTargetVoice(), getActiveLang());
+        const session = buildReviewSession(st, hasTargetVoice(), getActiveLang(), v);
         setQueue(session.exercises);
       });
     }

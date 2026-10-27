@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 import type { QuestionPattern, QuestionWord } from "@/data/questions";
 import type { SoundRule } from "@/data/pronunciation";
 import type { VerbEntry } from "@/data/verbs";
-import { refModules } from "@/data/course.gen";
+import { refModules } from "@/data/refs.gen";
 import { sanitizeNoteHtml } from "@/lib/sanitize";
 import { SpeakerHigh } from "@phosphor-icons/react";
 import { speak } from "@/lib/tts";

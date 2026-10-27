@@ -4,7 +4,8 @@ import { examsOf } from "@/data/exams";
 import { courseCeiling, highestAvailableUpTo, highestStartedCefr, LEVEL_STARTED_THRESHOLD, levels } from "@/lib/levels";
 import { DROP } from "@/lib/drop";
 import { cefrRank } from "@/lib/cefr";
-import { courses } from "@/data/course";
+// los niveles leen el índice ligero: el fixture se cuela ahí
+import { courses } from "@/data/courseIndex";
 import { LEVEL_MIN_DROP } from "@/lib/drop";
 import { withMutateCatalogLock } from "./mutateCatalogLock";
 import { examResultId, testId } from "@/lib/ids";
@@ -135,7 +136,7 @@ describe("courseCeiling — V4 techo = max available de ESTE build", () => {
       });
       courses.de.phases.push({
         id: "b2m1-ceiling", level: "b2", n: 1, title: "x", goal: "", color: "#000",
-        lessons: [{ id: "b2m1-ceiling-l1", phaseId: "b2m1-ceiling", title: "x", subtitle: "", minutes: 1, sections: [] }],
+        lessons: [{ id: "b2m1-ceiling-l1", phaseId: "b2m1-ceiling", title: "x", subtitle: "", minutes: 1, nEx: 0 }],
       });
       try {
         expect(courseCeiling("de")).toBe("b2");

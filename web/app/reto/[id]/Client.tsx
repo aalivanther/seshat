@@ -9,7 +9,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { X, ArrowCounterClockwise } from "@phosphor-icons/react";
 import { LifeHeart, Medal as MedalArt, DuelSeal } from "@/components/Art";
-import { courses, langOfPhase } from "@/data/course";
+import { courses } from "@/data/courseIndex";
+import { loadVocab, loadedVocab } from "@/data/vocab";
+import { loadFullPhase } from "@/data/phases";
 import { has } from "@/data/features";
 import { adoptLang } from "@/lib/languages";
 import { useProgress } from "@/lib/useProgress";
@@ -28,7 +30,7 @@ import { TTSGuard } from "@/components/TTSGuard";
 import { checkNewBadges } from "@/lib/badgeTracker";
 import { BadgeUnlocks } from "@/components/BadgeUnlocks";
 import type { Badge } from "@/lib/achievements";
-import type { Exercise, ServerState } from "@/lib/types";
+import type { Exercise, Phase, ServerState } from "@/lib/types";
 import { modeOfExercise } from "@/lib/types";
 import ls from "@/components/lesson.module.css";
 import ex from "@/components/ex.module.css";
@@ -45,7 +47,11 @@ type Run = {
   escaped: { expected: string; prompt: string }[];
 };
 
-export default function RetoPage() {
+export default function RetoPage({ pastPhraseIds }: {
+  /** ids de frase de los módulos anteriores, para las visitas del pasado
+   *  (los calcula la página: recorrer esos módulos aquí obligaría a traerlos) */
+  pastPhraseIds: string[];
+}) {
   if (!has("challenges")) notFound();
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -56,6 +62,16 @@ export default function RetoPage() {
   useEffect(() => {
     if (phaseLang) adoptLang(phaseLang);
   }, [phaseLang]);
+  // El mazo se baraja al pulsar «Empezar» con los ejercicios del módulo y
+  // tarjetas de todo el idioma: los dos se piden al entrar, mientras se lee
+  // la portada, y están listos al pulsarlo.
+  const fullPhase = useRef<Phase | null>(null);
+  useEffect(() => {
+    if (!phase || !phaseLang) return;
+    void loadVocab(phaseLang).catch(() => undefined);
+    void loadFullPhase(phase).then((p) => (fullPhase.current = p), () => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase?.id, phaseLang]);
 
   const { state } = useProgress({ due: false });
   const st = state === "loading" ? null : state;
@@ -81,10 +97,20 @@ export default function RetoPage() {
   const backHref = phase.id.startsWith("nivel-") ? `/nivel/${phase.id.slice("nivel-".length)}` : `/modulo/${phase.id}`;
 
   function startRun() {
+    const vocab = loadedVocab(phaseLang!);
+    const full = fullPhase.current;
+    if (!vocab || !full) {
+      // red muy lenta: la run arranca en cuanto llegue lo que falta
+      void Promise.all([loadVocab(phaseLang!), loadFullPhase(phase!)]).then(([, p]) => {
+        fullPhase.current = p;
+        startRun();
+      }, () => undefined);
+      return;
+    }
     // semilla y mazo en handler/efecto — jamás en render (regla #418)
     const seed = (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0;
     const rng = mulberry32(seed ^ 0x9e3779b9);
-    const deck = buildRetoDeck(phase!, st, hasTargetVoice(), seed);
+    const deck = buildRetoDeck(full, st, hasTargetVoice(), seed, { vocab, pastPhraseIds });
     deckRef.current = deck;
     rngRef.current = rng;
     reported.current = false;

@@ -17,7 +17,6 @@ import type { GradeResult } from "@/lib/grade";
 import { langConfig } from "@/lib/language";
 import { buzz, sfxOk, sfxBad } from "@/lib/juice";
 import { speak, stopSpeech } from "@/lib/tts";
-import { newWordsIn } from "@/lib/newWords";
 import { MC, Cloze, Build, Match, TypeEx, Listen, Speak, Order, Transform, Bucket, Shadow, Fastmatch, Hearreal, Write, AudioMC, Read, Gapbank, Errorfix, Paraphrase, Monologue, Translate, isVocabTarget, VoiceMissingNotice } from "./ExerciseKinds";
 import { MarkSpark, MarkEar } from "@/components/Art";
 import s from "./ex.module.css";
@@ -66,12 +65,13 @@ const HOW_TO: Record<string, { icon: HowIcon; label: string; how: string }> = {
 };
 
 export function ExercisePlayer({
-  ex, onDone, lessonId, arena = false,
+  ex, onDone, freshWords, arena = false,
 }: {
   ex: Exercise;
   onDone: (o: ExerciseOutcome) => void;
-  /** con lección de contexto se avisa de palabras que se estrenan aquí */
-  lessonId?: string;
+  /** palabras que se estrenan en este ejercicio (solo dentro de una lección:
+   *  las calcula su página en el build con lib/newWords.ts) */
+  freshWords?: string[];
   /** modo reto: recuperación a una bala — sin pistas ni segundo intento */
   arena?: boolean;
 }) {
@@ -158,8 +158,8 @@ export function ExercisePlayer({
           ninguna dejaba al alumno gastando escuchas en silencio. */}
       <VoiceMissingNotice type={ex.type} />
 
-      {lessonId && (() => {
-        const fresh = newWordsIn(ex, lessonId);
+      {freshWords && (() => {
+        const fresh = freshWords;
         if (fresh.length === 0) return null;
         return (
           <p className={s.newWords} role="note">

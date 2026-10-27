@@ -11,7 +11,8 @@ import { notFound, useParams } from "next/navigation";
 // Toda la pantalla de la misión va con arte propio: es la pieza que el alumno
 // enseña cuando cuenta qué es esto.
 import { MarkCompass, MarkHouse, MarkGlobe, MarkSpark, MarkCheckBox, ToolTalk } from "@/components/Art";
-import { courses, langOfPhase, missionOf, courseOf } from "@/data/course";
+import { courses, langOfPhase } from "@/data/courseIndex";
+import { loadVocab, loadedVocab, type Vocab } from "@/data/vocab";
 import { has } from "@/data/features";
 import { adoptLang } from "@/lib/languages";
 import { useProgress } from "@/lib/useProgress";
@@ -21,6 +22,7 @@ import { missionId } from "@/lib/ids";
 import { postLessonResult, saveFailureDetail } from "@/lib/api";
 import { checkNewBadges } from "@/lib/badgeTracker";
 import type { Badge } from "@/lib/achievements";
+import type { Mission } from "@/lib/types";
 import { BadgeUnlocks } from "@/components/BadgeUnlocks";
 import { recordRetoMisses } from "@/lib/retoMiss";
 import { asciiFold } from "@/lib/langUtils";
@@ -31,14 +33,18 @@ import hub from "@/components/hub.module.css";
 import ex from "@/components/ex.module.css";
 import s from "./mision.module.css";
 
-export default function MissionPage() {
+export default function MissionPage({ mission }: { mission: Mission | null }) {
   if (!has("missions")) notFound();
   const params = useParams<{ id: string }>();
-  const mission = missionOf(params.id);
   const phase = Object.values(courses).flatMap((c) => c.phases).find((p) => p.id === params.id);
   const lang = phase ? langOfPhase(phase.id) : null;
   useEffect(() => {
     if (lang) adoptLang(lang);
+  }, [lang]);
+  // «las palabras que me faltaron» se buscan en el vocabulario del idioma:
+  // se pide al abrir la misión, para tenerlo listo al registrarla
+  useEffect(() => {
+    if (lang) void loadVocab(lang).catch(() => undefined);
   }, [lang]);
 
   const { state } = useProgress({ due: false });
@@ -81,8 +87,22 @@ export default function MissionPage() {
     const pct = checked.size / mission!.checklist.length;
     // "palabras que me faltaron" → ítems del curso → prioridad ×3 en el repaso
     const words = missedWords.toLowerCase().split(/[,;\n]+/).map((w) => w.trim()).filter((w) => w.length >= 3);
+    const ready = words.length ? loadedVocab(lang!) : {};
+    if (ready) {
+      register(pct, words, ready);
+      return;
+    }
+    // aún no ha llegado (red muy lenta): se registra en cuanto llegue, y sin
+    // él, antes que perder la misión, sin casar palabras
+    setSaved("pending");
+    void loadVocab(lang!)
+      .catch((): Vocab => ({}))
+      .then((v) => register(pct, words, v));
+  }
+
+  function register(pct: number, words: string[], bank: Vocab) {
     if (words.length) {
-      const vocab = Object.values(courseOf(lang!).vocab);
+      const vocab = Object.values(bank);
       const tokensOf = (s: string) => asciiFold(s.toLowerCase()).split(/[^a-z']+/).filter(Boolean);
       const found = new Set<string>();
       const hit = vocab

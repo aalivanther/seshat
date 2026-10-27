@@ -89,7 +89,9 @@ async function main() {
   env.NEXT_TELEMETRY_DISABLED = "1";
   env.NEXT_PUBLIC_SESHAT_DEMO_VERSION = `${pkg.version}-demo`;
 
-  // la misma puerta que el build normal (prebuild): contenido inválido no se publica
+  // lo mismo que el build normal (prebuild): el índice ligero al día con el
+  // curso, y contenido inválido no se publica
+  run(process.execPath, [join(web, "scripts", "gen-derived.mjs")], web, env);
   run(process.execPath, [join(web, "scripts", "validate-content.mjs")], web, env);
 
   await rm(stage, { recursive: true, force: true });

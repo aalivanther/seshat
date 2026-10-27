@@ -11,7 +11,7 @@ import { idiomasConCurso, LangTabs } from "@/components/LangTabs";
 import { usePlacementReports } from "@/lib/usePlacement";
 import { exportProfile, getProfile, getState, getVersion, importProfile, setAvatar, resetProgress } from "@/lib/api";
 import type { ServerState } from "@/lib/types";
-import { courseOf } from "@/data/course";
+import { courseOf } from "@/data/courseIndex";
 import { useConfirm } from "@/lib/useConfirm";
 import { activeLanguage, LANGUAGES, type LanguageDef } from "@/lib/languages";
 import { asCefr } from "@/lib/cefr";

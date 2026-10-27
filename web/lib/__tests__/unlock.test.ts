@@ -186,7 +186,9 @@ describe("prevPhaseOf", () => {
   });
 
   it("la segunda apunta a la primera", () => {
-    expect(prevPhaseOf(second)).toBe(first);
+    // devuelve la entrada del índice ligero (lo que lee el cliente), no el
+    // objeto del curso completo: se compara por id
+    expect(prevPhaseOf(second)?.id).toBe(first.id);
   });
 
   it("una fase ajena al curso devuelve null (y por tanto quedaría desbloqueada)", () => {

@@ -13,13 +13,14 @@
 // más barato de conseguir, y la memoria a largo plazo es lo que de verdad dice
 // que algo está aprendido.
 
-import type { Phase, ServerState } from "./types";
+import type { PhaseMeta, ServerState } from "./types";
 import { testId, missionId } from "./ids";
+import { phaseWords } from "@/data/phaseWords.gen";
 
 export type MasteryState = "sin-empezar" | "en-marcha" | "asentado" | "dominado";
 
 export interface ModuleMastery {
-  phase: Phase;
+  phase: PhaseMeta;
   /** 0-100: lo que se pinta en la barra */
   pct: number;
   state: MasteryState;
@@ -36,7 +37,7 @@ export interface ModuleMastery {
  *  no es memoria de ayer, es memoria de verdad. */
 const DIAS_FUERTE = 21;
 
-export function moduleMastery(phase: Phase, st: ServerState | null): ModuleMastery {
+export function moduleMastery(phase: PhaseMeta, st: ServerState | null): ModuleMastery {
   const lessons = phase.lessons ?? [];
   const lessonsDone = lessons.filter((l) => st?.lessons?.[l.id]?.completed).length;
   const lessonsTotal = lessons.length;
@@ -44,16 +45,10 @@ export function moduleMastery(phase: Phase, st: ServerState | null): ModuleMaste
   const test = st?.lessons?.[testId(phase.id)];
   const testPct = typeof test?.bestScore === "number" ? Math.round(test.bestScore * 100) : null;
 
-  // las palabras del módulo: las que aparecen en sus lecciones
-  const ids = new Set<string>();
-  for (const l of lessons) {
-    for (const sec of l.sections ?? []) {
-      for (const id of sec.itemIds ?? []) ids.add(id);
-      for (const ex of sec.exercises ?? []) {
-        for (const id of ex.itemIds ?? []) ids.add(id);
-      }
-    }
-  }
+  // las palabras del módulo: las que aparecen en sus lecciones (frases y
+  // ejercicios). Las junta gen-derived.mjs en el build: recorrerlas aquí
+  // obligaba a traer el contenido de todas las lecciones al perfil.
+  const ids = new Set<string>(phaseWords[phase.id] ?? []);
   const words = ids.size;
   let strongWords = 0;
   for (const id of ids) {

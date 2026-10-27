@@ -5,7 +5,8 @@
   "scripts": {
     "validate": "node scripts/validate-content.mjs",
     "test": "vitest run",
-    "prebuild": "node scripts/validate-content.mjs",
+    "prebuild": "node scripts/gen-derived.mjs && node scripts/validate-content.mjs",
+    "predev": "node scripts/gen-derived.mjs",
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start -H 0.0.0.0",

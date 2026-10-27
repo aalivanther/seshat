@@ -1,14 +1,12 @@
 "use client";
 
-import { notFound, useParams } from "next/navigation";
-import { examsByLang } from "@/data/exams";
+import { notFound } from "next/navigation";
 import { has } from "@/data/features";
 import { ExamPlayer } from "@/components/ExamPlayer";
+import type { ExamSet } from "@/lib/examTypes";
 
-export default function ExamPage() {
+export default function ExamPage({ set }: { set: ExamSet | null }) {
   if (!has("exams")) notFound();
-  const params = useParams<{ id: string }>();
-  const set = Object.values(examsByLang).flat().find((e) => e.id === params.id);
   if (!set) notFound();
   return <ExamPlayer set={set} />;
 }

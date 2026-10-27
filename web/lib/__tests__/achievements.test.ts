@@ -299,6 +299,17 @@ describe("cuando aparezca un nivel nuevo del inglés", () => {
       const real = await vi.importActual<typeof import("@/data/course.gen")>("@/data/course.gen");
       return { ...real, courses: { ...real.courses, en: withFakeEnA2(real.courses.en) } };
     });
+    // las medallas leen el índice ligero (lo que viaja al cliente): el nivel
+    // nuevo tiene que aparecer también ahí
+    vi.doMock("@/data/courseIndex.gen", async () => {
+      const real = await vi.importActual<typeof import("@/data/courseIndex.gen")>("@/data/courseIndex.gen");
+      const nuevas = withFakeEnA2({ phases: [], vocab: {} }).phases.map((p) => ({
+        ...p,
+        lessons: p.lessons.map(({ sections: _sections, ...l }) => ({ ...l, nEx: 0 })),
+      }));
+      const en = real.courseIndex.en;
+      return { ...real, courseIndex: { ...real.courseIndex, en: { ...en, phases: [...en.phases, ...nuevas] } } };
+    });
     const { computeBadges: compute } = await import("@/lib/achievements");
     const { courses: mocked } = await import("@/data/course");
 
@@ -328,6 +339,7 @@ describe("cuando aparezca un nivel nuevo del inglés", () => {
     expect(b2.find((b) => b.id === "en-world-class")!.earned).toBe(true);
 
     vi.doUnmock("@/data/course.gen");
+    vi.doUnmock("@/data/courseIndex.gen");
     vi.resetModules();
   });
 });
